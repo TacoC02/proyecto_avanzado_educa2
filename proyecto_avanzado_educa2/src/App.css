@@ -1,0 +1,26 @@
+.App {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 16px;
+}
+
+/* asegura que el cuadrado quede en el fondo */
+.App .cuadrado {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+/* texto "Carta" encima del cuadrado */
+.carta {
+  position: absolute;
+  top: 10%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  color: #fff;
+  font-weight: 700;
+  pointer-events: none;
+}
