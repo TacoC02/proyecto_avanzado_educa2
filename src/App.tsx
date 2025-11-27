@@ -1,5 +1,5 @@
 import './App.css'
-import Mazo from './Componentes/VistaMazo' // <-- asegúrate que "Componentes" coincide exactamente con la carpeta
+import Mazo from './Componentes/VistaMazo' 
 
 function App() {
   return (
