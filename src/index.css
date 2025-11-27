@@ -1,1 +1,7 @@
+@import url('https://fonts.cdnfonts.com/css/pokemon-solid');
 @import "tailwindcss";
+
+body {
+  background-color: #d6d6d6;
+  margin: 0;
+}

@@ -20,7 +20,17 @@ const cartasData = [
     defensa: 78,
     descripcion: 'Feroz dragón que lanza fuego por la boca.',
     imagen: 'https://images.wikidexcdn.net/mwuploads/wikidex/e/e6/latest/20220617191549/EP1204_Charizard_de_Lionel.png'
-  }
+  },
+  {
+  numero: 3,
+  nombre: 'Wobbuffet',
+  tipo: 'Psíquico',
+  ataque: 33,
+  defensa: 58,
+  descripcion: 'un pokemon que refleja los ataques del oponente',
+  imagen: 'https://preview.redd.it/opinions-on-jessies-wobbuffet-v0-lmxthhgm0h7c1.jpeg?auto=webp&s=efe9b868528083b5e4d0acfe27bd690425280f2d'
+  },
+
 ]
 
 function Mazo() {
