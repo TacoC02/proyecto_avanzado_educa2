@@ -1,0 +1,9 @@
+.mazo {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  margin-top: 24px;
+  position: relative;
+}

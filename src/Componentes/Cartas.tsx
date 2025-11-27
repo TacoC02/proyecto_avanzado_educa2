@@ -1,5 +1,6 @@
-import "./Cartas.css"
-type Props ={  
+import './Cartas.css'  
+
+type Props = {  
     numero: number;
     nombre: string;
     tipo: string;
@@ -9,27 +10,40 @@ type Props ={
     imagen: string;
 };
 
+type CartaProps = Props & {
+  expanded?: boolean;
+  onClick?: () => void;
+};
+
 function Carta ({
-    ataque=0,
-    defensa=0,
-    descripcion="ola",
+    ataque = 0,
+    defensa = 0,
+    descripcion = "sin descripción",
     imagen,
-    nombre="pikachu",
-    numero=0,
-    tipo="electrico",
-}:Props) {
+    nombre = "pikachu",
+    numero = 0,
+    tipo = "electrico",
+    expanded = false,
+    onClick,
+}: CartaProps) {
   return (
-    <div>
-        <h3>
-            {nombre} (#{numero})
-        </h3>
+    <div className={`carta ${expanded ? 'expanded' : ''}`} onClick={onClick} role="button" tabIndex={0}>
+      <div className="carta-media">
         <img src={imagen} alt={nombre} />
-        <p>Tipo: {tipo}</p>
-        <p>Ataque: {ataque}</p>
-        <p>Defensa: {defensa}</p>
-        <p>{descripcion}</p>
+      </div>
+
+      <div className="carta-nombre">{nombre}</div>
+
+      {expanded && (
+        <div className="carta-detalles">
+          <p>#{numero} — {tipo}</p>
+          <p>Ataque: {ataque}</p>
+          <p>Defensa: {defensa}</p>
+          <p className="descripcion">{descripcion}</p>
+        </div>
+      )}
     </div>
-  );
+  )
 }
 
-export default Carta;
+export default Carta
