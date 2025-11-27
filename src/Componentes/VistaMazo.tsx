@@ -10,7 +10,7 @@ const cartasData = [
     ataque: 55,
     defensa: 40,
     descripcion: 'Pequeño ratón eléctrico con un gran corazón.',
-    imagen: 'https://placehold.co/300x200' // usa placeholder si no tienes assets
+    imagen: 'https://i0.wp.com/codigoespagueti.com/wp-content/uploads/2024/01/pokemon-pikachu-no-evoluciono.jpg' // usa placeholder si no tienes assets
   },
   {
     numero: 2,
@@ -19,7 +19,7 @@ const cartasData = [
     ataque: 84,
     defensa: 78,
     descripcion: 'Feroz dragón que lanza fuego por la boca.',
-    imagen: 'https://placehold.co/300x200'
+    imagen: 'https://images.wikidexcdn.net/mwuploads/wikidex/e/e6/latest/20220617191549/EP1204_Charizard_de_Lionel.png'
   }
 ]
 
