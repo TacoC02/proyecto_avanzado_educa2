@@ -2,6 +2,9 @@
 @import "tailwindcss";
 
 body {
-  background-color: #d6d6d6;
+  background-image: url("https://preview.redd.it/i-made-a-cool-pokemon-koi-pond-wallpaper-v0-zipswqk1ztva1.png?auto=webp&s=fdf174c9c6d009638b40f8ede42fc2bfe00f0800");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   margin: 0;
 }

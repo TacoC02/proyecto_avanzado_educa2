@@ -2,10 +2,9 @@
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.45);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
   z-index: 999;
 }
-
 
 .modal {
   position: fixed;
@@ -13,7 +12,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-  width: 660px;
+  width: 90vw;
   max-width: 1200px;
   height: 80vh;
   display: flex;
@@ -23,70 +22,103 @@
   pointer-events: none;
 }
 
-
 .modal-card {
-  pointer-events: auto; 
-  width: 55%;
+  pointer-events: auto;
+  width: 400px;
   height: 100%;
-  background: linear-gradient(135deg,#fff 0%, #f1f5f9 100%);
-  border-radius: 14px;
-  box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  background: rgb(196, 190, 231);
+  border-radius: 18px;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.45);
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
+  border: 3px solid rgba(0,0,0,0.08);
+  overflow: hidden;
 }
 
-
-.modal-card-header .modal-num {
+.modal-card-header {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  z-index: 41;
+}
+.modal-num {
   font-size: 48px;
   font-weight: 700;
-  margin-left: 6px;
+  color: #111;
 }
 
+/* Centrado de imagen en el modal */
 .modal-card-body {
   display: flex;
   align-items: center;
   justify-content: center;
   height: calc(100% - 120px);
+  padding: 8px 28px 0;
 }
-
+.modal-media {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+}
 .modal-media img {
-  width: 70%;
-  height: auto;
-  max-height: 70%;
+  width: 100%;
+  max-width: 420px;
   object-fit: contain;
-  border-radius: 8px;
-  border: 3px solid rgba(0,0,0,0.06);
+  transform: translateY(38px);
+  border-radius: 20px;
 }
 
-
+/* Nombre dentro de la carta grande modal */
+.modal-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+}
 .modal-card-footer .modal-name {
-  text-align: left;
-  margin: 0;
-  font-size: 22px;
+  font-family: 'Pokemon Solid', sans-serif;
   font-weight: 700;
+  font-size: 24px;
+  margin: 0;
 }
 
-
+/* Panel de detalles a la derecha */
 .modal-details {
   pointer-events: auto;
-  width: 36%;
+  width: 34%;
   height: 100%;
-  background: transparent;
+  background: rgb(166, 160, 201);
   color: #111;
   padding: 18px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  align-items: flex-start;
+  gap: 12px;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
+/* Stats */
+.stat-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 8px;
+  font-size: 14px;
+}
+.stat-icon { font-size: 18px; }
 
+/* Botón cerrar */
 .close-button {
   margin-top: auto;
-  align-self: stretch;
   padding: 10px 14px;
   background: #111;
   color: #fff;
@@ -95,56 +127,126 @@
   cursor: pointer;
 }
 
-
+/* ========== Lista de cartas  ========== */
 .carta {
-  width: 300px;
-  height: 380px;
-  background: linear-gradient(135deg,#fff 0%, #f1f5f9 100%);
-  border-radius: 12px;
-  display: flex;
-  padding: 12px;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+  width: 280px;
+  height: 370px;
+  background: rgb(196, 190, 231);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.08);
   cursor: pointer;
-  transition: transform 200ms ease;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+  position: relative;
+  border: 3px solid rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.carta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(255, 88, 88, 0.12), rgba(255, 207, 64, 0.06));
+  -webkit-mask: linear-gradient(#fff,#fff) content-box, linear-gradient(#fff,#fff);
+  mask: linear-gradient(#fff,#fff) content-box, linear-gradient(#fff,#fff);
+  pointer-events: none;
+}
+
+/* Hover efecto */
+.carta:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+}
+
+/* número grande en la carta (arriba-izq) */
+.carta-number {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  font-size: 42px;
+  font-weight: 700;
+  color: rgba(0,0,0,0.85);
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.4);
+  z-index: 2;
+}
+
+/* pokebola pequeña */
+.pokebola {
+  position: absolute;
+  top: 20px;
+  left: 240px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid #000;
+  background: linear-gradient(180deg, #ff4d4d 0 50%, #fff 50% 100%);
+  z-index: 10;
+}
+
+/* pequeña pokebola arriba a la derecha en modal */
+.modal-pokebola {
+  width: 42px;
+  height: 42px;
+  top: 32px;
+  right: 14px;
+  left: auto;
+  position: absolute;
+  border-radius: 50%;
+  z-index: 40;
+  background: linear-gradient(180deg, #ff4d4d 0 50%, #fff 50% 100%);
+  border: 3px solid #000;
 }
 
 /* Contenido vertical: imagen arriba, nombre abajo */
 .carta-contenido {
   display: flex;
-  flex-direction: column; /* nombre debajo de la imagen */
-  gap: 8px;
+  flex-direction: column;
+  gap: 10px;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   height: 100%;
 }
 
-/* Imagen en la carta (lista) */
+/* Imagen grande circular con borde */
 .carta-media {
-  width: 330px;
-  height: 260px;
+  width: 86%;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 30px;
 }
-
 .carta-media img {
-  width: 70%;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 8px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 8px solid rgba(0,0,0,0.06);
+  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.6), transparent 20%);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12), inset 0 -6px 10px rgba(0,0,0,0.02);
 }
 
-/* Nombre debajo de la imagen */
+/* Barra inferior con nombre y badge tipo */
+.carta-name-bar {
+  width: 100%;
+  padding: 10px 12px;
+  background: linear-gradient(180deg,#fff 0%, #f2f4f5 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid rgba(0,0,0,0.04);
+  border-radius: 10px;
+  margin-bottom: 4px;
+  justify-content: center;
+}
+
 .carta-name {
   font-family: 'Pokemon Solid', sans-serif;
   font-weight: 700;
   font-size: 18px;
-  color: #111;
-  text-align: center;
-  margin-top: 4px;
-}
-.modal-card-footer .modal-name {
-  font-family: 'Pokemon Solid', sans-serif;
-  font-weight: 700;
-  font-size: 22px;
+  color: #000000;
 }
