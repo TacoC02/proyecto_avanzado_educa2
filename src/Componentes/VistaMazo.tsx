@@ -56,7 +56,7 @@ function Mazo() {
   function handleCreate(data: Omit<CartaItem, 'numero'> & { vida?: number }) {
     const nuevo = { ...data, numero: getNextNumero() }
     setCartas((s) => [...s, nuevo as CartaItem])
-    setSelectedIndex(cartas.length) // expand new card (index before update)
+    setSelectedIndex(cartas.length)
   }
 
   return (
