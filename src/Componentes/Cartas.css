@@ -14,7 +14,7 @@
   z-index: 1000;
   width: 90vw;
   max-width: 1200px;
-  height: 80vh;
+  height: 64vh;
   display: flex;
   gap: 24px;
   align-items: flex-start;
@@ -25,7 +25,8 @@
 .modal-card {
   pointer-events: auto;
   width: 400px;
-  height: 100%;
+  height: auto;
+  max-height: 60vh;
   background: rgb(196, 190, 231);
   border-radius: 18px;
   box-shadow: 0 18px 60px rgba(0,0,0,0.45);
@@ -55,7 +56,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: calc(100% - 120px);
+  height: calc(60vh - 120px);
   padding: 8px 28px 0;
 }
 .modal-media {
@@ -68,9 +69,10 @@
 }
 .modal-media img {
   width: 100%;
-  max-width: 420px;
+  max-width: 360px;
+  max-height: 380px;
   object-fit: contain;
-  transform: translateY(38px);
+  transform: translateY(20px);
   border-radius: 20px;
 }
 
@@ -92,7 +94,8 @@
 .modal-details {
   pointer-events: auto;
   width: 34%;
-  height: 100%;
+  height: auto;
+  max-height: 60vh;
   background: rgb(166, 160, 201);
   color: #111;
   padding: 18px;
