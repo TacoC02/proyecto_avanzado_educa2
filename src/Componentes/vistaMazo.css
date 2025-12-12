@@ -1,11 +1,13 @@
 .mazo {
   display: flex;
-  gap: 18px;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px 24px;
   justify-content: center;
+  align-items: flex-start;
   padding: 24px;
-  margin-top: 24px;
+  margin: 24px auto 0;
   position: relative;
+  max-width: 1192px; /* 4 cards (280px) + 3 gaps (24px) = 1192px to force wrap after 4 */
 }
 
 .create-card-button {

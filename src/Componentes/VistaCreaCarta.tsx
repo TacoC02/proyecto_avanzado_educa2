@@ -64,7 +64,7 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
 				</div>
 
 				<aside className="modal-details" onClick={(e) => e.stopPropagation()}>
-					<h3>Crear nueva carta</h3>
+					<h1>Crear tu carta</h1>
 					<form onSubmit={submit} className="create-form">
 						<label>
 							Nombre

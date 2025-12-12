@@ -12,9 +12,9 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-  width: 90vw;
-  max-width: 1200px;
-  height: 64vh;
+  width: 900px;
+  max-width: 900px;
+  height: 500px;
   display: flex;
   gap: 24px;
   align-items: flex-start;
@@ -93,38 +93,46 @@
 /* Panel de detalles a la derecha */
 .modal-details {
   pointer-events: auto;
-  width: 34%;
-  height: auto;
-  max-height: 60vh;
+  width: 460px;
+  height: 600px;
+  max-height: 78vh;
   background: rgb(166, 160, 201);
   color: #111;
-  padding: 18px;
+  padding: 14px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  border-radius: 14px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  gap: 10px;
+  border-radius: 18px;
+  border: 3px solid rgba(0,0,0,0.08);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.14);
 }
 
 /* Stats */
 .stat-row {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
-  padding: 8px 10px;
+  padding: 6px 8px;
   background: rgba(255,255,255,0.6);
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 13px;
+  line-height: 1.2;
 }
-.stat-icon { font-size: 18px; }
+.stat-icon { font-size: 16px; }
+
+/* Limitar la altura de la descripción dentro del panel de detalles */
+.modal-details .stat-row:last-of-type {
+  max-height: 64px;
+  overflow: auto;
+}
 
 /* Botón cerrar */
 .close-button {
   margin-top: auto;
   padding: 10px 14px;
   background: #111;
-  color: #fff;
+  color: #000000;
   border: none;
   border-radius: 8px;
   cursor: pointer;
