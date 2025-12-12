@@ -60,10 +60,8 @@ function Mazo() {
   }
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 12 }}>
-        <button className="create-card-button" onClick={() => setShowCreate(true)}>Crear carta</button>
-      </div>
+    <div className="mazo-container">
+      <button className="create-card-button" onClick={() => setShowCreate(true)}>Crear carta</button>
 
       <div className="mazo">
         {cartas.map((c, i) => (
