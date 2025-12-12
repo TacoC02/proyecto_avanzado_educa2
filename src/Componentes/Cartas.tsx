@@ -6,6 +6,7 @@ type Props = {
   tipo: string;
   ataque?: number;
   defensa?: number;
+  vida?: number;
   descripcion: string;
   imagen: string;
 };
