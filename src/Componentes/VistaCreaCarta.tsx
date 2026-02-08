@@ -8,6 +8,7 @@ type FormData = {
 	defensa: number
 	vida: number
 	descripcion: string
+	pokemonName: string
 	imagen: string
 }
 
@@ -25,6 +26,7 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
 		defensa: 0,
 		vida: 100,
 		descripcion: '',
+		pokemonName: '',
 		imagen: '',
 	})
 
@@ -32,11 +34,25 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
 		setForm((s) => ({ ...s, [key]: value }))
 	}
 
-	function submit(e?: React.FormEvent) {
+	async function submit(e?: React.FormEvent) {
 		e?.preventDefault()
 		if (!form.nombre) return alert('Ingrese un nombre')
-		onCreate({ ...form })
-		onClose()
+		if (!form.pokemonName) return alert('Ingrese el nombre del Pokémon para buscar la imagen')
+
+		const name = form.pokemonName.trim().toLowerCase()
+		try {
+			const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${encodeURIComponent(name)}`)
+			if (!res.ok) return alert('Pokémon no encontrado')
+			const data = await res.json()
+			const image = data?.sprites?.other?.['official-artwork']?.front_default || data?.sprites?.front_default || ''
+			if (!image) return alert('Imagen no disponible para ese Pokémon')
+
+			onCreate({ ...form, imagen: image })
+			onClose()
+		} catch (err) {
+			console.error(err)
+			alert('Error al buscar el Pokémon')
+		}
 	}
 
 	return (
@@ -95,8 +111,8 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
 						</div>
 
 						<label>
-							Imagen (URL)
-							<input value={form.imagen} onChange={(e) => handleChange('imagen', e.target.value)} />
+							Nombre del Pokémon
+							<input value={form.pokemonName} onChange={(e) => handleChange('pokemonName', e.target.value)} placeholder="Ej: Pikachu" />
 						</label>
 
 						<label>
