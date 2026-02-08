@@ -14,6 +14,9 @@ type Props = {
 type CartaProps = Props & {
   expanded?: boolean;
   onClick?: () => void;
+  selectable?: boolean;
+  isSelected?: boolean;
+  onSelect?: () => void;
 };
 
 function Carta ({
@@ -26,6 +29,9 @@ function Carta ({
   tipo = "Normal",
   expanded = false,
   onClick,
+  selectable = false,
+  isSelected = false,
+  onSelect,
 }: CartaProps) {
 
   if (expanded) {
@@ -64,9 +70,20 @@ function Carta ({
     )
   }
 
+  const handleClick = () => {
+    if (selectable) {
+      onSelect?.()
+    } else {
+      onClick?.()
+    }
+  }
+
   return (
-    <div className="carta" onClick={onClick} role="button" tabIndex={0}>
+    <div className={"carta" + (isSelected ? ' selected' : '')} onClick={handleClick} role="button" tabIndex={0}>
       <div className="pokebola" aria-hidden="true" />
+      {selectable && (
+        <div className={"select-badge" + (isSelected ? ' checked' : '')} aria-hidden="true">{isSelected ? '✓' : ''}</div>
+      )}
       <div className="carta-number">#{numero}</div>
 
       <div className="carta-contenido">

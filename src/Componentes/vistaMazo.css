@@ -10,11 +10,18 @@
   max-width: 1192px; /* 4 cards (280px) + 3 gaps (24px) = 1192px to force wrap after 4 */
 }
 
-.create-card-button {
+.top-controls {
   position: absolute;
   top: 12px;
   left: 50%;
   transform: translateX(-50%);
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  z-index: 20;
+}
+
+.create-card-button {
   padding: 10px 18px;
   border-radius: 12px;
   background: linear-gradient(180deg, #ffffff 0%, #f2f4f5 100%);
@@ -24,17 +31,37 @@
   font-family: 'Pokemon Solid', sans-serif;
   font-weight: 700;
   letter-spacing: 0.6px;
-  z-index: 20;
   transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
 .create-card-button:hover {
-  transform: translateX(-50%) translateY(-4px) scale(1.02);
+  transform: translateY(-4px) scale(1.02);
   box-shadow: 0 20px 60px rgba(0,0,0,0.12);
 }
 
 .mazo-container {
   position: relative;
   padding-top: 64px; 
+}
+
+/* Botón eliminar junto a crear */
+.delete-card-button {
+  padding: 10px 18px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #fff 0%, #f8e6e6 100%);
+  border: 2px solid rgba(0,0,0,0.06);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+  cursor: pointer;
+  font-family: 'Pokemon Solid', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.delete-card-button:hover { transform: translateY(-4px) scale(1.02); }
+
+.delete-card-button.active {
+  background: linear-gradient(180deg, #ffdede 0%, #ffbdbd 100%);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.12);
 }
  

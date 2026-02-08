@@ -48,6 +48,8 @@ function Mazo() {
   const [cartas, setCartas] = useState<CartaItem[]>(initialCartas)
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
   const [showCreate, setShowCreate] = useState(false)
+  const [selectionMode, setSelectionMode] = useState(false)
+  const [selected, setSelected] = useState<number[]>([])
 
   function getNextNumero() {
     return cartas.length ? Math.max(...cartas.map((c) => c.numero)) + 1 : 1
@@ -59,9 +61,39 @@ function Mazo() {
     setSelectedIndex(cartas.length)
   }
 
+  function toggleSelect(numero: number) {
+    setSelected((s) => {
+      if (s.includes(numero)) return s.filter((n) => n !== numero)
+      return [...s, numero]
+    })
+  }
+
+  function handleDeleteClick() {
+    if (!selectionMode) {
+      setSelectionMode(true)
+      setSelected([])
+      return
+    }
+
+    // If selectionMode and nothing selected, just exit selection mode
+    if (selected.length === 0) {
+      setSelectionMode(false)
+      return
+    }
+
+    // Delete selected cards
+    setCartas((s) => s.filter((c) => !selected.includes(c.numero)))
+    setSelectionMode(false)
+    setSelected([])
+    setSelectedIndex(null)
+  }
+
   return (
     <div className="mazo-container">
-      <button className="create-card-button" onClick={() => setShowCreate(true)}>Crear carta</button>
+      <div className="top-controls">
+        <button className="create-card-button" onClick={() => setShowCreate(true)}>Crear carta</button>
+        <button className={"delete-card-button" + (selectionMode ? ' active' : '')} onClick={handleDeleteClick}>{selectionMode ? 'Confirmar borrar' : 'Borrar carta'}</button>
+      </div>
 
       <div className="mazo">
         {cartas.map((c, i) => (
@@ -70,6 +102,9 @@ function Mazo() {
             {...c}
             expanded={selectedIndex === i}
             onClick={() => setSelectedIndex(selectedIndex === i ? null : i)}
+            selectable={selectionMode}
+            isSelected={selected.includes(c.numero)}
+            onSelect={() => toggleSelect(c.numero)}
           />
         ))}
       </div>
