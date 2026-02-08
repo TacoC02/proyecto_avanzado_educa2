@@ -121,6 +121,30 @@
 }
 .stat-icon { font-size: 16px; }
 
+/* Descripción en el modal: un poco más grande que el resto de stat-row */
+.modal-details .stat-row--descripcion {
+  /* aumentar el cuadro (alto) de la fila de descripción sin cambiar las letras */
+  padding: 12px 10px;
+  min-height: 120px;
+  max-height: 220px;
+  overflow: auto;
+  font-size: 13px; /* mantener el tamaño de letra original */
+  line-height: 1.2;
+}
+
+.modal-details .stat-row--descripcion .descripcion-text {
+  font-size: 13px; /* mantener igual que el resto */
+  line-height: 1.35;
+  margin-left: 6px;
+  font-weight: 500;
+  display: block;
+}
+
+.modal-details .stat-row--descripcion strong {
+  font-size: 13px;
+  font-weight: 700;
+}
+
 /* Limitar la altura de la descripción dentro del panel de detalles */
 .modal-details .stat-row:last-of-type {
   max-height: 64px;

@@ -56,7 +56,7 @@ function Carta ({
             <div className="stat-row"><span className="stat-icon">🛡️</span> <strong>Defensa:</strong> {defensa}</div>
             <div className="stat-row"><span className="stat-icon">❤</span> <strong>Vida:</strong> 100</div>
             <div className="stat-row"><span className="stat-icon">✨</span> <strong>Tipo:</strong> {tipo}</div>
-            <div className="stat-row"><span className="stat-icon">📜</span> <strong>Descripción:</strong> {descripcion}</div>
+            <div className="stat-row stat-row--descripcion"><span className="stat-icon">📜</span> <strong>Descripción:</strong> <span className="descripcion-text">{descripcion}</span></div>
             <button className="close-button" onClick={onClick}>Cerrar</button>
           </aside>
         </div>
