@@ -18,7 +18,7 @@
   display: flex;
   gap: 18px;
   align-items: center;
-  z-index: 20;
+  z-index: 40;
 }
 
 .create-card-button {
@@ -42,6 +42,34 @@
 .mazo-container {
   position: relative;
   padding-top: 64px; 
+}
+
+/* Estado vacío centrado cuando no hay cartas */
+.empty-state {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* no bloquear botones */
+  z-index: 10; /* por debajo de .top-controls */
+}
+
+.empty-state .label {
+  font-family: 'Pokemon Solid', sans-serif;
+  font-weight: 900;
+  font-size: 64px;
+  line-height: 1;
+  text-align: center;
+  -webkit-text-stroke: 3px #c62828; /* borde rojo similar a logo */
+  color: #ffd400; /* amarillo Pokémon */
+  text-shadow: 0 6px 12px rgba(0,0,0,0.18), 0 2px 0 rgba(255,255,255,0.08);
+  background: linear-gradient(90deg, #ffd400 0%, #ff8f00 40%, #ff4d4d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding: 8px 18px;
+  border-radius: 12px;
 }
 
 /* Botón eliminar junto a crear */

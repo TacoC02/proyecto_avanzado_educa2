@@ -95,19 +95,23 @@ function Mazo() {
         <button className={"delete-card-button" + (selectionMode ? ' active' : '')} onClick={handleDeleteClick}>{selectionMode ? 'Confirmar borrar' : 'Borrar carta'}</button>
       </div>
 
-      <div className="mazo">
-        {cartas.map((c, i) => (
-          <Carta
-            key={c.numero}
-            {...c}
-            expanded={selectedIndex === i}
-            onClick={() => setSelectedIndex(selectedIndex === i ? null : i)}
-            selectable={selectionMode}
-            isSelected={selected.includes(c.numero)}
-            onSelect={() => toggleSelect(c.numero)}
-          />
-        ))}
-      </div>
+      {cartas.length === 0 ? (
+        <div className="empty-state"><div className="label">Agrega una carta</div></div>
+      ) : (
+        <div className="mazo">
+          {cartas.map((c, i) => (
+            <Carta
+              key={c.numero}
+              {...c}
+              expanded={selectedIndex === i}
+              onClick={() => setSelectedIndex(selectedIndex === i ? null : i)}
+              selectable={selectionMode}
+              isSelected={selected.includes(c.numero)}
+              onSelect={() => toggleSelect(c.numero)}
+            />
+          ))}
+        </div>
+      )}
 
       {showCreate && (
         <VistaCreaCarta
