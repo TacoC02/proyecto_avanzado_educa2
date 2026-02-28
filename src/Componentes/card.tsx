@@ -1,32 +1,32 @@
 type Props ={  
     numero: number;
-    nombre: string;
-    tipo: string;
-    ataque: number;
-    defensa: number;
-    descripcion: string;
-    imagen: string;
+    name: string;
+    attributes: string;
+    attack: number;
+    defense: number;
+    description: string;
+    pictureUrl: string;
 };
 
 function CardDetail ({
-    ataque,
-    defensa,
-    descripcion,
-    imagen,
-    nombre,
+    attack,
+    defense,
+    description,
+    pictureUrl,
+    name,
     numero,
-    tipo,
+    attributes,
 }:Props) {
   return (
     <div>
         <h3>
-            {nombre} (#{numero})
+            {name} (#{numero})
         </h3>
-        <img src={imagen} alt={nombre} />
-        <p>Tipo: {tipo}</p>
-        <p>Ataque: {ataque}</p>
-        <p>Defensa: {defensa}</p>
-        <p>{descripcion}</p>
+        <img src={pictureUrl} alt={name} />
+        <p>attributes: {attributes}</p>
+        <p>attack: {attack}</p>
+        <p>defense: {defense}</p>
+        <p>{description}</p>
     </div>
     );
 }

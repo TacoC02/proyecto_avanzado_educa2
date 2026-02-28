@@ -2,14 +2,14 @@ import { useState } from 'react'
 import './vistaCreaCarta.css'
 
 type FormData = {
-	nombre: string
-	tipo: string
-	ataque: number
-	defensa: number
-	vida: number
-	descripcion: string
+	name: string
+	attributes: string
+	attack: number
+	defense: number
+	llifepoints: number
+	description: string
 	pokemonName: string
-	imagen: string
+	pictureUrl: string
 }
 
 type Props = {
@@ -20,14 +20,14 @@ type Props = {
 
 function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
 	const [form, setForm] = useState<FormData>({
-		nombre: '',
-		tipo: '',
-		ataque: 0,
-		defensa: 0,
-		vida: 100,
-		descripcion: '',
+		name: '',
+		attributes: '',
+		attack: 0,
+		defense: 0,
+		llifepoints: 100,
+		description: '',
 		pokemonName: '',
-		imagen: '',
+		pictureUrl: '',
 	})
 
 	function handleChange<K extends keyof FormData>(key: K, value: FormData[K]) {
@@ -36,8 +36,8 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
 
 	async function submit(e?: React.FormEvent) {
 		e?.preventDefault()
-		if (!form.nombre) return alert('Ingrese un nombre')
-		if (!form.pokemonName) return alert('Ingrese el nombre del Pokémon para buscar la imagen')
+		if (!form.name) return alert('Ingrese un name')
+		if (!form.pokemonName) return alert('Ingrese el name del Pokémon para buscar la pictureUrl')
 
 		const name = form.pokemonName.trim().toLowerCase()
 		try {
@@ -45,9 +45,9 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
 			if (!res.ok) return alert('Pokémon no encontrado')
 			const data = await res.json()
 			const image = data?.sprites?.other?.['official-artwork']?.front_default || data?.sprites?.front_default || ''
-			if (!image) return alert('Imagen no disponible para ese Pokémon')
+			if (!image) return alert('pictureUrl no disponible para ese Pokémon')
 
-			onCreate({ ...form, imagen: image })
+			onCreate({ ...form, pictureUrl: image })
 			onClose()
 		} catch (err) {
 			console.error(err)
@@ -66,8 +66,8 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
 
 					<div className="modal-card-body">
 						<div className="modal-media">
-							{form.imagen ? (
-								<img src={form.imagen} alt={form.nombre || 'preview'} />
+							{form.pictureUrl ? (
+								<img src={form.pictureUrl} alt={form.name || 'preview'} />
 							) : (
 								<div style={{width:120,height:120,borderRadius:999,background:'#fff',boxShadow:'inset 0 0 0 6px rgba(0,0,0,0.03)'}} />
 							)}
@@ -75,7 +75,7 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
 					</div>
 
 					<div className="modal-card-footer">
-						<h2 className="modal-name">{form.nombre || 'Nombre'}</h2>
+						<h2 className="modal-name">{form.name || 'name'}</h2>
 					</div>
 				</div>
 
@@ -83,41 +83,41 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
 					<h1>Crear tu carta</h1>
 					<form onSubmit={submit} className="create-form">
 						<label>
-							Nombre
-							<input value={form.nombre} onChange={(e) => handleChange('nombre', e.target.value)} />
+							name
+							<input value={form.name} onChange={(e) => handleChange('name', e.target.value)} />
 						</label>
 
 						<label>
-							Tipo
-							<input value={form.tipo} onChange={(e) => handleChange('tipo', e.target.value)} />
+							attributes
+							<input value={form.attributes} onChange={(e) => handleChange('attributes', e.target.value)} />
 						</label>
 
 						<div className="stat-row"><span className="stat-icon">⚔️</span>
-							<label>Ataque
-								<input type="number" value={form.ataque} onChange={(e) => handleChange('ataque', Number(e.target.value || 0))} />
+							<label>attack
+								<input type="number" value={form.attack} onChange={(e) => handleChange('attack', Number(e.target.value || 0))} />
 							</label>
 						</div>
 
 						<div className="stat-row"><span className="stat-icon">🛡️</span>
-							<label>Defensa
-								<input type="number" value={form.defensa} onChange={(e) => handleChange('defensa', Number(e.target.value || 0))} />
+							<label>defense
+								<input type="number" value={form.defense} onChange={(e) => handleChange('defense', Number(e.target.value || 0))} />
 							</label>
 						</div>
 
 						<div className="stat-row"><span className="stat-icon">❤</span>
-							<label>Vida
-								<input type="number" value={form.vida} onChange={(e) => handleChange('vida', Number(e.target.value || 0))} />
+							<label>llifepoints
+								<input type="number" value={form.llifepoints} onChange={(e) => handleChange('llifepoints', Number(e.target.value || 0))} />
 							</label>
 						</div>
 
 						<label>
-							Nombre del Pokémon
+							name del Pokémon
 							<input value={form.pokemonName} onChange={(e) => handleChange('pokemonName', e.target.value)} placeholder="Ej: Pikachu" />
 						</label>
 
 						<label>
 							Descripción
-							<textarea value={form.descripcion} onChange={(e) => handleChange('descripcion', e.target.value)} />
+							<textarea value={form.description} onChange={(e) => handleChange('description', e.target.value)} />
 						</label>
 
 						<div style={{display:'flex',gap:10,justifyContent:'flex-end'}}>

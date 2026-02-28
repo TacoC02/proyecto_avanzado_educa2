@@ -51,7 +51,7 @@
   color: #111;
 }
 
-/* Centrado de imagen en el modal */
+/* Centrado de pictureUrl en el modal */
 .modal-card-body {
   display: flex;
   align-items: center;
@@ -122,7 +122,7 @@
 .stat-icon { font-size: 16px; }
 
 /* Descripción en el modal: un poco más grande que el resto de stat-row */
-.modal-details .stat-row--descripcion {
+.modal-details .stat-row--description {
   /* aumentar el cuadro (alto) de la fila de descripción sin cambiar las letras */
   padding: 12px 10px;
   min-height: 120px;
@@ -132,7 +132,7 @@
   line-height: 1.2;
 }
 
-.modal-details .stat-row--descripcion .descripcion-text {
+.modal-details .stat-row--description .description-text {
   font-size: 13px; /* mantener igual que el resto */
   line-height: 1.35;
   margin-left: 6px;
@@ -140,7 +140,7 @@
   display: block;
 }
 
-.modal-details .stat-row--descripcion strong {
+.modal-details .stat-row--description strong {
   font-size: 13px;
   font-weight: 700;
 }
@@ -239,7 +239,7 @@
   border: 3px solid #000;
 }
 
-/* Contenido vertical: imagen arriba, nombre abajo */
+/* Contenido vertical: pictureUrl arriba, nombre abajo */
 .carta-contenido {
   display: flex;
   flex-direction: column;
@@ -250,7 +250,7 @@
   height: 100%;
 }
 
-/* Imagen grande circular con borde */
+/* pictureUrl grande circular con borde */
 .carta-media {
   width: 86%;
   height: auto;
@@ -269,7 +269,7 @@
   box-shadow: 0 12px 30px rgba(0,0,0,0.12), inset 0 -6px 10px rgba(0,0,0,0.02);
 }
 
-/* Barra inferior con nombre y badge tipo */
+/* Barra inferior con nombre y badge attributes */
 .carta-name-bar {
   width: 100%;
   padding: 10px 12px;
