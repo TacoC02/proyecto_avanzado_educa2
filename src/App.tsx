@@ -1,6 +1,5 @@
 import './App.css'
 import Mazo from './Componentes/VistaMazo' 
-import { Link } from 'react-router'
 
 function App() {
   return (
