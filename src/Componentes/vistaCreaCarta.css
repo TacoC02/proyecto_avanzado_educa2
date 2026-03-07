@@ -20,7 +20,13 @@
 	display: flex;
 	gap: 20px;
 	align-items: center;
-}
+		animation: fadeInModal 0.7s cubic-bezier(.42,0,.58,1);
+	}
+
+	@keyframes fadeInModal {
+		from { opacity: 0; transform: scale(0.96) translateY(24px); }
+		to { opacity: 1; transform: scale(1) translateY(0); }
+	}
 
 .create-form {
 	display: flex;
@@ -50,6 +56,16 @@
 .btn { padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 15px }
 .btn.primary { background: #111; color: #fff; border: none }
 .close-button { padding: 10px 14px; border-radius: 10px; background: #f2f2f2; border: 1px solid rgba(0,0,0,0.14); cursor: pointer; font-weight: 700 }
+
+.btn,
+.close-button {
+	transition: background 0.3s, box-shadow 0.3s, transform 0.18s;
+}
+.btn:active,
+.close-button:active {
+	transform: scale(0.98);
+	box-shadow: 0 6px 18px rgba(166,160,201,0.18);
+}
 
 
 .modal-card {
@@ -88,16 +104,93 @@
 	box-shadow: 0 10px 30px rgba(0,0,0,0.12);
 	display: flex;
 	flex-direction: column;
-	gap: 12px;
 }
 
+/* Scrollbar Pokémon para todos los paneles con scroll */
+.modal-details,
+.stat-row--description {
+  scrollbar-width: thin;
+  scrollbar-color: #ffd400 #c62828;
+}
+
+/* Scrollbar Webkit (Chrome, Edge, Safari) */
+.modal-details::-webkit-scrollbar,
+.stat-row--description::-webkit-scrollbar {
+  width: 12px;
+  background: linear-gradient(90deg, #ffd400 0%, #ff8f00 40%, #ff4d4d 100%);
+  border-radius: 8px;
+}
+
+.modal-details::-webkit-scrollbar-thumb,
+.stat-row--description::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ffd400 0%, #ff8f00 40%, #ff4d4d 100%);
+  border-radius: 8px;
+  border: 2px solid #c62828;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.modal-details::-webkit-scrollbar-thumb:hover,
+.stat-row--description::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ff4d4d 0%, #ffd400 100%);
+  border: 2px solid #ff8f00;
+}
+
+.modal-details {
+	gap: 12px;
+}
 .modal-media img {
 	max-width: 360px;
 	max-height: 360px;
 	object-fit: contain;
 	transform: translateY(8px);
 	border-radius: 16px;
-}
+		transition: transform 0.18s, box-shadow 0.18s;
+	}
+
+	/* Efecto clásico Pokémon al agregar carta */
+
+	.pokemon-flash {
+		position: relative;
+		animation: pokemonFlash 1s cubic-bezier(.42,0,.58,1);
+		z-index: 10;
+	}
+	.pokemon-flash::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 120%;
+		height: 120%;
+		transform: translate(-50%, -50%);
+		border-radius: 50%;
+		pointer-events: none;
+		z-index: 1;
+		background: radial-gradient(circle, #fff 0%, #ffd700 40%, transparent 80%);
+		opacity: 0.85;
+		animation: pokemonFlashHalo 1s cubic-bezier(.42,0,.58,1);
+	}
+
+	@keyframes pokemonFlashHalo {
+		0% { opacity: 0; filter: blur(8px); }
+		20% { opacity: 1; filter: blur(4px); }
+		40% { opacity: 0.85; filter: blur(2px); }
+		60% { opacity: 0.7; filter: blur(1px); }
+		80% { opacity: 0.5; filter: blur(0px); }
+		100% { opacity: 0; filter: blur(0px); }
+	}
+
+	@keyframes pokemonFlash {
+		0% { opacity: 0; transform: scale(0.7) rotate(-8deg); filter: brightness(2) blur(2px); }
+		20% { opacity: 1; transform: scale(1.15) rotate(2deg); filter: brightness(2.5) blur(0.5px); }
+		40% { opacity: 1; transform: scale(1.05) rotate(-2deg); filter: brightness(1.8) blur(0.2px); }
+		60% { opacity: 1; transform: scale(1) rotate(0deg); filter: brightness(1.2) blur(0px); }
+		80% { opacity: 1; transform: scale(1) rotate(0deg); filter: brightness(1) blur(0px); }
+		100% { opacity: 1; transform: scale(1) rotate(0deg); filter: brightness(1) blur(0px); }
+	}
+	.modal-media img:hover {
+		transform: scale(1.04) translateY(0);
+		box-shadow: 0 18px 40px rgba(166,160,201,0.18);
+	}
 
 .create-form input,
 .create-form textarea { width: 100%; box-sizing: border-box; height: 50%;}

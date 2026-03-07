@@ -29,6 +29,7 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
 		pokemonName: '',
 		pictureUrl: '',
 	})
+	const [showFlash, setShowFlash] = useState(false);
 
 	function handleChange<K extends keyof FormData>(key: K, value: FormData[K]) {
 		setForm((s) => ({ ...s, [key]: value }))
@@ -47,8 +48,13 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
 			const image = data?.sprites?.other?.['official-artwork']?.front_default || data?.sprites?.front_default || ''
 			if (!image) return alert('pictureUrl no disponible para ese Pokémon')
 
-			onCreate({ ...form, pictureUrl: image })
-			onClose()
+			setForm((f) => ({ ...f, pictureUrl: image }))
+			setShowFlash(true)
+			setTimeout(() => {
+				setShowFlash(false)
+				onCreate({ ...form, pictureUrl: image })
+				onClose()
+			}, 1000)
 		} catch (err) {
 			console.error(err)
 			alert('Error al buscar el Pokémon')
@@ -67,7 +73,11 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
 					<div className="modal-card-body">
 						<div className="modal-media">
 							{form.pictureUrl ? (
-								<img src={form.pictureUrl} alt={form.name || 'preview'} />
+								<img
+									src={form.pictureUrl}
+									alt={form.name || 'preview'}
+									className={showFlash ? 'pokemon-flash' : ''}
+								/>
 							) : (
 								<div style={{width:120,height:120,borderRadius:999,background:'#fff',boxShadow:'inset 0 0 0 6px rgba(0,0,0,0.03)'}} />
 							)}
