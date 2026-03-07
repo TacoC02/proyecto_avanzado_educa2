@@ -58,7 +58,7 @@ function Carta ({
 
           <aside className="modal-details" onClick={(e) => e.stopPropagation()}>
             <h3>Estadísticas</h3>
-            <div className="stat-row"><span className="stat-icon">⚔️</span> <strong>attack:</strong> {attack}</div>
+            <div className="stat-row"><span className="stat-icon">⚔️</span> <strong>attack: </strong>{attack}</div>
             <div className="stat-row"><span className="stat-icon">🛡️</span> <strong>defense:</strong> {defense}</div>
             <div className="stat-row"><span className="stat-icon">❤</span> <strong>llifepoints:</strong> 100</div>
             <div className="stat-row"><span className="stat-icon">✨</span> <strong>attributes:</strong> {attributes}</div>
