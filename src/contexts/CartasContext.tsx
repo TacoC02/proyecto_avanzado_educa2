@@ -12,7 +12,6 @@ export type CartaItem = {
   description: string
   pictureUrl: string
   llifepoints?: number
-  // additional fields from the API
   userSecret?: string | null
   createdAt?: string
   updatedAt?: string | null
