@@ -144,7 +144,9 @@
 	object-fit: contain;
 	transform: translateY(8px);
 	border-radius: 16px;
-		transition: transform 0.18s, box-shadow 0.18s;
+	transition: transform 0.18s, box-shadow 0.18s;
+	position: relative;
+	overflow: visible;
 	}
 
 	/* Efecto clásico Pokémon al agregar carta */

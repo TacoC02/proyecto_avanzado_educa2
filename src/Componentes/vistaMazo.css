@@ -137,17 +137,50 @@
   transform: scale(0.98);
   box-shadow: 0 6px 18px rgba(166,160,201,0.18);
 }
+
 .card {
   animation: fadeInCard 0.7s cubic-bezier(.42,0,.58,1);
   transition: transform 0.18s, box-shadow 0.18s;
+  position: relative;
 }
-.card:hover {
-  transform: scale(1.04) translateY(-6px);
-  box-shadow: 0 18px 40px rgba(166,160,201,0.18);
+.card.pokemon-flash {
+  animation: pokemonFlash 1s cubic-bezier(.42,0,.58,1);
+  z-index: 10;
+}
+.card.pokemon-flash::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120%;
+  height: 120%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(circle, #fff 0%, #ffd700 40%, transparent 80%);
+  opacity: 0.85;
+  animation: pokemonFlashHalo 1s cubic-bezier(.42,0,.58,1);
 }
 @keyframes fadeInCard {
   from { opacity: 0; transform: scale(0.96) translateY(18px); }
   to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes pokemonFlash {
+  0% { opacity: 0; transform: scale(0.7) rotate(-8deg); filter: brightness(2) blur(2px); }
+  20% { opacity: 1; transform: scale(1.15) rotate(2deg); filter: brightness(2.5) blur(0.5px); }
+  40% { opacity: 1; transform: scale(1.05) rotate(-2deg); filter: brightness(1.8) blur(0.2px); }
+  60% { opacity: 1; transform: scale(1) rotate(0deg); filter: brightness(1.2) blur(0px); }
+  80% { opacity: 1; transform: scale(1) rotate(0deg); filter: brightness(1) blur(0px); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); filter: brightness(1) blur(0px); }
+}
+@keyframes pokemonFlashHalo {
+  0% { opacity: 0; filter: blur(8px); }
+  20% { opacity: 1; filter: blur(4px); }
+  40% { opacity: 0.85; filter: blur(2px); }
+  60% { opacity: 0.7; filter: blur(1px); }
+  80% { opacity: 0.5; filter: blur(0px); }
+  100% { opacity: 0; filter: blur(0px); }
 }
 
 

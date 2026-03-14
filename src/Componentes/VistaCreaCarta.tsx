@@ -73,11 +73,12 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
 					<div className="modal-card-body">
 						<div className="modal-media">
 							{form.pictureUrl ? (
-								<img
-									src={form.pictureUrl}
-									alt={form.name || 'preview'}
-									className={showFlash ? 'pokemon-flash' : ''}
-								/>
+								<div className={showFlash ? 'pokemon-flash' : ''} style={{display:'inline-block',position:'relative'}}>
+									<img
+										src={form.pictureUrl}
+										alt={form.name || 'preview'}
+									/>
+								</div>
 							) : (
 								<div style={{width:120,height:120,borderRadius:999,background:'#fff',boxShadow:'inset 0 0 0 6px rgba(0,0,0,0.03)'}} />
 							)}
