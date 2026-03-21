@@ -47,7 +47,13 @@ export default function CardDetailPage() {
       <button onClick={() => navigate(-1)} style={{ marginBottom: 16 }}>
         ← Volver
       </button>
-      <Carta {...carta} expanded onClick={() => navigate(-1)} />
+      <Carta 
+  expanded={true} 
+  onClick={() => navigate('/card')} 
+  {...carta} 
+  // Agregamos esta línea para que TypeScript no de error:
+  name={carta.nb_name} 
+/>
     </div>
   )
 }
