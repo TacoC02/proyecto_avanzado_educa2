@@ -50,7 +50,6 @@ function mapApiToCarta(item: any): CartaItem {
 async function apiFetch(path: string, opts: RequestInit = {}) {
   const res = await fetch(`${API_BASE}${path}`, {
     headers: {
-      'Content-Type': 'application/json',
       usersecretpasskey: USER_SECRET_KEY,
       ...(opts.headers ?? {}),
     },
