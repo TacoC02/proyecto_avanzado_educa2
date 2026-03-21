@@ -63,7 +63,7 @@ function Mazo() {
         <div className="mazo">
           {cartas.map((c) => (
             <Carta
-              key={c.numero}
+              name={''} key={c.numero}
               {...c}
               selectable={selectionMode}
               isSelected={selected.includes(c.numero)}
@@ -71,8 +71,7 @@ function Mazo() {
               onClick={() => {
                 if (selectionMode) return
                 navigate(`/card/${c.numero}`)
-              }}
-            />
+              } }            />
           ))}
         </div>
       )}

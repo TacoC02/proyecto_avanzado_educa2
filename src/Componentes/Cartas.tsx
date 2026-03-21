@@ -24,9 +24,10 @@ function Carta ({
   defense = 0,
   description = "sin descripción",
   pictureUrl,
-  name = "Pikachu",
-  numero = 0,
+  name = "Sin nombre",
+  numero = 0, // Este ahora será el index + 1 que viene del padre
   attributes = "Normal",
+  llifepoints = 0, // Corregido para usar el prop real
   expanded = false,
   onClick,
   selectable = false,
@@ -42,6 +43,7 @@ function Carta ({
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <div className="pokebola modal-pokebola" aria-hidden="true" />
             <div className="modal-card-header">
+              {/* Aquí se muestra el número visual correlativo */}
               <span className="modal-num">#{numero}</span>
             </div>
 
@@ -58,11 +60,14 @@ function Carta ({
 
           <aside className="modal-details" onClick={(e) => e.stopPropagation()}>
             <h3>Estadísticas</h3>
-            <div className="stat-row"><span className="stat-icon">⚔️</span> <strong>attack:</strong> {attack}</div>
-            <div className="stat-row"><span className="stat-icon">🛡️</span> <strong>defense:</strong> {defense}</div>
-            <div className="stat-row"><span className="stat-icon">❤</span> <strong>llifepoints:</strong> 100</div>
-            <div className="stat-row"><span className="stat-icon">✨</span> <strong>attributes:</strong> {attributes}</div>
-            <div className="stat-row stat-row--description"><span className="stat-icon">📜</span> <strong>Descripción:</strong> <span className="description-text">{description}</span></div>
+            <div className="stat-row"><span className="stat-icon">⚔️</span> <strong>Ataque:</strong> {attack}</div>
+            <div className="stat-row"><span className="stat-icon">🛡️</span> <strong>Defensa:</strong> {defense}</div>
+            <div className="stat-row"><span className="stat-icon">❤</span> <strong>Vida:</strong> {llifepoints}</div>
+            <div className="stat-row"><span className="stat-icon">✨</span> <strong>Atributos:</strong> {attributes}</div>
+            <div className="stat-row stat-row--description">
+              <span className="stat-icon">📜</span> <strong>Descripción:</strong> 
+              <span className="description-text">{description}</span>
+            </div>
             <button className="close-button" onClick={onClick}>Cerrar</button>
           </aside>
         </div>
@@ -82,8 +87,11 @@ function Carta ({
     <div className={"carta" + (isSelected ? ' selected' : '')} onClick={handleClick} role="button" tabIndex={0}>
       <div className="pokebola" aria-hidden="true" />
       {selectable && (
-        <div className={"select-badge" + (isSelected ? ' checked' : '')} aria-hidden="true">{isSelected ? '✓' : ''}</div>
+        <div className={"select-badge" + (isSelected ? ' checked' : '')} aria-hidden="true">
+          {isSelected ? '✓' : ''}
+        </div>
       )}
+      {/* Este número es el que ahora se verá como 1, 2, 3... */}
       <div className="carta-number">#{numero}</div>
 
       <div className="carta-contenido">
