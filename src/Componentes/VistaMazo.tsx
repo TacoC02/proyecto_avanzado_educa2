@@ -1,15 +1,28 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import Carta from './Cartas'
 import './vistaMazo.css'
 import { useCartas } from '../contexts/CartasContext'
+import Spinner from './Spinner'
 
 function Mazo() {
   const navigate = useNavigate()
-  const { cartas, deleteCartas } = useCartas()
+  const { cartas, deleteCartas, refresh } = useCartas()
   const [selectionMode, setSelectionMode] = useState(false)
   const [selected, setSelected] = useState<number[]>([])
   const [isDeleting, setIsDeleting] = useState(false)
+  const [initialLoading, setInitialLoading] = useState(true)
+
+  useEffect(() => {
+    // Simular carga inicial para mostrar spinner
+    const loadData = async () => {
+      await refresh()
+      setTimeout(() => {
+        setInitialLoading(false)
+      }, 500) // Pequeño delay para que se vea la animación
+    }
+    loadData()
+  }, [refresh])
 
   function toggleSelect(numero: number) {
     setSelected((s) => {
@@ -40,6 +53,10 @@ function Mazo() {
     } finally {
       setIsDeleting(false)
     }
+  }
+
+  if (initialLoading) {
+    return <Spinner message="Cargando tu mazo Pokémon..." />
   }
 
   return (

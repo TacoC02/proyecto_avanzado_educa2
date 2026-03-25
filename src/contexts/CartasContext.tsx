@@ -139,7 +139,7 @@ const getNextNumero = useCallback(() => {
       if (!item) return undefined
       return mapApiToCarta(item)
     } catch (err) {
-      console.error('Error fetching carta by id', err)
+      console.error('Error al obtener carta por id', err)
       return undefined
     }
   }, [])

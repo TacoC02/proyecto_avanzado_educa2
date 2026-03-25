@@ -1,0 +1,161 @@
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  background: rgba(196, 190, 231, 0.95);
+  padding: 40px 60px;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  animation: scaleIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Pokeball animada */
+.pokeball-spinner {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  background: linear-gradient(180deg, #ff4d4d 0%, #ff4d4d 50%, #fff 50%, #fff 100%);
+  border-radius: 50%;
+  border: 4px solid #000;
+  animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+  box-shadow: 0 0 20px rgba(255, 77, 77, 0.5);
+}
+
+.pokeball-spinner::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border-radius: 50%;
+  border: 4px solid #000;
+  z-index: 2;
+}
+
+.pokeball-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background: #000;
+  border-radius: 50%;
+  z-index: 3;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+/* Línea divisoria */
+.pokeball-spinner::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: #000;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.spinner-message {
+  font-family: 'Pokemon Solid', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #ff4d4d, #ffd400);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 1px;
+  animation: messagePulse 1.5s ease-in-out infinite;
+}
+
+/* Animaciones */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.3);
+    opacity: 0.7;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes messagePulse {
+  0%, 100% {
+    opacity: 0.8;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-5px);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .spinner-container {
+    padding: 30px 40px;
+  }
+  
+  .pokeball-spinner {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .spinner-message {
+    font-size: 16px;
+  }
+}
