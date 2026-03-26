@@ -43,7 +43,6 @@ function Carta ({
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <div className="pokebola modal-pokebola" aria-hidden="true" />
             <div className="modal-card-header">
-              {/* Aquí se muestra el número visual correlativo */}
               <span className="modal-num">#{numero}</span>
             </div>
 
@@ -75,23 +74,37 @@ function Carta ({
     )
   }
 
-  const handleClick = () => {
+  // Función que maneja el clic en la carta
+  const handleCardClick = () => {
+    console.log('Carta clickeada - selectable:', selectable, 'name:', name)
     if (selectable) {
-      onSelect?.()
+      // Si estamos en modo selección, llamamos a onSelect
+      if (onSelect) {
+        console.log('Llamando a onSelect para:', numero)
+        onSelect()
+      }
     } else {
-      onClick?.()
+      // Si no, llamamos a onClick para ver detalles
+      if (onClick) {
+        console.log('Llamando a onClick para ver detalles')
+        onClick()
+      }
     }
   }
 
   return (
-    <div className={"carta" + (isSelected ? ' selected' : '')} onClick={handleClick} role="button" tabIndex={0}>
+    <div 
+      className={`carta ${isSelected ? 'selected' : ''} ${selectable ? 'select-mode' : ''}`} 
+      onClick={handleCardClick}
+      role="button" 
+      tabIndex={0}
+    >
       <div className="pokebola" aria-hidden="true" />
       {selectable && (
-        <div className={"select-badge" + (isSelected ? ' checked' : '')} aria-hidden="true">
-          {isSelected ? '✓' : ''}
+        <div className={`select-badge ${isSelected ? 'checked' : ''}`} aria-hidden="true">
+          {isSelected ? '✓' : '🗑️'}
         </div>
       )}
-      {/* 1, 2, 3... */}
       <div className="carta-number">#{numero}</div>
 
       <div className="carta-contenido">
@@ -101,8 +114,16 @@ function Carta ({
 
         <div className="carta-name-bar">
           <div className="carta-name">{name}</div>
+          {attributes && attributes !== "Normal" && (
+            <div className="carta-attribute-badge">{attributes}</div>
+          )}
         </div>
       </div>
+      
+      {/* Efecto de brillo al seleccionar para borrar */}
+      {selectable && isSelected && (
+        <div className="delete-effect"></div>
+      )}
     </div>
   )
 }

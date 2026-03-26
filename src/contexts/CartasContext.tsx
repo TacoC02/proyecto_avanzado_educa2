@@ -34,7 +34,7 @@ const CartasContext = createContext<CartasContextValue | undefined>(undefined)
 function mapApiToCarta(item: any): CartaItem {
   return {
     numero: item.idCard,
-    nb_name: item.name,
+    nb_name: item.name,  
     description: item.description,
     attack: item.attack,
     defense: item.defense,

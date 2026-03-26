@@ -1,3 +1,4 @@
+/* ========== MODAL ========== */
 .overlay {
   position: fixed;
   inset: 0;
@@ -45,13 +46,13 @@
   left: 14px;
   z-index: 41;
 }
+
 .modal-num {
   font-size: 48px;
   font-weight: 700;
   color: #111;
 }
 
-/* Centrado de pictureUrl en el modal */
 .modal-card-body {
   display: flex;
   align-items: center;
@@ -59,6 +60,7 @@
   height: calc(60vh - 120px);
   padding: 8px 28px 0;
 }
+
 .modal-media {
   width: 100%;
   max-width: 520px;
@@ -66,7 +68,10 @@
   align-items: center;
   justify-content: center;
   margin-top: 16px;
+  position: relative;
+  z-index: 1;
 }
+
 .modal-media img {
   width: 100%;
   max-width: 360px;
@@ -74,15 +79,17 @@
   object-fit: contain;
   transform: translateY(20px);
   border-radius: 20px;
+  position: relative;
+  z-index: 2;
 }
 
-/* Nombre dentro de la carta grande modal */
 .modal-card-footer {
   display: flex;
   align-items: center;
   gap: 12px;
   justify-content: center;
 }
+
 .modal-card-footer .modal-name {
   font-family: 'Pokemon Solid', sans-serif;
   font-weight: 700;
@@ -90,7 +97,6 @@
   margin: 0;
 }
 
-/* Panel de detalles a la derecha */
 .modal-details {
   pointer-events: auto;
   width: 460px;
@@ -108,7 +114,6 @@
   box-shadow: 0 18px 60px rgba(0,0,0,0.14);
 }
 
-/* Stats */
 .stat-row {
   display: flex;
   gap: 8px;
@@ -119,39 +124,26 @@
   font-size: 13px;
   line-height: 1.2;
 }
+
 .stat-icon { font-size: 16px; }
 
-/* Descripción en el modal: un poco más grande que el resto de stat-row */
 .modal-details .stat-row--description {
-  /* aumentar el cuadro (alto) de la fila de descripción sin cambiar las letras */
   padding: 12px 10px;
   min-height: 120px;
   max-height: 220px;
   overflow: auto;
-  font-size: 13px; /* mantener el tamaño de letra original */
+  font-size: 13px;
   line-height: 1.2;
 }
 
 .modal-details .stat-row--description .description-text {
-  font-size: 13px; /* mantener igual que el resto */
+  font-size: 13px;
   line-height: 1.35;
   margin-left: 6px;
   font-weight: 500;
   display: block;
 }
 
-.modal-details .stat-row--description strong {
-  font-size: 13px;
-  font-weight: 700;
-}
-
-/* Limitar la altura de la descripción dentro del panel de detalles */
-.modal-details .stat-row:last-of-type {
-  max-height: 64px;
-  overflow: auto;
-}
-
-/* Botón cerrar */
 .close-button {
   margin-top: auto;
   padding: 10px 14px;
@@ -167,7 +159,7 @@
   box-shadow: 0 20px 60px rgba(0,0,0,0.12);
 }
 
-/* ========== Lista de cartas  ========== */
+/* ========== CARTA (VISTA NORMAL) ========== */
 .carta {
   width: 280px;
   height: 370px;
@@ -194,13 +186,11 @@
   pointer-events: none;
 }
 
-/* Hover efecto */
 .carta:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow: 0 20px 60px rgba(0,0,0,0.12);
 }
 
-/* número grande en la carta (arriba-izq) */
 .carta-number {
   position: absolute;
   top: 8px;
@@ -212,7 +202,6 @@
   z-index: 2;
 }
 
-/* pokebola pequeña */
 .pokebola {
   position: absolute;
   top: 20px;
@@ -225,7 +214,6 @@
   z-index: 10;
 }
 
-/* pequeña pokebola arriba a la derecha en modal */
 .modal-pokebola {
   width: 42px;
   height: 42px;
@@ -239,7 +227,6 @@
   border: 3px solid #000;
 }
 
-/* Contenido vertical: pictureUrl arriba, nombre abajo */
 .carta-contenido {
   display: flex;
   flex-direction: column;
@@ -250,7 +237,6 @@
   height: 100%;
 }
 
-/* pictureUrl grande circular con borde */
 .carta-media {
   width: 86%;
   height: auto;
@@ -259,6 +245,7 @@
   justify-content: center;
   margin-top: 30px;
 }
+
 .carta-media img {
   width: 220px;
   height: 220px;
@@ -269,11 +256,10 @@
   box-shadow: 0 12px 30px rgba(0,0,0,0.12), inset 0 -6px 10px rgba(0,0,0,0.02);
 }
 
-/* Barra inferior con nombre y badge attributes */
 .carta-name-bar {
   width: 100%;
   padding: 10px 12px;
-  background: linear-gradient(180deg,#fff 0%, #f2f4f5 100%);
+  background: linear-gradient(180deg, #fff 0%, #f2f4f5 100%);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -281,34 +267,63 @@
   border-top: 1px solid rgba(0,0,0,0.04);
   border-radius: 10px;
   margin-bottom: 4px;
-  justify-content: center;
+  transition: all 0.3s ease;
 }
 
 .carta-name {
   font-family: 'Pokemon Solid', sans-serif;
   font-weight: 700;
-  font-size: 18px;
-  color: #000000;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #ff4d4d, #ff8f00);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* Visual de selección en cada carta: borde rojo brillante y animación */
+.carta-attribute-badge {
+  font-size: 10px;
+  padding: 4px 8px;
+  background: linear-gradient(135deg, rgba(255, 77, 77, 0.2), rgba(255, 212, 0, 0.2));
+  border-radius: 20px;
+  color: #ff4d4d;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 77, 77, 0.3);
+  white-space: nowrap;
+}
+
+.carta:hover .carta-name {
+  background: linear-gradient(135deg, #ff6b6b, #ffaa33);
+  -webkit-background-clip: text;
+  background-clip: text;
+  transform: scale(1.02);
+  transition: all 0.2s ease;
+}
+
+/* ========== SELECCIÓN PARA BORRAR ========== */
 .carta.selected {
-  border: 6px solid rgba(220, 30, 30, 0.96);
+  border: 6px solid #ff4d4d;
   border-radius: 18px;
   transform: translateY(-6px) scale(1.02);
   position: relative;
   z-index: 5;
-  animation: glow-red 1.2s infinite ease-in-out;
+  animation: deleteGlow 0.8s ease-in-out infinite;
+  box-shadow: 0 0 30px rgba(255, 77, 77, 0.5);
 }
 
-/* animated glow */
-@keyframes glow-red {
-  0% { box-shadow: 0 6px 18px rgba(220,30,30,0.14), 0 0 6px 2px rgba(255,40,40,0.06); }
-  40% { box-shadow: 0 14px 48px rgba(220,30,30,0.30), 0 0 22px 10px rgba(255,60,60,0.22); }
-  100% { box-shadow: 0 6px 18px rgba(220,30,30,0.14), 0 0 6px 2px rgba(255,40,40,0.06); }
+@keyframes deleteGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 77, 77, 0.3); border-color: #ff4d4d; }
+  50% { box-shadow: 0 0 40px rgba(255, 77, 77, 0.8); border-color: #ff0000; }
 }
 
-/* subtle moving sheen across the border */
 .carta.selected::after {
   content: "";
   position: absolute;
@@ -327,24 +342,81 @@
   100% { transform: translateX(120%); }
 }
 
+.carta.selected:hover {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0) translateY(-6px); }
+  25% { transform: translateX(-5px) translateY(-6px); }
+  75% { transform: translateX(5px) translateY(-6px); }
+}
+
 .select-badge {
   position: absolute;
   top: 10px;
   right: 12px;
-  width: 32px;
-  height: 32px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.95);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 800;
-  color: rgba(0,0,0,0.6);
-  border: 2px solid rgba(0,0,0,0.06);
+  font-size: 20px;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
   z-index: 30;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.select-badge:hover {
+  transform: scale(1.1);
+  background: rgba(255, 77, 77, 0.9);
+  border-color: #ffd400;
 }
 
 .select-badge.checked {
-  background: linear-gradient(180deg,#ffecec 0%, #ffdede 100%);
-  color: #c0392b;
+  background: linear-gradient(135deg, #ff4d4d, #c62828);
+  color: #ffd400;
+  animation: badgePop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  box-shadow: 0 0 20px rgba(255, 77, 77, 0.6);
+}
+
+@keyframes badgePop {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.delete-effect {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  pointer-events: none;
+  animation: ripple 0.6s ease-out;
+  background: radial-gradient(circle, rgba(255, 77, 77, 0.4) 0%, rgba(255, 77, 77, 0) 70%);
+}
+
+@keyframes ripple {
+  0% { transform: scale(0); opacity: 0.8; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .carta-name {
+    font-size: 14px;
+  }
+  .carta-attribute-badge {
+    font-size: 8px;
+    padding: 2px 6px;
+  }
 }

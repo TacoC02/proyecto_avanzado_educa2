@@ -14,42 +14,73 @@ function Mazo() {
   const [initialLoading, setInitialLoading] = useState(true)
 
   useEffect(() => {
-    // Simular carga inicial para mostrar spinner
     const loadData = async () => {
       await refresh()
       setTimeout(() => {
         setInitialLoading(false)
-      }, 500) // Pequeño delay para que se vea la animación
+      }, 500)
     }
     loadData()
   }, [refresh])
 
-  function toggleSelect(numero: number) {
-    setSelected((s) => {
-      if (s.includes(numero)) return s.filter((n) => n !== numero)
-      return [...s, numero]
+  // Función para seleccionar/deseleccionar cartas
+  const toggleSelect = (numero: number) => {
+    console.log('Toggle select:', numero, 'Selection mode:', selectionMode)
+    if (!selectionMode) return
+    
+    setSelected(prev => {
+      if (prev.includes(numero)) {
+        console.log('Deseleccionando:', numero)
+        return prev.filter(n => n !== numero)
+      } else {
+        console.log('Seleccionando:', numero)
+        return [...prev, numero]
+      }
     })
   }
 
-  async function handleDeleteClick() {
+  // Activar modo selección
+  const activateSelectionMode = () => {
+    console.log('Activando modo selección')
+    setSelectionMode(true)
+    setSelected([])
+  }
+
+  // Cancelar modo selección
+  const cancelSelection = () => {
+    console.log('Cancelando modo selección')
+    setSelectionMode(false)
+    setSelected([])
+  }
+
+  // Eliminar cartas seleccionadas
+  const handleDeleteClick = () => {
+    console.log('Handle delete click - selectionMode:', selectionMode, 'selected:', selected)
+    
     if (!selectionMode) {
-      setSelectionMode(true)
-      setSelected([])
+      // Activar modo selección
+      activateSelectionMode()
       return
     }
 
+    // Si estamos en modo selección pero no hay cartas seleccionadas, salir del modo
     if (selected.length === 0) {
-      setSelectionMode(false)
+      cancelSelection()
       return
     }
+
+    // Confirmar borrado
+    const confirmDelete = window.confirm(`¿Estás seguro de que quieres eliminar ${selected.length} carta${selected.length !== 1 ? 's' : ''}?`)
+    if (!confirmDelete) return
 
     setIsDeleting(true)
+
     try {
-      await deleteCartas(selected)
-      setSelectionMode(false)
-      setSelected([])
+      deleteCartas(selected)
+      cancelSelection()
     } catch (err) {
       console.error('Error deleting cartas', err)
+      alert('Error al eliminar las cartas. Intenta de nuevo.')
     } finally {
       setIsDeleting(false)
     }
@@ -61,38 +92,70 @@ function Mazo() {
 
   return (
     <div className="mazo-container">
+      {/* Contador de selección */}
+      {selectionMode && selected.length > 0 && (
+        <div className="selection-counter">
+          🗑️ {selected.length} carta{selected.length !== 1 ? 's' : ''} seleccionada{selected.length !== 1 ? 's' : ''}
+        </div>
+      )}
+      
       <div className="top-controls">
         <button className="create-card-button" onClick={() => navigate('/card/create')}>
-          Crear carta
+          ✨ Crear carta
         </button>
         <button
-          className={"delete-card-button" + (selectionMode ? ' active' : '')}
+          className={`delete-card-button ${selectionMode ? 'active' : ''}`}
           onClick={handleDeleteClick}
           disabled={isDeleting}
         >
-          {selectionMode ? 'Confirmar borrar' : 'Borrar carta'}
+          {isDeleting ? (
+            <span>🗑️ Eliminando...</span>
+          ) : selectionMode ? (
+            <span>✅ Confirmar borrar {selected.length > 0 ? `(${selected.length})` : ''}</span>
+          ) : (
+            <span>🗑️ Borrar carta</span>
+          )}
         </button>
+        {selectionMode && (
+          <button 
+            className="cancel-button"
+            onClick={cancelSelection}
+            disabled={isDeleting}
+          >
+            ✖ Cancelar
+          </button>
+        )}
       </div>
 
       {cartas.length === 0 ? (
-        <div className="empty-state"><div className="label">Agrega una carta</div></div>
+        <div className="empty-state">
+          <div className="label"> Agrega una carta </div>
+        </div>
       ) : (
         <div className="mazo">
           {cartas.map((c) => (
             <Carta
-              name={''} key={c.numero}
-              {...c}
+              key={c.numero}
+              name={c.nb_name}
+              numero={c.numero}
+              attributes={c.attributes}
+              attack={c.attack}
+              defense={c.defense}
+              llifepoints={c.llifepoints}
+              description={c.description}
+              pictureUrl={c.pictureUrl}
               selectable={selectionMode}
               isSelected={selected.includes(c.numero)}
               onSelect={() => toggleSelect(c.numero)}
               onClick={() => {
-                if (selectionMode) return
-                navigate(`/card/${c.numero}`)
-              } }            />
+                if (!selectionMode) {
+                  navigate(`/card/${c.numero}`)
+                }
+              }}
+            />
           ))}
         </div>
       )}
-
     </div>
   )
 }
