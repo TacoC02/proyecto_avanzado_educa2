@@ -25,9 +25,9 @@ function Carta ({
   description = "sin descripción",
   pictureUrl,
   name = "Sin nombre",
-  numero = 0, // Este ahora será el index + 1 que viene del padre
+  numero = 0, 
   attributes = "Normal",
-  llifepoints = 0, // Corregido para usar el prop real
+  llifepoints = 0, 
   expanded = false,
   onClick,
   selectable = false,
@@ -91,7 +91,7 @@ function Carta ({
           {isSelected ? '✓' : ''}
         </div>
       )}
-      {/* Este número es el que ahora se verá como 1, 2, 3... */}
+      {/* 1, 2, 3... */}
       <div className="carta-number">#{numero}</div>
 
       <div className="carta-contenido">
