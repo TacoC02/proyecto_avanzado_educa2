@@ -17,6 +17,7 @@ type CartaProps = Props & {
   selectable?: boolean;
   isSelected?: boolean;
   onSelect?: () => void;
+  onEdit?: () => void;  
 };
 
 function Carta ({
@@ -33,6 +34,7 @@ function Carta ({
   selectable = false,
   isSelected = false,
   onSelect,
+  onEdit, 
 }: CartaProps) {
 
   if (expanded) {
@@ -74,21 +76,29 @@ function Carta ({
     )
   }
 
-  // Función que maneja el clic en la carta
-  const handleCardClick = () => {
+  const handleCardClick = (e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest('.edit-button')) {
+      return
+    }
+    
     console.log('Carta clickeada - selectable:', selectable, 'name:', name)
     if (selectable) {
-      // Si estamos en modo selección, llamamos a onSelect
       if (onSelect) {
         console.log('Llamando a onSelect para:', numero)
         onSelect()
       }
     } else {
-      // Si no, llamamos a onClick para ver detalles
       if (onClick) {
         console.log('Llamando a onClick para ver detalles')
         onClick()
       }
+    }
+  }
+
+  const handleEditClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (onEdit) {
+      onEdit()
     }
   }
 
@@ -105,6 +115,16 @@ function Carta ({
           {isSelected ? '✓' : '🗑️'}
         </div>
       )}
+      {}
+      {!selectable && (
+        <button 
+          className="edit-button"
+          onClick={handleEditClick}
+          aria-label="Editar carta"
+        >
+          ✏️
+        </button>
+      )}
       <div className="carta-number">#{numero}</div>
 
       <div className="carta-contenido">
@@ -120,7 +140,7 @@ function Carta ({
         </div>
       </div>
       
-      {/* Efecto de brillo al seleccionar para borrar */}
+      {}
       {selectable && isSelected && (
         <div className="delete-effect"></div>
       )}

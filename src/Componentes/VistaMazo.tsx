@@ -53,17 +53,14 @@ function Mazo() {
     setSelected([])
   }
 
-  // Eliminar cartas seleccionadas
   const handleDeleteClick = () => {
     console.log('Handle delete click - selectionMode:', selectionMode, 'selected:', selected)
     
     if (!selectionMode) {
-      // Activar modo selección
       activateSelectionMode()
       return
     }
 
-    // Si estamos en modo selección pero no hay cartas seleccionadas, salir del modo
     if (selected.length === 0) {
       cancelSelection()
       return
@@ -84,6 +81,11 @@ function Mazo() {
     } finally {
       setIsDeleting(false)
     }
+  }
+
+  // Función para editar carta
+  const handleEdit = (numero: number) => {
+    navigate(`/card/edit/${numero}`)
   }
 
   if (initialLoading) {
@@ -147,6 +149,7 @@ function Mazo() {
               selectable={selectionMode}
               isSelected={selected.includes(c.numero)}
               onSelect={() => toggleSelect(c.numero)}
+              onEdit={() => handleEdit(c.numero)}
               onClick={() => {
                 if (!selectionMode) {
                   navigate(`/card/${c.numero}`)

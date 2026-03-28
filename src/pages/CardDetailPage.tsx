@@ -26,7 +26,6 @@ export default function CardDetailPage() {
           navigate('/card', { replace: true })
           return
         }
-        // Pequeño delay para que se vea la animación (opcional)
         setTimeout(() => {
           setCarta(c)
           setLoading(false)
@@ -36,10 +35,7 @@ export default function CardDetailPage() {
         console.error('Error loading carta:', err)
         navigate('/card', { replace: true })
       })
-      .finally(() => {
-        // Aseguramos que si falla rápido, también quite el loading
-        // Pero como ya navegamos, no es necesario
-      })
+      .finally(() => {})
   }, [getCartaById, id, navigate])
 
   if (loading) {

@@ -14,21 +14,21 @@ type FormData = {
 }
 
 type Props = {
+  carta: CartaItem
   onClose: () => void
-  onCreate: (data: Omit<CartaItem, 'numero'>) => Promise<any> | void
-  nextNumero: number
+  onUpdate: (data: Partial<Omit<CartaItem, 'numero'>>) => Promise<any> | void
 }
 
-function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
+function VistaEditarCarta({ carta, onClose, onUpdate }: Props) {
   const [form, setForm] = useState<FormData>({
-    nb_name: '',
-    attributes: '',
-    attack: 0,
-    defense: 0,
-    llifepoints: 100,
-    description: '',
+    nb_name: carta.nb_name,
+    attributes: carta.attributes,
+    attack: carta.attack,
+    defense: carta.defense,
+    llifepoints: carta.llifepoints || 0,
+    description: carta.description,
     pokemonName: '',
-    pictureUrl: '',
+    pictureUrl: carta.pictureUrl,
   })
   const [showFlash, setShowFlash] = useState(false)
   const [isSearching, setIsSearching] = useState(false)
@@ -72,10 +72,10 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
   async function submit(e?: React.FormEvent) {
     e?.preventDefault()
     if (!form.nb_name || !form.nb_name.trim()) return alert('Ingrese un nombre para la carta')
-    if (!form.pictureUrl) return alert('Primero busca un Pokémon para la carta')
+    if (!form.pictureUrl) return alert('Debe tener una imagen para la carta')
 
     try {
-      await onCreate({
+      await onUpdate({
         nb_name: form.nb_name,
         attributes: form.attributes,
         attack: form.attack,
@@ -86,8 +86,8 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
       })
       onClose()
     } catch (err) {
-      console.error('Error en onCreate:', err)
-      alert('No se pudo crear la carta. Intente de nuevo.')
+      console.error('Error en onUpdate:', err)
+      alert('No se pudo actualizar la carta. Intente de nuevo.')
     }
   }
 
@@ -97,7 +97,7 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
         <div className="modal-card" onClick={(e) => e.stopPropagation()}>
           <div className="pokebola modal-pokebola" aria-hidden="true" />
           <div className="modal-card-header">
-            <span className="modal-num">#{nextNumero}</span>
+            <span className="modal-num">#{carta.numero}</span>
           </div>
 
           <div className="modal-card-body">
@@ -125,7 +125,7 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
                   ) : (
                     <>
                       <div className="placeholder-icon">🔍</div>
-                      <p>Ingresa un Pokémon para comenzar</p>
+                      <p>Busca un Pokémon para cambiar la imagen</p>
                       <div className="placeholder-hint">
                         <span>Ej: Pikachu, Charizard, Mewtwo</span>
                       </div>
@@ -142,7 +142,7 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
         </div>
 
         <aside className="modal-details" onClick={(e) => e.stopPropagation()}>
-          <h1>✨ Crear tu carta Pokémon ✨</h1>
+          <h1>✏️ Editar carta Pokémon ✏️</h1>
           <form onSubmit={submit} className="create-form">
             <label>
               Nombre de la carta
@@ -150,13 +150,7 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
                 value={form.nb_name} 
                 onChange={(e) => handleChange('nb_name', e.target.value)} 
                 placeholder="Ej: Pikachu Furioso"
-                disabled={!!form.pictureUrl}
               />
-              {form.pictureUrl && (
-                <small style={{ color: '#ff4d4d', fontSize: '11px' }}>
-                  ℹ️ El nombre se asignó automáticamente al buscar el Pokémon
-                </small>
-              )}
             </label>
 
             <label>
@@ -184,30 +178,18 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
 
             <div className="pokemon-search-section">
               <label>
-                Nombre del Pokémon
+                Cambiar imagen (buscar Pokémon)
                 <div className="search-input-group">
                   <input 
                     value={form.pokemonName} 
                     onChange={(e) => handleChange('pokemonName', e.target.value)} 
                     placeholder="Ej: Pikachu"
                     onKeyPress={(e) => e.key === 'Enter' && searchPokemon()}
-                    disabled={!!form.pictureUrl}
                   />
-                  <button type="button" className="search-button" onClick={searchPokemon} disabled={isSearching || !!form.pictureUrl}>
-                    {isSearching ? 'Buscando...' : '🔍 Buscar'}
+                  <button type="button" className="search-button" onClick={searchPokemon} disabled={isSearching}>
+                    {isSearching ? 'Buscando...' : '🔍 Buscar nueva imagen'}
                   </button>
                 </div>
-                {form.pictureUrl && (
-                  <button 
-                    type="button" 
-                    className="reset-button" 
-                    onClick={() => {
-                      setForm(prev => ({ ...prev, pictureUrl: '', nb_name: '', pokemonName: '' }))
-                    }}
-                  >
-                    Cambiar Pokémon
-                  </button>
-                )}
               </label>
             </div>
 
@@ -218,8 +200,8 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
 
             <div className="form-actions">
               <button type="button" className="close-button" onClick={onClose}>Cancelar</button>
-              <button type="submit" className="btn primary" disabled={!form.pictureUrl}>
-                ➕ Agregar Carta 
+              <button type="submit" className="btn primary">
+                💾 Guardar cambios
               </button>
             </div>
           </form>
@@ -229,4 +211,4 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
   )
 }
 
-export default VistaCreaCarta
+export default VistaEditarCarta

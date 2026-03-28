@@ -1,9 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
-// Definimos las constantes directamente o mediante la forma correcta de tu bundler
 const API_BASE = 'https://educapi-v2.onrender.com'
 
-// Si no estás seguro de tu .env, pon el string directo para probar que el Error 500 se fue
 const USER_SECRET_KEY = 'Cesa369435EZ' 
 
 export type CartaItem = {
@@ -24,6 +22,7 @@ type CartasContextValue = {
   cartas: CartaItem[]
   getNextNumero: () => number
   addCarta: (data: Omit<CartaItem, 'numero'>) => Promise<CartaItem>
+  updateCarta: (id: number, data: Partial<Omit<CartaItem, 'numero'>>) => Promise<CartaItem>
   deleteCartas: (numeros: number[]) => Promise<void>
   getCartaById: (id: number) => Promise<CartaItem | undefined>
   refresh: () => Promise<void>
@@ -86,17 +85,11 @@ export function CartasProvider({ children }: { children: React.ReactNode }) {
     })
   }, [refresh])
 
-const getNextNumero = useCallback(() => {
-  // 1. Si no hay cartas, el siguiente teóricamente es 1 
-  // (Pero el servidor podría mandar 162 si ya hubo cartas antes)
-  if (cartas.length === 0) return 1;
-
-  // 2. Buscamos el número más alto que realmente está en la lista
-  const maxActual = Math.max(...cartas.map((c) => c.numero));
-
-  // 3. El siguiente debe ser el máximo + 1
-  return maxActual + 1;
-}, [cartas]);
+  const getNextNumero = useCallback(() => {
+    if (cartas.length === 0) return 1;
+    const maxActual = Math.max(...cartas.map((c) => c.numero));
+    return maxActual + 1;
+  }, [cartas]);
 
   const addCarta = useCallback(async (data: Omit<CartaItem, 'numero'>) => {
     const body = {
@@ -125,6 +118,53 @@ const getNextNumero = useCallback(() => {
     }
   }, [])
 
+const updateCarta = useCallback(async (id: number, data: Partial<Omit<CartaItem, 'numero'>>) => {
+  const body: any = {}
+  
+  if (data.nb_name !== undefined) body.name = data.nb_name
+  if (data.description !== undefined) body.description = data.description
+  if (data.attack !== undefined) body.attack = Number(data.attack)
+  if (data.defense !== undefined) body.defense = Number(data.defense)
+  if (data.llifepoints !== undefined) body.lifePoints = Number(data.llifepoints)
+  if (data.pictureUrl !== undefined) body.pictureUrl = data.pictureUrl
+  if (data.attributes !== undefined) body.attributes = { tipo: String(data.attributes) }
+
+  console.log('Updating carta with ID:', id)
+  console.log('Request body:', body)
+
+  try {
+    try {
+      const result = await apiFetch(`/card/${id}`, {
+        method: 'PATCH',
+        headers: { 
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      })
+      console.log('PATCH result:', result)
+      const updatedCard = mapApiToCarta(result)
+      setCartas((prev) => prev.map(c => c.numero === id ? updatedCard : c))
+      return updatedCard
+    } catch (patchError) {
+      console.log('PATCH failed, trying PUT...')
+      const result = await apiFetch(`/card/${id}`, {
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      })
+      console.log('PUT result:', result)
+      const updatedCard = mapApiToCarta(result)
+      setCartas((prev) => prev.map(c => c.numero === id ? updatedCard : c))
+      return updatedCard
+    }
+  } catch (err) {
+    console.error('updateCarta error', err)
+    throw err
+  }
+}, [])
+
   const deleteCartas = useCallback(async (numeros: number[]) => {
     await Promise.all(
       numeros.map((id) => apiFetch(`/card/${id}`, { method: 'DELETE' }))
@@ -145,8 +185,8 @@ const getNextNumero = useCallback(() => {
   }, [])
 
   const value = useMemo(
-    () => ({ cartas, getNextNumero, addCarta, deleteCartas, getCartaById, refresh }),
-    [cartas, getNextNumero, addCarta, deleteCartas, getCartaById, refresh]
+    () => ({ cartas, getNextNumero, addCarta, updateCarta, deleteCartas, getCartaById, refresh }),
+    [cartas, getNextNumero, addCarta, updateCarta, deleteCartas, getCartaById, refresh]
   )
 
   return <CartasContext.Provider value={value}>{children}</CartasContext.Provider>
