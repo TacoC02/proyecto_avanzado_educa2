@@ -127,7 +127,7 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
                       <div className="placeholder-icon">🔍</div>
                       <p>Ingresa un Pokémon para comenzar</p>
                       <div className="placeholder-hint">
-                        <span>Ej: Pikachu, Charizard, Mewtwo</span>
+                        <span>Ej: Pikachu, Charizard, Torterra</span>
                       </div>
                     </>
                   )}

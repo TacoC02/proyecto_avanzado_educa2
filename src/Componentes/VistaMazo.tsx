@@ -112,9 +112,9 @@ function Mazo() {
       {cartas.length === 0 ? (
         <div className="fixed inset-0 flex flex-col items-center justify-center pointer-events-none z-10 animate-fadeInEmpty">
           <div className="font-pokemon font-black text-5xl text-center bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent shadow-lg animate-bounceEmpty relative whitespace-nowrap px-6 py-5 rounded-full">
-            <span className="absolute left-[-20px] top-1/2 transform -translate-y-1/2 text-4xl bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent animate-pulse">⚡</span>
+            <span className="absolute left-[-20px] top-1/2 transform -translate-y-1/2 text-4xl bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent animate-pulse">◓⃙</span>
             Agrega una carta
-            <span className="absolute right-[-20px] top-1/2 transform -translate-y-1/2 text-4xl bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent animate-pulse delay-150">⚡</span>
+            <span className="absolute right-[-20px] top-1/2 transform -translate-y-1/2 text-4xl bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent animate-pulse delay-150">◓⃙</span>
           </div>
           <div className="text-center font-pokemon text-lg mt-8 bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent tracking-wide relative px-6 py-3 bg-black/30 backdrop-blur-md rounded-full border-2 border-yellow-400/30 animate-fadeInUp">
             <span className="inline-block animate-spinStar mr-2">✨</span>
