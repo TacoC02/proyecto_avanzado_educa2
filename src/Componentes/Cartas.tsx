@@ -1,3 +1,5 @@
+// Cartas.tsx - Arreglar el botón de editar
+
 import './Cartas.css'
 
 type Props = {  
@@ -76,9 +78,12 @@ function Carta ({
     )
   }
 
+  // Función que maneja el clic en la carta
   const handleCardClick = (e: React.MouseEvent) => {
+    // Detener propagación si se hizo clic en el botón de editar
     if ((e.target as HTMLElement).closest('.edit-button')) {
-      return
+      e.stopPropagation();
+      return;
     }
     
     console.log('Carta clickeada - selectable:', selectable, 'name:', name)
@@ -95,10 +100,13 @@ function Carta ({
     }
   }
 
+  // Manejar clic en editar
   const handleEditClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Botón editar clickeado para carta:', numero);
     if (onEdit) {
-      onEdit()
+      onEdit();
     }
   }
 
@@ -115,12 +123,14 @@ function Carta ({
           {isSelected ? '✓' : '🗑️'}
         </div>
       )}
-      {}
+      {/* Botón de editar */}
       {!selectable && (
         <button 
           className="edit-button"
           onClick={handleEditClick}
+          onMouseDown={(e) => e.stopPropagation()} // Prevenir que el mousedown active el click de la carta
           aria-label="Editar carta"
+          type="button"
         >
           ✏️
         </button>
@@ -140,7 +150,7 @@ function Carta ({
         </div>
       </div>
       
-      {}
+      {/* Efecto de brillo al seleccionar para borrar */}
       {selectable && isSelected && (
         <div className="delete-effect"></div>
       )}

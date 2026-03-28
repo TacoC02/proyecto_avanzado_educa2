@@ -23,208 +23,350 @@
   pointer-events: none;
 }
 
+/* ========== TARJETA DEL MODAL ========== */
 .modal-card {
   pointer-events: auto;
   width: 400px;
   height: auto;
-  max-height: 60vh;
-  background: rgb(196, 190, 231);
-  border-radius: 18px;
-  box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+  max-height: 65vh;
+  background: linear-gradient(135deg, rgb(196, 190, 231) 0%, rgb(166, 160, 201) 100%);
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  border: 3px solid rgba(0,0,0,0.08);
-  overflow: hidden;
+  border: 3px solid rgba(255, 215, 0, 0.4);
+  overflow-y: auto;
+  animation: cardSlideIn 0.4s ease-out;
+}
+
+.modal-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  padding: 3px;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.5), rgba(255, 140, 0, 0.5));
+  -webkit-mask: linear-gradient(#fff, #fff) content-box, linear-gradient(#fff, #fff);
+  mask: linear-gradient(#fff, #fff) content-box, linear-gradient(#fff, #fff);
+  pointer-events: none;
+}
+
+.modal-card::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.05), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.modal-card:hover::after {
+  opacity: 1;
+}
+
+@keyframes cardSlideIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .modal-card-header {
   position: absolute;
   top: 12px;
-  left: 14px;
+  left: 16px;
   z-index: 41;
-}
-
-.modal-num {
-  font-size: 48px;
-  font-weight: 700;
-  color: #111;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  padding: 4px 12px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
 .modal-card-body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: calc(60vh - 120px);
-  padding: 8px 28px 0;
-}
-
-.modal-media {
-  width: 100%;
-  max-width: 520px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 16px;
-  position: relative;
-  z-index: 1;
-}
-
-.modal-media img {
-  width: 100%;
-  max-width: 360px;
-  max-height: 380px;
-  object-fit: contain;
-  transform: translateY(20px);
-  border-radius: 20px;
-  position: relative;
-  z-index: 2;
+  padding: 20px 28px 5px;
+  min-height: 240px;
 }
 
 .modal-card-footer {
   display: flex;
   align-items: center;
-  gap: 12px;
   justify-content: center;
+  gap: 12px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 40px;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
-.modal-card-footer .modal-name {
-  font-family: 'Pokemon Solid', sans-serif;
-  font-weight: 700;
-  font-size: 24px;
-  margin: 0;
+/* ========== NÚMEROS ========== */
+.modal-num, .carta-number {
+  font-weight: 900;
+  font-family: 'Pokemon Solid', monospace;
+  background: linear-gradient(135deg, #ffd700, #ff8c00, #ff4d4d);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
 }
 
-.modal-details {
-  pointer-events: auto;
-  width: 460px;
-  height: 600px;
-  max-height: 78vh;
-  background: rgb(166, 160, 201);
-  color: #111;
-  padding: 14px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border-radius: 18px;
-  border: 3px solid rgba(0,0,0,0.08);
-  box-shadow: 0 18px 60px rgba(0,0,0,0.14);
+.modal-num {
+  font-size: 32px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.stat-row {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  padding: 6px 8px;
-  background: rgba(255,255,255,0.6);
-  border-radius: 8px;
-  font-size: 13px;
-  line-height: 1.2;
+.modal-num::before, .carta-number::before {
+  background: linear-gradient(135deg, #ffb347, #ff6b35);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-right: 2px;
 }
 
-.stat-icon { font-size: 16px; }
-
-.modal-details .stat-row--description {
-  padding: 12px 10px;
-  min-height: 120px;
-  max-height: 220px;
-  overflow: auto;
-  font-size: 13px;
-  line-height: 1.2;
-}
-
-.modal-details .stat-row--description .description-text {
-  font-size: 13px;
-  line-height: 1.35;
-  margin-left: 6px;
-  font-weight: 500;
-  display: block;
-}
-
-.close-button {
-  margin-top: auto;
-  padding: 10px 14px;
-  background: #111;
-  color: #000000;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.close-button:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
-}
-
-/* ========== CARTA (VISTA NORMAL) ========== */
-.carta {
-  width: 280px;
-  height: 370px;
-  background: rgb(196, 190, 231);
-  border-radius: 16px;
-  padding: 14px;
-  box-shadow: 0 8px 22px rgba(0,0,0,0.08);
-  cursor: pointer;
-  transition: transform 220ms ease, box-shadow 220ms ease;
-  position: relative;
-  border: 3px solid rgba(0,0,0,0.06);
-  overflow: hidden;
-}
-
-.carta::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 16px;
-  padding: 2px;
-  background: linear-gradient(135deg, rgba(255, 88, 88, 0.12), rgba(255, 207, 64, 0.06));
-  -webkit-mask: linear-gradient(#fff,#fff) content-box, linear-gradient(#fff,#fff);
-  mask: linear-gradient(#fff,#fff) content-box, linear-gradient(#fff,#fff);
-  pointer-events: none;
-}
-
-.carta:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
-}
+.modal-num::before { font-size: 24px; }
+.carta-number::before { font-size: 28px; }
 
 .carta-number {
   position: absolute;
   top: 8px;
   left: 12px;
   font-size: 42px;
-  font-weight: 700;
-  color: rgba(0,0,0,0.85);
-  text-shadow: 1px 1px 0 rgba(255,255,255,0.4);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   z-index: 2;
 }
 
-.pokebola {
+.carta:hover .carta-number {
+  transform: scale(1.02);
+  text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.4), 5px 5px 0px rgba(0, 0, 0, 0.2);
+}
+
+/* ========== NOMBRES ========== */
+.modal-name, .carta-name {
+  font-family: 'Pokemon Solid', sans-serif;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ff4d4d, #d47a04, #ffd700);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-align: center;
+}
+
+.modal-name {
+  font-size: 28px;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 2px;
+  word-break: break-word;
+  white-space: normal;
+  line-height: 1.2;
+  max-width: 100%;
+  padding: 0 10px;
+  animation: nameGlow 3s ease infinite;
+}
+
+.carta-name {
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.carta:hover .carta-name {
+  background-position: right center;
+  transform: scale(1.02);
+  letter-spacing: 2px;
+}
+
+@keyframes nameGlow {
+  0%, 100% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); }
+  50% { text-shadow: 0 0 8px rgba(255, 215, 0, 0.5); }
+}
+
+/* ========== MEDIA (IMAGENES) ========== */
+.modal-media {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px;
+  background: radial-gradient(circle at 50% 30%, rgba(255, 215, 0, 0.1), transparent 70%);
+  border-radius: 20px;
+}
+
+.modal-media::before {
+  content: "";
   position: absolute;
-  top: 20px;
-  left: 240px;
-  width: 28px;
-  height: 28px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 95%;
+  height: 95%;
   border-radius: 50%;
-  border: 3px solid #000;
+  border: 2px dashed rgba(255, 215, 0, 0.4);
+  pointer-events: none;
+  animation: rotateBorder 20s linear infinite;
+}
+
+.modal-media::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.2), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.modal-card:hover .modal-media::after { opacity: 1; }
+
+.modal-media img {
+  max-width: 240px;
+  max-height: 240px;
+  object-fit: contain;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+  animation: floatImage 3s ease-in-out infinite;
+}
+
+.modal-card:hover .modal-media img {
+  transform: scale(1.05);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes rotateBorder {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes floatImage {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ========== POKEBOLAS ========== */
+.pokebola, .modal-pokebola {
+  position: absolute;
+  border-radius: 50%;
   background: linear-gradient(180deg, #ff4d4d 0 50%, #fff 50% 100%);
+  border: 3px solid #000;
+  transition: all 0.3s ease;
+}
+
+.pokebola {
+  top: 20px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
   z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.carta:hover .pokebola {
+  transform: rotate(360deg);
+  box-shadow: 0 0 12px rgba(255, 77, 77, 0.6);
 }
 
 .modal-pokebola {
-  width: 42px;
-  height: 42px;
-  top: 32px;
-  right: 14px;
-  left: auto;
-  position: absolute;
-  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  top: 20px;
+  right: 20px;
   z-index: 40;
-  background: linear-gradient(180deg, #ff4d4d 0 50%, #fff 50% 100%);
-  border: 3px solid #000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.modal-card:hover .modal-pokebola {
+  transform: rotate(360deg);
+  box-shadow: 0 0 20px rgba(255, 77, 77, 0.6);
+}
+
+/* ========== CARTAS (VISTA MAZO) ========== */
+.carta {
+  width: 280px;
+  height: 370px;
+  background: linear-gradient(135deg, rgb(196, 190, 231) 0%, rgb(176, 170, 211) 100%);
+  border-radius: 20px;
+  padding: 14px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  position: relative;
+  border: 3px solid rgba(255, 215, 0, 0.3);
+  overflow: hidden;
+  animation: cardAppear 0.5s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
+}
+
+.carta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  padding: 3px;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0), rgba(255, 140, 0, 0));
+  -webkit-mask: linear-gradient(#fff,#fff) content-box, linear-gradient(#fff,#fff);
+  mask: linear-gradient(#fff,#fff) content-box, linear-gradient(#fff,#fff);
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.carta::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.1), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.carta:hover::before {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.8), rgba(255, 140, 0, 0.8));
+}
+
+.carta:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 215, 0, 0.6);
+}
+
+.carta:hover::after { opacity: 1; }
+
+@keyframes cardAppear {
+  from { opacity: 0; transform: translateY(30px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .carta-contenido {
@@ -244,68 +386,239 @@
   align-items: center;
   justify-content: center;
   margin-top: 30px;
+  position: relative;
 }
 
 .carta-media img {
-  width: 220px;
-  height: 220px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   object-fit: cover;
-  border: 8px solid rgba(0,0,0,0.06);
-  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.6), transparent 20%);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.12), inset 0 -6px 10px rgba(0,0,0,0.02);
+  border: 4px solid rgba(255, 215, 0, 0.3);
+  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.8), transparent 70%);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), inset 0 -4px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.carta:hover .carta-media img {
+  transform: scale(1.05);
+  border-color: rgba(255, 215, 0, 0.8);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
 }
 
 .carta-name-bar {
   width: 100%;
-  padding: 10px 12px;
-  background: linear-gradient(180deg, #fff 0%, #f2f4f5 100%);
+  padding: 12px 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(242,244,245,0.95) 100%);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  border-top: 1px solid rgba(0,0,0,0.04);
-  border-radius: 10px;
+  border-top: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: 12px;
   margin-bottom: 4px;
   transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+  min-height: 48px;
 }
 
-.carta-name {
-  font-family: 'Pokemon Solid', sans-serif;
-  font-weight: 700;
-  font-size: 16px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  background: linear-gradient(135deg, #ff4d4d, #ff8f00);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  flex: 1;
-  text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.carta:hover .carta-name-bar {
+  background: linear-gradient(180deg, #fff 0%, #fffaf0 100%);
+  border-top-color: rgba(255, 215, 0, 0.6);
 }
 
 .carta-attribute-badge {
   font-size: 10px;
-  padding: 4px 8px;
-  background: linear-gradient(135deg, rgba(255, 77, 77, 0.2), rgba(255, 212, 0, 0.2));
+  padding: 4px 10px;
+  background: linear-gradient(135deg, rgba(255,77,77,0.2), rgba(255,212,0,0.3));
   border-radius: 20px;
   color: #ff4d4d;
   font-weight: bold;
   text-transform: uppercase;
-  border: 1px solid rgba(255, 77, 77, 0.3);
+  border: 1px solid rgba(255, 77, 77, 0.4);
   white-space: nowrap;
+  transition: all 0.3s ease;
 }
 
-.carta:hover .carta-name {
-  background: linear-gradient(135deg, #ff6b6b, #ffaa33);
+.carta:hover .carta-attribute-badge {
+  background: linear-gradient(135deg, rgba(255,77,77,0.3), rgba(255,212,0,0.4));
+  transform: scale(1.05);
+  border-color: rgba(255, 77, 77, 0.6);
+}
+
+/* ========== BOTONES DE ACCIÓN ========== */
+.edit-button, .select-badge {
+  position: absolute;
+  top: 58px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.edit-button {
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  border: 2px solid #fff;
+  cursor: pointer;
+  font-size: 16px;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.edit-button:hover {
+  transform: scale(1.15) rotate(15deg);
+  background: linear-gradient(135deg, #ffed4e, #ffa500);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
+}
+
+.select-badge {
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  font-weight: 800;
+  font-size: 18px;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+
+.select-badge:hover {
+  transform: scale(1.15);
+  background: rgba(255, 77, 77, 0.9);
+  border-color: #ffd700;
+}
+
+.select-badge.checked {
+  background: linear-gradient(135deg, #ff4d4d, #c62828);
+  color: #ffd700;
+  animation: badgePop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  box-shadow: 0 0 20px rgba(255, 77, 77, 0.6);
+}
+
+@keyframes badgePop {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ========== PANEL DE DETALLES ========== */
+.modal-details {
+  pointer-events: auto;
+  width: 460px;
+  height: auto;
+  max-height: 78vh;
+  background: linear-gradient(135deg, rgb(166, 160, 201) 0%, rgb(146, 140, 181) 100%);
+  color: #111;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-radius: 18px;
+  border: 3px solid rgba(255, 215, 0, 0.3);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.14), inset 0 1px 0 rgba(255,255,255,0.2);
+  animation: detailsSlideIn 0.4s ease-out;
+}
+
+.modal-details h3 {
+  font-family: 'Pokemon Solid', sans-serif;
+  font-size: 24px;
+  text-align: center;
+  margin: 0 0 10px;
+  padding-bottom: 8px;
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
   -webkit-background-clip: text;
   background-clip: text;
-  transform: scale(1.02);
-  transition: all 0.2s ease;
+  color: transparent;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+  letter-spacing: 2px;
+  border-bottom: 2px solid rgba(255, 215, 0, 0.5);
+}
+
+.stat-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.stat-row:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateX(5px);
+  border-color: rgba(255, 215, 0, 0.5);
+}
+
+.stat-icon { font-size: 20px; min-width: 32px; text-align: center; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)); }
+
+.stat-row strong {
+  font-family: 'Pokemon Solid', sans-serif;
+  font-size: 14px;
+  color: #c62828;
+  min-width: 70px;
+  letter-spacing: 0.5px;
+}
+
+.stat-row span:last-child { font-weight: 600; color: #2c3e50; }
+
+.modal-details .stat-row--description {
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.8);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.modal-details .stat-row--description .description-text {
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 500;
+  color: #2c3e50;
+  font-style: italic;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  width: 100%;
+}
+
+.close-button {
+  margin-top: 16px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #ff4d4d, #c62828);
+  color: #bb4646;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-family: 'Pokemon Solid', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.close-button:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  background: linear-gradient(135deg, #ff6b6b, #e63946);
+  color: #fff;
+}
+
+.close-button:active { transform: translateY(0); }
+
+@keyframes detailsSlideIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 /* ========== SELECCIÓN PARA BORRAR ========== */
@@ -313,7 +626,6 @@
   border: 6px solid #ff4d4d;
   border-radius: 18px;
   transform: translateY(-6px) scale(1.02);
-  position: relative;
   z-index: 5;
   animation: deleteGlow 0.8s ease-in-out infinite;
   box-shadow: 0 0 30px rgba(255, 77, 77, 0.5);
@@ -329,68 +641,24 @@
   position: absolute;
   inset: 0;
   border-radius: 16px;
-  pointer-events: none;
-  background: linear-gradient(120deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.02) 100%);
+  background: linear-gradient(120deg, rgba(255,255,255,0.02), rgba(255,255,255,0.12), rgba(255,255,255,0.02));
   mix-blend-mode: screen;
   transform: translateX(-120%);
   animation: sheen 2s linear infinite;
+  pointer-events: none;
 }
 
 @keyframes sheen {
   0% { transform: translateX(-120%); }
-  60% { transform: translateX(120%); }
-  100% { transform: translateX(120%); }
+  60%, 100% { transform: translateX(120%); }
 }
 
-.carta.selected:hover {
-  animation: shake 0.5s ease-in-out;
-}
+.carta.selected:hover { animation: shake 0.5s ease-in-out; }
 
 @keyframes shake {
   0%, 100% { transform: translateX(0) translateY(-6px); }
   25% { transform: translateX(-5px) translateY(-6px); }
   75% { transform: translateX(5px) translateY(-6px); }
-}
-
-.select-badge {
-  position: absolute;
-  top: 10px;
-  right: 12px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 20px;
-  color: white;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  z-index: 30;
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.select-badge:hover {
-  transform: scale(1.1);
-  background: rgba(255, 77, 77, 0.9);
-  border-color: #ffd400;
-}
-
-.select-badge.checked {
-  background: linear-gradient(135deg, #ff4d4d, #c62828);
-  color: #ffd400;
-  animation: badgePop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  box-shadow: 0 0 20px rgba(255, 77, 77, 0.6);
-}
-
-@keyframes badgePop {
-  0% { transform: scale(0); opacity: 0; }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); opacity: 1; }
 }
 
 .delete-effect {
@@ -402,7 +670,7 @@
   border-radius: 16px;
   pointer-events: none;
   animation: ripple 0.6s ease-out;
-  background: radial-gradient(circle, rgba(255, 77, 77, 0.4) 0%, rgba(255, 77, 77, 0) 70%);
+  background: radial-gradient(circle, rgba(255,77,77,0.4) 0%, rgba(255,77,77,0) 70%);
 }
 
 @keyframes ripple {
@@ -410,309 +678,24 @@
   100% { transform: scale(2); opacity: 0; }
 }
 
+/* ========== SCROLLBAR ========== */
+.modal-details::-webkit-scrollbar { width: 8px; }
+.modal-details::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
+.modal-details::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #ffd700, #ff8c00); border-radius: 10px; }
+.modal-details::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #ffed4e, #ffa500); }
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
-  .carta-name {
-    font-size: 14px;
-  }
-  .carta-attribute-badge {
-    font-size: 8px;
-    padding: 2px 6px;
-  }
+  .carta-name { font-size: 16px; letter-spacing: 0.8px; }
+  .modal-name { font-size: 24px; }
+  .carta-name-bar { padding: 10px 12px; }
+  .modal-details { width: 100%; padding: 15px; }
+  .modal-details h3 { font-size: 20px; }
+  .stat-row strong { min-width: 60px; font-size: 12px; }
+  .stat-icon { font-size: 18px; min-width: 28px; }
+  .close-button { padding: 10px 16px; font-size: 14px; }
+  .modal-card { width: 100%; }
+  .modal-media img { max-width: 180px; max-height: 180px; }
+  .modal-card-body { padding: 15px 20px 5px; min-height: 200px; }
+  .modal-card-footer { padding: 8px 12px; margin-bottom: 5px; }
 }
-/* Botón de editar */
-.edit-button {
-  position: absolute;
-  top: 10px;
-  right: 12px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ffd400, #ff8f00);
-  border: 2px solid #fff;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 30;
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  color: #fff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.edit-button:hover {
-  transform: scale(1.1) rotate(15deg);
-  background: linear-gradient(135deg, #ffaa00, #ff6b00);
-  box-shadow: 0 0 12px rgba(255, 212, 0, 0.6);
-}
-
-.edit-button:active {
-  transform: scale(0.95);
-}
-
-.carta .edit-button {
-  pointer-events: auto;
-}
-
-
-.edit-button {
-  position: absolute;
-  top: 60px; 
-  right: 12px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ffd400, #ff8f00);
-  border: 2px solid #fff;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 30;
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  color: #fff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.edit-button:hover {
-  transform: scale(1.1) rotate(15deg);
-  background: linear-gradient(135deg, #ffaa00, #ff6b00);
-  box-shadow: 0 0 12px rgba(255, 212, 0, 0.6);
-}
-
-.edit-button:active {
-  transform: scale(0.95);
-}
-
-
-.pokebola {
-  position: absolute;
-  top: 20px;
-  right: 12px; 
-  left: auto;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 3px solid #000;
-  background: linear-gradient(180deg, #ff4d4d 0 50%, #fff 50% 100%);
-  z-index: 10;
-}
-
-/* Cartas.css - Modificar select-badge para que esté en la misma posición que edit-button */
-
-/* Badge de selección (borrar) - Misma posición que el botón de editar */
-.select-badge {
-  position: absolute;
-  top: 58px; /* Mismo top que el botón de editar */
-  right: 12px; /* Mismo right que el botón de editar */
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 18px;
-  color: white;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  z-index: 30;
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.select-badge:hover {
-  transform: scale(1.1);
-  background: rgba(255, 77, 77, 0.9);
-  border-color: #ffd400;
-}
-
-.select-badge.checked {
-  background: linear-gradient(135deg, #ff4d4d, #c62828);
-  color: #ffd400;
-  animation: badgePop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  box-shadow: 0 0 20px rgba(255, 77, 77, 0.6);
-}
-
-@keyframes badgePop {
-  0% { transform: scale(0); opacity: 0; }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-/* Botón de editar - Misma posición */
-.edit-button {
-  position: absolute;
-  top: 58px; /* Mismo top que el badge de selección */
-  right: 12px; /* Mismo right que el badge de selección */
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ffd400, #ff8f00);
-  border: 2px solid #fff;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 30;
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  color: #fff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.edit-button:hover {
-  transform: scale(1.1) rotate(15deg);
-  background: linear-gradient(135deg, #ffaa00, #ff6b00);
-  box-shadow: 0 0 12px rgba(255, 212, 0, 0.6);
-}
-
-.edit-button:active {
-  transform: scale(0.95);
-}
-
-.carta .edit-button {
-  pointer-events: auto;
-}
-
-/* Ajustar la posición de la Pokebola para que quede arriba */
-.pokebola {
-  position: absolute;
-  top: 20px;
-  right: 12px;
-  left: auto;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 3px solid #000;
-  background: linear-gradient(180deg, #ff4d4d 0 50%, #fff 50% 100%);
-  z-index: 10;
-}
-
-/* Cartas.css - Estilo unificado para todos los números */
-
-/* Estilo para números en cartas normales (VistaMazo) */
-.carta-number {
-  position: absolute;
-  top: 8px;
-  left: 12px;
-  font-size: 48px;
-  font-weight: 900;
-  font-family: 'Pokemon Solid', monospace;
-  background: linear-gradient(135deg, #ffd700 0%, #ff8c00 50%, #ff4d4d 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 
-    2px 2px 0px rgba(0, 0, 0, 0.3),
-    4px 4px 0px rgba(0, 0, 0, 0.2);
-  letter-spacing: 2px;
-  z-index: 2;
-  transition: all 0.3s ease;
-}
-
-.carta-number::before {
-  font-size: 32px;
-  background: linear-gradient(135deg, #ffb347, #ff6b35);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
-  margin-right: 2px;
-}
-
-.modal-num {
-  font-size: 48px;
-  font-weight: 900;
-  font-family: 'Pokemon Solid', monospace;
-  background: linear-gradient(135deg, #ffd700 0%, #ff8c00 50%, #ff4d4d 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 
-    2px 2px 0px rgba(0, 0, 0, 0.3),
-    4px 4px 0px rgba(0, 0, 0, 0.2);
-  letter-spacing: 2px;
-  z-index: 2;
-  transition: all 0.3s ease;
-}
-
-.modal-num::before {
-  font-size: 32px;
-  background: linear-gradient(135deg, #ffb347, #ff6b35);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
-  margin-right: 2px;
-}
-
-.carta:hover .carta-number {
-  transform: scale(1.02);
-  text-shadow: 
-    3px 3px 0px rgba(0, 0, 0, 0.4),
-    5px 5px 0px rgba(0, 0, 0, 0.2);
-}
-
-/* Cartas.css - Ajustar número en modales */
-
-.modal-num {
-  font-size: 38px; /* Reducido de 48px a 38px */
-  font-weight: 900;
-  font-family: 'Pokemon Solid', monospace;
-  background: linear-gradient(135deg, #ffd700 0%, #ff8c00 50%, #ff4d4d 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 
-    2px 2px 0px rgba(0, 0, 0, 0.3),
-    3px 3px 0px rgba(0, 0, 0, 0.2);
-  letter-spacing: 2px;
-  z-index: 41;
-  position: relative;
-  display: inline-block;
-  transition: all 0.3s ease;
-}
-
-.modal-num::before {
-  font-size: 28px; /* Reducido proporcionalmente */
-  background: linear-gradient(135deg, #ffb347, #ff6b35);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
-  margin-right: 2px;
-}
-
-/* Ajustar la posición del header del modal */
-.modal-card-header {
-  position: absolute;
-  top: 5px; /* Cambiado de 12px a 20px para alinear con la Pokebola */
-  left: 20px;
-  z-index: 41;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* Asegurar que la Pokebola esté a la misma altura */
-.modal-pokebola {
-  width: 42px;
-  height: 42px;
-  top: 20px; /* Mismo top que el header */
-  right: 20px;
-  left: auto;
-  position: absolute;
-  border-radius: 50%;
-  z-index: 40;
-  background: linear-gradient(180deg, #ff4d4d 0 50%, #fff 50% 100%);
-  border: 3px solid #000;
-}
-
