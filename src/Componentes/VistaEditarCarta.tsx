@@ -142,7 +142,7 @@ function VistaEditarCarta({ carta, onClose, onUpdate }: Props) {
         </div>
 
         <aside className="modal-details" onClick={(e) => e.stopPropagation()}>
-          <h1>✏️ Editar carta Pokémon ✏️</h1>
+          <h1> Editar carta Pokémon </h1>
           <form onSubmit={submit} className="create-form">
             <label>
               Nombre de la carta

@@ -94,7 +94,7 @@ function Mazo() {
 
   return (
     <div className="mazo-container">
-      {/* Contador de selección */}
+      {}
       {selectionMode && selected.length > 0 && (
         <div className="selection-counter">
           🗑️ {selected.length} carta{selected.length !== 1 ? 's' : ''} seleccionada{selected.length !== 1 ? 's' : ''}

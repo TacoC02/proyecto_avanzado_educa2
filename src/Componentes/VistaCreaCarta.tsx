@@ -142,7 +142,7 @@ function VistaCreaCarta({ onClose, onCreate, nextNumero }: Props) {
         </div>
 
         <aside className="modal-details" onClick={(e) => e.stopPropagation()}>
-          <h1>✨ Crear tu carta Pokémon ✨</h1>
+          <h1> Crear tu carta Pokémon </h1>
           <form onSubmit={submit} className="create-form">
             <label>
               Nombre de la carta

@@ -159,3 +159,44 @@
     font-size: 16px;
   }
 }
+
+/* Cartas.css - Versión más elegante del número */
+
+.carta-number {
+  position: absolute;
+  top: 0px;
+  left: 7px;
+  font-size: 40px;
+  font-weight: 800;
+  font-family: 'Pokemon Solid', 'Courier New', monospace;
+  background: linear-gradient(135deg, #fff5e0 0%, #ffdd99 30%, #ffaa33 70%, #ff8833 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 
+    3px 3px 0px rgba(0, 0, 0, 0.25),
+    5px 5px 0px rgba(0, 0, 0, 0.15);
+  letter-spacing: 3px;
+  z-index: 2;
+  transition: all 0.2s ease;
+}
+
+.carta-number::before {
+  font-size: 38px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ffcc88, #ffaa44);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+  margin-right: 4px;
+  display: inline-block;
+}
+
+.carta:hover .carta-number {
+  transform: translateY(-2px) scale(1.03);
+  text-shadow: 
+    4px 4px 0px rgba(0, 0, 0, 0.3),
+    7px 7px 0px rgba(0, 0, 0, 0.15);
+}
+

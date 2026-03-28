@@ -455,3 +455,264 @@
 .carta .edit-button {
   pointer-events: auto;
 }
+
+
+.edit-button {
+  position: absolute;
+  top: 60px; 
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffd400, #ff8f00);
+  border: 2px solid #fff;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.edit-button:hover {
+  transform: scale(1.1) rotate(15deg);
+  background: linear-gradient(135deg, #ffaa00, #ff6b00);
+  box-shadow: 0 0 12px rgba(255, 212, 0, 0.6);
+}
+
+.edit-button:active {
+  transform: scale(0.95);
+}
+
+
+.pokebola {
+  position: absolute;
+  top: 20px;
+  right: 12px; 
+  left: auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid #000;
+  background: linear-gradient(180deg, #ff4d4d 0 50%, #fff 50% 100%);
+  z-index: 10;
+}
+
+/* Cartas.css - Modificar select-badge para que esté en la misma posición que edit-button */
+
+/* Badge de selección (borrar) - Misma posición que el botón de editar */
+.select-badge {
+  position: absolute;
+  top: 58px; /* Mismo top que el botón de editar */
+  right: 12px; /* Mismo right que el botón de editar */
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 18px;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  z-index: 30;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.select-badge:hover {
+  transform: scale(1.1);
+  background: rgba(255, 77, 77, 0.9);
+  border-color: #ffd400;
+}
+
+.select-badge.checked {
+  background: linear-gradient(135deg, #ff4d4d, #c62828);
+  color: #ffd400;
+  animation: badgePop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  box-shadow: 0 0 20px rgba(255, 77, 77, 0.6);
+}
+
+@keyframes badgePop {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Botón de editar - Misma posición */
+.edit-button {
+  position: absolute;
+  top: 58px; /* Mismo top que el badge de selección */
+  right: 12px; /* Mismo right que el badge de selección */
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffd400, #ff8f00);
+  border: 2px solid #fff;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.edit-button:hover {
+  transform: scale(1.1) rotate(15deg);
+  background: linear-gradient(135deg, #ffaa00, #ff6b00);
+  box-shadow: 0 0 12px rgba(255, 212, 0, 0.6);
+}
+
+.edit-button:active {
+  transform: scale(0.95);
+}
+
+.carta .edit-button {
+  pointer-events: auto;
+}
+
+/* Ajustar la posición de la Pokebola para que quede arriba */
+.pokebola {
+  position: absolute;
+  top: 20px;
+  right: 12px;
+  left: auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid #000;
+  background: linear-gradient(180deg, #ff4d4d 0 50%, #fff 50% 100%);
+  z-index: 10;
+}
+
+/* Cartas.css - Estilo unificado para todos los números */
+
+/* Estilo para números en cartas normales (VistaMazo) */
+.carta-number {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  font-size: 48px;
+  font-weight: 900;
+  font-family: 'Pokemon Solid', monospace;
+  background: linear-gradient(135deg, #ffd700 0%, #ff8c00 50%, #ff4d4d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 
+    2px 2px 0px rgba(0, 0, 0, 0.3),
+    4px 4px 0px rgba(0, 0, 0, 0.2);
+  letter-spacing: 2px;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.carta-number::before {
+  font-size: 32px;
+  background: linear-gradient(135deg, #ffb347, #ff6b35);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+  margin-right: 2px;
+}
+
+.modal-num {
+  font-size: 48px;
+  font-weight: 900;
+  font-family: 'Pokemon Solid', monospace;
+  background: linear-gradient(135deg, #ffd700 0%, #ff8c00 50%, #ff4d4d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 
+    2px 2px 0px rgba(0, 0, 0, 0.3),
+    4px 4px 0px rgba(0, 0, 0, 0.2);
+  letter-spacing: 2px;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.modal-num::before {
+  font-size: 32px;
+  background: linear-gradient(135deg, #ffb347, #ff6b35);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+  margin-right: 2px;
+}
+
+.carta:hover .carta-number {
+  transform: scale(1.02);
+  text-shadow: 
+    3px 3px 0px rgba(0, 0, 0, 0.4),
+    5px 5px 0px rgba(0, 0, 0, 0.2);
+}
+
+/* Cartas.css - Ajustar número en modales */
+
+.modal-num {
+  font-size: 38px; /* Reducido de 48px a 38px */
+  font-weight: 900;
+  font-family: 'Pokemon Solid', monospace;
+  background: linear-gradient(135deg, #ffd700 0%, #ff8c00 50%, #ff4d4d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 
+    2px 2px 0px rgba(0, 0, 0, 0.3),
+    3px 3px 0px rgba(0, 0, 0, 0.2);
+  letter-spacing: 2px;
+  z-index: 41;
+  position: relative;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.modal-num::before {
+  font-size: 28px; /* Reducido proporcionalmente */
+  background: linear-gradient(135deg, #ffb347, #ff6b35);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+  margin-right: 2px;
+}
+
+/* Ajustar la posición del header del modal */
+.modal-card-header {
+  position: absolute;
+  top: 5px; /* Cambiado de 12px a 20px para alinear con la Pokebola */
+  left: 20px;
+  z-index: 41;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Asegurar que la Pokebola esté a la misma altura */
+.modal-pokebola {
+  width: 42px;
+  height: 42px;
+  top: 20px; /* Mismo top que el header */
+  right: 20px;
+  left: auto;
+  position: absolute;
+  border-radius: 50%;
+  z-index: 40;
+  background: linear-gradient(180deg, #ff4d4d 0 50%, #fff 50% 100%);
+  border: 3px solid #000;
+}
+
