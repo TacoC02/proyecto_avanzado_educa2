@@ -40,7 +40,7 @@
   justify-content: space-between;
   position: relative;
   border: 3px solid rgba(0,0,0,0.14);
-  box-shadow: 0 22px 80px rgba(0,0,0,0.18);
+  box-shadow: 0 22px 80px rgba(255, 255, 255, 0.18);
   overflow: hidden;
 }
 
@@ -56,9 +56,9 @@
 .modal-card-footer .modal-name {
   font-family: 'Pokemon Solid', sans-serif;
   font-weight: 700;
-  font-size: 24px;
+  font-size: 30px;
   margin: 0;
-  background: linear-gradient(90deg, #9b2424, #ffd500);
+  background: linear-gradient(90deg, #ad1e0b, #c95151);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
