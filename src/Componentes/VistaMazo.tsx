@@ -22,7 +22,7 @@ function Mazo() {
       }, 500)
     }
     loadData()
-  }, [refresh])
+  }, [])
 
   const toggleSelect = (numero: number) => {
     if (!selectionMode) return
