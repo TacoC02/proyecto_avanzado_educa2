@@ -98,12 +98,12 @@ function Mazo() {
     <div className="relative pt-16">
       {selectionMode && selected.length > 0 && (
         <div className="fixed top-20 right-5 bg-gradient-to-r from-violet-500 to-blue-700 text-white px-5 py-3 rounded-full font-bold z-50 shadow-lg border-2 border-cyan-300 backdrop-blur-sm animate-slideInRight">
-          {selectionMode === 'delete' ? '🗑️' : '🎯'} {selected.length} carta{selected.length !== 1 ? 's' : ''} {selectionMode === 'delete' ? 'lista para borrar' : 'seleccionada para usar'}
+          {selectionMode === 'delete' ? '🗑️' : '🎯'} {selected.length} carta{selected.length !== 1 ? 's' : ''} {selectionMode === 'delete' ? 'lista para borrar' : 'seleccionada'}
         </div>
       )}
       {selectionMode === null && savedSelection.length > 0 && (
         <div className="fixed top-20 right-5 bg-gradient-to-r from-emerald-500 to-teal-700 text-white px-5 py-3 rounded-full font-bold z-50 shadow-lg border-2 border-lime-300 backdrop-blur-sm animate-slideInRight">
-          🎯 {savedSelection.length} carta{savedSelection.length !== 1 ? 's' : ''} guardada{savedSelection.length !== 1 ? 's' : ''} para usar luego
+          🎯 {savedSelection.length} carta{savedSelection.length !== 1 ? 's' : ''} lista{savedSelection.length !== 1 ? 's' : ''}
         </div>
       )}
       
