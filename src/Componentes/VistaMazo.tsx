@@ -6,11 +6,14 @@ import './vistaMazo.css'
 import { useCartas } from '../contexts/CartasContext'
 import Spinner from './Spinner'
 
+type SelectionMode = 'delete' | 'select' | null
+
 function Mazo() {
   const navigate = useNavigate()
   const { cartas, deleteCartas, refresh } = useCartas()
-  const [selectionMode, setSelectionMode] = useState(false)
+  const [selectionMode, setSelectionMode] = useState<SelectionMode>(null)
   const [selected, setSelected] = useState<number[]>([])
+  const [savedSelection, setSavedSelection] = useState<number[]>([])
   const [isDeleting, setIsDeleting] = useState(false)
   const [initialLoading, setInitialLoading] = useState(true)
 
@@ -29,19 +32,26 @@ function Mazo() {
     setSelected(prev => prev.includes(numero) ? prev.filter(n => n !== numero) : [...prev, numero])
   }
 
-  const activateSelectionMode = () => {
-    setSelectionMode(true)
+  const activateSelectionMode = (mode: Exclude<SelectionMode, null>) => {
+    setSelectionMode(mode)
     setSelected([])
+    if (mode === 'select') {
+      setSavedSelection([])
+    }
   }
 
   const cancelSelection = () => {
-    setSelectionMode(false)
+    setSelectionMode(null)
     setSelected([])
   }
 
+  const clearSavedSelection = () => {
+    setSavedSelection([])
+  }
+
   const handleDeleteClick = () => {
-    if (!selectionMode) {
-      activateSelectionMode()
+    if (selectionMode !== 'delete') {
+      activateSelectionMode('delete')
       return
     }
     if (selected.length === 0) {
@@ -62,6 +72,20 @@ function Mazo() {
     }
   }
 
+  const handleSelectClick = () => {
+    if (selectionMode !== 'select') {
+      activateSelectionMode('select')
+      return
+    }
+    if (selected.length === 0) {
+      cancelSelection()
+      return
+    }
+    setSavedSelection(selected)
+    setSelectionMode(null)
+    setSelected([])
+  }
+
   const handleEdit = (numero: number) => {
     navigate(`/card/edit/${numero}`)
   }
@@ -73,8 +97,13 @@ function Mazo() {
   return (
     <div className="relative pt-16">
       {selectionMode && selected.length > 0 && (
-        <div className="fixed top-20 right-5 bg-gradient-to-r from-red-500 to-red-700 text-yellow-400 px-5 py-3 rounded-full font-bold z-50 shadow-lg border-2 border-yellow-400 backdrop-blur-sm animate-slideInRight">
-          🗑️ {selected.length} carta{selected.length !== 1 ? 's' : ''} seleccionada{selected.length !== 1 ? 's' : ''}
+        <div className="fixed top-20 right-5 bg-gradient-to-r from-violet-500 to-blue-700 text-white px-5 py-3 rounded-full font-bold z-50 shadow-lg border-2 border-cyan-300 backdrop-blur-sm animate-slideInRight">
+          {selectionMode === 'delete' ? '🗑️' : '🎯'} {selected.length} carta{selected.length !== 1 ? 's' : ''} {selectionMode === 'delete' ? 'lista para borrar' : 'seleccionada para usar'}
+        </div>
+      )}
+      {selectionMode === null && savedSelection.length > 0 && (
+        <div className="fixed top-20 right-5 bg-gradient-to-r from-emerald-500 to-teal-700 text-white px-5 py-3 rounded-full font-bold z-50 shadow-lg border-2 border-lime-300 backdrop-blur-sm animate-slideInRight">
+          🎯 {savedSelection.length} carta{savedSelection.length !== 1 ? 's' : ''} guardada{savedSelection.length !== 1 ? 's' : ''} para usar luego
         </div>
       )}
       
@@ -86,16 +115,27 @@ function Mazo() {
           ✨ Crear carta
         </button>
         <button
-          className={`px-5 py-2.5 rounded-xl bg-gradient-to-b from-white to-red-50 border-2 border-gray-200 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all font-pokemon font-bold tracking-wide ${selectionMode ? 'bg-gradient-to-b from-red-100 to-red-200 animate-pulse' : ''}`}
+          className={`px-5 py-2.5 rounded-xl bg-gradient-to-b from-white to-red-50 border-2 border-gray-200 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all font-pokemon font-bold tracking-wide ${selectionMode === 'delete' ? 'bg-gradient-to-b from-red-100 to-red-200 animate-pulse' : ''}`}
           onClick={handleDeleteClick}
           disabled={isDeleting}
         >
           {isDeleting ? (
             <span>🗑️ Eliminando...</span>
-          ) : selectionMode ? (
+          ) : selectionMode === 'delete' ? (
             <span>✅ Confirmar borrar {selected.length > 0 ? `(${selected.length})` : ''}</span>
           ) : (
             <span>🗑️ Borrar carta</span>
+          )}
+        </button>
+        <button
+          className={`px-5 py-2.5 rounded-xl bg-gradient-to-b from-white to-sky-50 border-2 border-gray-200 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all font-pokemon font-bold tracking-wide ${selectionMode === 'select' ? 'bg-gradient-to-b from-sky-100 to-cyan-200 animate-pulse' : ''}`}
+          onClick={handleSelectClick}
+          disabled={isDeleting}
+        >
+          {selectionMode === 'select' ? (
+            <span>✅ Confirmar selección {selected.length > 0 ? `(${selected.length})` : ''}</span>
+          ) : (
+            <span>🎯 Seleccionar carta</span>
           )}
         </button>
         {selectionMode && (
@@ -105,6 +145,14 @@ function Mazo() {
             disabled={isDeleting}
           >
             ✖ Cancelar
+          </button>
+        )}
+        {savedSelection.length > 0 && selectionMode === null && (
+          <button
+            className="px-5 py-2.5 rounded-xl bg-gradient-to-b from-white to-lime-100 border-2 border-gray-200 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all font-pokemon font-bold tracking-wide text-emerald-700"
+            onClick={clearSavedSelection}
+          >
+            ✨ Limpiar selección
           </button>
         )}
       </div>
@@ -125,28 +173,34 @@ function Mazo() {
         </div>
       ) : (
         <div className="flex flex-wrap gap-5 justify-center items-start p-6 mt-6 max-w-[1192px] mx-auto animate-fadeInMazo">
-          {cartas.map((c) => (
-            <Carta
-              key={c.numero}
-              name={c.nb_name}
-              numero={c.numero}
-              attributes={c.attributes}
-              attack={c.attack}
-              defense={c.defense}
-              llifepoints={c.llifepoints}
-              description={c.description}
-              pictureUrl={c.pictureUrl}
-              selectable={selectionMode}
-              isSelected={selected.includes(c.numero)}
-              onSelect={() => toggleSelect(c.numero)}
-              onEdit={() => handleEdit(c.numero)}
-              onClick={() => {
-                if (!selectionMode) {
-                  navigate(`/card/${c.numero}`)
-                }
-              }}
-            />
-          ))}
+          {cartas.map((c) => {
+            const persistSelected = savedSelection.includes(c.numero)
+            const activeSelected = selected.includes(c.numero)
+            const isSelectedCard = activeSelected || persistSelected
+            return (
+              <Carta
+                key={c.numero}
+                name={c.nb_name}
+                numero={c.numero}
+                attributes={c.attributes}
+                attack={c.attack}
+                defense={c.defense}
+                llifepoints={c.llifepoints}
+                description={c.description}
+                pictureUrl={c.pictureUrl}
+                selectable={selectionMode !== null}
+                selectionType={selectionMode ?? (persistSelected ? 'select' : undefined)}
+                isSelected={isSelectedCard}
+                onSelect={() => toggleSelect(c.numero)}
+                onEdit={() => handleEdit(c.numero)}
+                onClick={() => {
+                  if (!selectionMode) {
+                    navigate(`/card/${c.numero}`)
+                  }
+                }}
+              />
+            )
+          })}
         </div>
       )}
     </div>

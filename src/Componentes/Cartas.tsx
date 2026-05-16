@@ -17,6 +17,7 @@ type CartaProps = Props & {
   expanded?: boolean;
   onClick?: () => void;
   selectable?: boolean;
+  selectionType?: 'delete' | 'select';
   isSelected?: boolean;
   onSelect?: () => void;
   onEdit?: () => void;  
@@ -34,6 +35,7 @@ function Carta ({
   expanded = false,
   onClick,
   selectable = false,
+  selectionType = 'delete',
   isSelected = false,
   onSelect,
   onEdit, 
@@ -86,17 +88,16 @@ function Carta ({
       return;
     }
     
-    console.log('Carta clickeada - selectable:', selectable, 'name:', name)
     if (selectable) {
+      e.stopPropagation();
       if (onSelect) {
-        console.log('Llamando a onSelect para:', numero)
         onSelect()
       }
-    } else {
-      if (onClick) {
-        console.log('Llamando a onClick para ver detalles')
-        onClick()
-      }
+      return
+    }
+
+    if (onClick) {
+      onClick()
     }
   }
 
@@ -110,17 +111,20 @@ function Carta ({
     }
   }
 
+  const showBadge = selectable || isSelected
+  const badgeIcon = isSelected ? '✅' : selectionType === 'select' ? '🎯' : '🗑️'
+
   return (
     <div 
-      className={`carta ${isSelected ? 'selected' : ''} ${selectable ? 'select-mode' : ''}`} 
+      className={`carta ${isSelected ? 'selected' : ''} ${selectable ? 'select-mode' : ''} selection-type-${selectionType}`} 
       onClick={handleCardClick}
       role="button" 
       tabIndex={0}
     >
       <div className="pokebola" aria-hidden="true" />
-      {selectable && (
-        <div className={`select-badge ${isSelected ? 'checked' : ''}`} aria-hidden="true">
-          {isSelected ? '✓' : '🗑️'}
+      {showBadge && (
+        <div className={`select-badge ${isSelected ? 'checked' : ''} select-type-${selectionType}`} aria-hidden="true">
+          {badgeIcon}
         </div>
       )}
       {/* Botón de editar */}
