@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+﻿import { useEffect, useRef, useState } from 'react'
 import './campoDeBatalla.css'
 import type { CartaItem } from '../contexts/CartasContext'
 
@@ -9,100 +9,124 @@ type CampoDeBatallaProps = {
 }
 
 function calcularDaño(atacante: CartaItem, defensor: CartaItem) {
-  const dañoBase = Math.max(atacante.attack - defensor.defense * 0.4, 1)
-  return Math.round(dañoBase + Math.random() * 4)
+  const dañoBase = Math.max((atacante.attack || 0) - (defensor.defense || 0) * 0.35, 1)
+  return Math.round(dañoBase + Math.random() * 3)
 }
 
-function CampoDeBatalla({ cardA, cardB, onExit }: CampoDeBatallaProps) {
+export default function CampoDeBatalla({ cardA, cardB, onExit }: CampoDeBatallaProps) {
   const [logs, setLogs] = useState<string[]>([])
+  const [hpA, setHpA] = useState<number>(cardA.llifepoints ?? 0)
+  const [hpB, setHpB] = useState<number>(cardB.llifepoints ?? 0)
+  const [inProgress, setInProgress] = useState(false)
   const [winner, setWinner] = useState<CartaItem | null>(null)
-  const [finished, setFinished] = useState(false)
-  const [rounds, setRounds] = useState(0)
+  const [attacking, setAttacking] = useState<'A' | 'B' | null>(null)
+  const timeouts = useRef<number[]>([])
+
+  useEffect(() => {
+    setHpA(cardA.llifepoints ?? 0)
+    setHpB(cardB.llifepoints ?? 0)
+    setLogs([])
+    setWinner(null)
+    setInProgress(false)
+    return () => {
+      timeouts.current.forEach((id) => clearTimeout(id))
+      timeouts.current = []
+    }
+  }, [cardA, cardB])
+
+  const pushLog = (text: string) => setLogs((l) => [text, ...l].slice(0, 20))
 
   const startBattle = () => {
-    if (finished) return
+    if (inProgress) return
+    setInProgress(true)
+    pushLog(`¡La batalla entre ${cardA.nb_name} y ${cardB.nb_name} comienza!`)
 
-    let hpA = cardA.llifepoints ?? 0
-    let hpB = cardB.llifepoints ?? 0
-    let atacante = cardA
-    let defensor = cardB
-    const nuevoLog: string[] = []
+    let currentA = hpA
+    let currentB = hpB
     let turno = 1
+    let atacante: 'A' | 'B' = 'A'
 
-    while (hpA > 0 && hpB > 0 && turno <= 10) {
-      const daño = calcularDaño(atacante, defensor)
-      if (atacante.numero === cardA.numero) {
-        hpB = Math.max(0, hpB - daño)
-      } else {
-        hpA = Math.max(0, hpA - daño)
-      }
+    const pasos: Array<() => void> = []
 
-      nuevoLog.push(
-        `Turno ${turno}: ${atacante.nb_name} ataca a ${defensor.nb_name} y hace ${daño} de daño. (${hpA} vs ${hpB})`
-      )
+    while (currentA > 0 && currentB > 0 && turno <= 10) {
+      const source = atacante === 'A' ? cardA : cardB
+      const target = atacante === 'A' ? cardB : cardA
+      const daño = calcularDaño(source, target)
 
-      if (hpA === 0 || hpB === 0) break
-      ;[atacante, defensor] = [defensor, atacante]
+      pasos.push(() => {
+        setAttacking(atacante)
+        if (atacante === 'A') {
+          currentB = Math.max(0, currentB - daño)
+          setHpB(currentB)
+        } else {
+          currentA = Math.max(0, currentA - daño)
+          setHpA(currentA)
+        }
+        pushLog(`Turno ${turno}: ${source.nb_name} hizo ${daño} de daño`)
+      })
+
+      atacante = atacante === 'A' ? 'B' : 'A'
       turno += 1
     }
 
-    const ganador = hpA > hpB ? cardA : hpB > hpA ? cardB : (cardA.attack >= cardB.attack ? cardA : cardB)
-    nuevoLog.push(`🏁 Ganador: ${ganador.nb_name}!`)
+    pasos.push(() => {
+      const ganador = currentA > currentB ? cardA : currentB > currentA ? cardB : (cardA.attack >= cardB.attack ? cardA : cardB)
+      setWinner(ganador)
+      pushLog(`🏁 Ganador: ${ganador.nb_name}`)
+      setAttacking(null)
+      setInProgress(false)
+    })
 
-    setLogs(nuevoLog)
-    setWinner(ganador)
-    setFinished(true)
-    setRounds(turno)
+    pasos.forEach((fn, i) => {
+      const id = window.setTimeout(fn, 700 * (i + 1))
+      timeouts.current.push(id)
+    })
   }
 
   return (
-    <div className="campo-batalla-wrapper">
-      <header className="campo-batalla-header">
-        <div>
-          <h1>Campo de Batalla</h1>
-          <p>Estas usando las dos cartas seleccionadas para pelear.</p>
+    <div className="battle-screen">
+      <div className="battle-bg" aria-hidden />
+
+      <header className="battle-header">
+        <h1>Campo de Batalla</h1>
+        <div className="battle-actions">
+          <button className="battle-exit" onClick={onExit}>Volver</button>
+          <button className="battle-start" onClick={startBattle} disabled={inProgress}>Iniciar</button>
         </div>
-        <button className="battle-exit-button" onClick={onExit} type="button">
-          Volver al mazo
-        </button>
       </header>
 
-      <div className="battle-cards-grid">
-        {[cardA, cardB].map((card) => (
-          <article key={card.numero} className="battle-card">
-            <div className="battle-card-image">
-              <img src={card.pictureUrl} alt={card.nb_name} />
-            </div>
-            <div className="battle-card-info">
-              <h2>{card.nb_name}</h2>
-              <p className="battle-card-meta">#{card.numero}</p>
-              <p>Ataque: {card.attack}</p>
-              <p>Defensa: {card.defense}</p>
-              <p>Vida: {card.llifepoints}</p>
-              <p>Atributo: {card.attributes}</p>
-            </div>
-          </article>
-        ))}
-      </div>
+      <main className="battle-stage">
+        <div className="opponent-area">
+          <div className={`sprite ${attacking === 'B' ? 'attacking' : ''}`}>
+            <img src={cardB.pictureUrl} alt={cardB.nb_name} />
+          </div>
+          <div className="hp">
+            <div className="hp-name">{cardB.nb_name}</div>
+            <div className="hp-bar"><div style={{ width: `${Math.max(0, (hpB / (cardB.llifepoints || 1)) * 100)}%` }} /></div>
+            <div className="hp-text">{hpB} / {cardB.llifepoints ?? 0}</div>
+          </div>
+        </div>
 
-      <div className="battle-controls">
-        <button className="battle-start-button" onClick={startBattle} disabled={finished} type="button">
-          {finished ? 'Batalla completada' : 'Iniciar pelea'}
-        </button>
-        {winner && (
-          <p className="battle-result">Resultado: <strong>{winner.nb_name}</strong> ganó en {rounds} turnos.</p>
-        )}
-      </div>
+        <div className="field-area" />
 
-      <div className="battle-log">
-        {logs.map((line, index) => (
-          <p key={`${index}-${line}`}>{line}</p>
-        ))}
-      </div>
+        <div className="player-area">
+          <div className="hp">
+            <div className="hp-name">{cardA.nb_name}</div>
+            <div className="hp-bar"><div style={{ width: `${Math.max(0, (hpA / (cardA.llifepoints || 1)) * 100)}%` }} /></div>
+            <div className="hp-text">{hpA} / {cardA.llifepoints ?? 0}</div>
+          </div>
+          <div className={`sprite ${attacking === 'A' ? 'attacking' : ''}`}>
+            <img src={cardA.pictureUrl} alt={cardA.nb_name} />
+          </div>
+        </div>
+      </main>
+
+      <aside className="battle-log">
+        {winner && <div className="battle-winner">Ganador: <strong>{winner.nb_name}</strong></div>}
+        {logs.map((l, i) => <div key={i} className="log-line">{l}</div>)}
+      </aside>
     </div>
   )
 }
-
-export default CampoDeBatalla
 
 

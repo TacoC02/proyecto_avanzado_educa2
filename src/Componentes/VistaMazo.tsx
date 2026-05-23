@@ -1,6 +1,6 @@
 // VistaMazo.tsx
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import Carta from './Cartas'
 import './vistaMazo.css'
 import { useCartas } from '../contexts/CartasContext'

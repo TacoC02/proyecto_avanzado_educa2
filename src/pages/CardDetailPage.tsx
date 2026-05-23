@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router-dom'
 import type { CartaItem } from '../contexts/CartasContext'
 import { useCartas } from '../contexts/CartasContext'
 import Carta from '../Componentes/Cartas'

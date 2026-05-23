@@ -1,112 +1,79 @@
-﻿.campo-batalla-wrapper {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 24px;
-  color: #111827;
+﻿.battle-screen {
+  min-height: 72vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 12px;
+  font-family: Inter, system-ui, Arial;
+  color: #04121a;
 }
 
-.campo-batalla-header {
+.battle-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(#88bb66 0%, #6aa84f 40%, #5aa14a 100%);
+  z-index: 0;
+  opacity: 0.9;
+}
+
+.battle-header {
+  z-index: 5;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid rgba(15, 23, 42, 0.08);
-}
-
-.campo-batalla-header h1 {
-  font-size: 2rem;
-  margin: 0;
-}
-
-.battle-exit-button,
-.battle-start-button {
   padding: 12px 20px;
-  border-radius: 18px;
+}
+
+.battle-actions button {
+  margin-left: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
-  font-weight: 700;
 }
 
-.battle-exit-button {
-  background: #1d4ed8;
-  color: white;
-}
-
-.battle-start-button {
-  background: #fbbf24;
-  color: #111827;
-}
-
-.battle-start-button:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.battle-cards-grid {
+.battle-stage {
+  z-index: 5;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
-  margin-bottom: 24px;
+  grid-template-columns: 1fr 360px 1fr;
+  align-items: end;
+  padding: 8px 20px 40px;
 }
 
-.battle-card {
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-  overflow: hidden;
-}
-
-.battle-card-image {
-  background: #eff6ff;
+.opponent-area, .player-area {
   display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.field-area {
+  height: 220px;
+  position: relative;
+}
+
+.sprite {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-  min-height: 240px;
 }
 
-.battle-card-image img {
-  max-width: 100%;
-  max-height: 220px;
-}
+.sprite img { max-width: 140px; max-height: 140px; filter: drop-shadow(0 6px 6px rgba(0,0,0,0.25)); }
 
-.battle-card-info {
-  padding: 18px;
-}
+.hp { background: rgba(255,255,255,0.95); padding: 8px 10px; border-radius: 8px; box-shadow: 0 6px 18px rgba(2,6,23,0.08); }
+.hp-name { font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+.hp-bar { width: 200px; height: 12px; background: #e6eef0; border-radius: 8px; overflow: hidden; }
+.hp-bar > div { height: 100%; background: linear-gradient(90deg,#f87171,#f97316); transition: width 400ms ease; }
+.hp-text { font-size: 12px; color: #334155; margin-top: 6px; }
 
-.battle-card-info h2 {
-  margin: 0 0 10px;
-  font-size: 1.3rem;
-}
+.battle-log { z-index: 5; padding: 12px 20px; max-height: 220px; overflow: auto; background: rgba(255,255,255,0.9); border-top: 1px solid rgba(0,0,0,0.04); }
+.log-line { font-size: 13px; margin-bottom: 6px; }
+.battle-winner { font-size: 16px; margin-bottom: 8px; color: #065f46 }
 
-.battle-card-meta {
-  color: #475569;
-  margin-bottom: 12px;
-}
+.sprite.attacking { transform: translateX(6px) translateY(-6px) scale(1.02); transition: transform 150ms ease; }
 
-.battle-controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 18px;
-}
-
-.battle-result {
-  margin: 0;
-  font-size: 1rem;
-  color: #065f46;
-}
-
-.battle-log {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 18px;
-}
-
-.battle-log p {
-  margin: 0 0 10px;
-  line-height: 1.5;
+@media (max-width: 880px) {
+  .battle-stage { grid-template-columns: 1fr 1fr; }
+  .field-area { display:none }
+  .hp-bar { width: 140px }
 }
