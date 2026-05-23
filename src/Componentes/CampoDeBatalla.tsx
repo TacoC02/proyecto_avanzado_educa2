@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import './campoDeBatalla.css'
 import type { CartaItem } from '../contexts/CartasContext'
 
@@ -17,106 +17,133 @@ export default function CampoDeBatalla({ cardA, cardB, onExit }: CampoDeBatallaP
   const [logs, setLogs] = useState<string[]>([])
   const [hpA, setHpA] = useState<number>(cardA.llifepoints ?? 0)
   const [hpB, setHpB] = useState<number>(cardB.llifepoints ?? 0)
-  const [inProgress, setInProgress] = useState(false)
+  const [battleStarted, setBattleStarted] = useState(false)
   const [winner, setWinner] = useState<CartaItem | null>(null)
+  const [turn, setTurn] = useState<'A' | 'B' | null>(null)
   const [attacking, setAttacking] = useState<'A' | 'B' | null>(null)
-  const timeouts = useRef<number[]>([])
 
   useEffect(() => {
     setHpA(cardA.llifepoints ?? 0)
     setHpB(cardB.llifepoints ?? 0)
     setLogs([])
     setWinner(null)
-    setInProgress(false)
-    return () => {
-      timeouts.current.forEach((id) => clearTimeout(id))
-      timeouts.current = []
-    }
+    setBattleStarted(false)
+    setTurn(null)
+    setAttacking(null)
   }, [cardA, cardB])
 
-  const pushLog = (text: string) => setLogs((l) => [text, ...l].slice(0, 20))
+  const pushLog = (text: string) => setLogs((current) => [text, ...current].slice(0, 20))
 
   const startBattle = () => {
-    if (inProgress) return
-    setInProgress(true)
+    if (battleStarted) return
+    setBattleStarted(true)
+    setTurn('A')
     pushLog(`¡La batalla entre ${cardA.nb_name} y ${cardB.nb_name} comienza!`)
+    pushLog(`Turno de ${cardA.nb_name}`)
+  }
 
-    let currentA = hpA
-    let currentB = hpB
-    let turno = 1
-    let atacante: 'A' | 'B' = 'A'
+  const attacker = turn === 'A' ? cardA : cardB
+  const defender = turn === 'A' ? cardB : cardA
 
-    const pasos: Array<() => void> = []
+  const handleFight = () => {
+    if (!battleStarted || !turn || winner) return
 
-    while (currentA > 0 && currentB > 0 && turno <= 10) {
-      const source = atacante === 'A' ? cardA : cardB
-      const target = atacante === 'A' ? cardB : cardA
-      const daño = calcularDaño(source, target)
+    const damage = calcularDaño(attacker, defender)
+    setAttacking(turn)
 
-      pasos.push(() => {
-        setAttacking(atacante)
-        if (atacante === 'A') {
-          currentB = Math.max(0, currentB - daño)
-          setHpB(currentB)
-        } else {
-          currentA = Math.max(0, currentA - daño)
-          setHpA(currentA)
-        }
-        pushLog(`Turno ${turno}: ${source.nb_name} hizo ${daño} de daño`)
-      })
-
-      atacante = atacante === 'A' ? 'B' : 'A'
-      turno += 1
+    if (turn === 'A') {
+      const nextHp = Math.max(0, hpB - damage)
+      setHpB(nextHp)
+      pushLog(`${attacker.nb_name} atacó a ${defender.nb_name} e hizo ${damage} de daño.`)
+      if (nextHp === 0) {
+        setWinner(attacker)
+        pushLog(`🏆 ${attacker.nb_name} gana la batalla.`)
+        setBattleStarted(false)
+        setAttacking(null)
+        return
+      }
+    } else {
+      const nextHp = Math.max(0, hpA - damage)
+      setHpA(nextHp)
+      pushLog(`${attacker.nb_name} atacó a ${defender.nb_name} e hizo ${damage} de daño.`)
+      if (nextHp === 0) {
+        setWinner(attacker)
+        pushLog(`🏆 ${attacker.nb_name} gana la batalla.`)
+        setBattleStarted(false)
+        setAttacking(null)
+        return
+      }
     }
 
-    pasos.push(() => {
-      const ganador = currentA > currentB ? cardA : currentB > currentA ? cardB : (cardA.attack >= cardB.attack ? cardA : cardB)
-      setWinner(ganador)
-      pushLog(`🏁 Ganador: ${ganador.nb_name}`)
-      setAttacking(null)
-      setInProgress(false)
-    })
-
-    pasos.forEach((fn, i) => {
-      const id = window.setTimeout(fn, 700 * (i + 1))
-      timeouts.current.push(id)
-    })
+    const nextTurn = turn === 'A' ? 'B' : 'A'
+    setTurn(nextTurn)
+    setAttacking(null)
+    pushLog(`Ahora es turno de ${nextTurn === 'A' ? cardA.nb_name : cardB.nb_name}.`)
   }
+
+  const handleRun = () => {
+    if (!battleStarted || !turn || winner) return
+
+    const fleeing = turn === 'A' ? cardA : cardB
+    const victor = turn === 'A' ? cardB : cardA
+    setWinner(victor)
+    setBattleStarted(false)
+    setTurn(null)
+    setAttacking(null)
+    pushLog(`${fleeing.nb_name} huyó. ${victor.nb_name} gana por abandono.`)
+  }
+
+  const currentTurnName = turn === 'A' ? cardA.nb_name : turn === 'B' ? cardB.nb_name : null
+  const maxHpA = Math.max(cardA.llifepoints ?? 1, 1)
+  const maxHpB = Math.max(cardB.llifepoints ?? 1, 1)
 
   return (
     <div className="battle-screen">
       <div className="battle-bg" aria-hidden />
 
       <header className="battle-header">
-        <h1>Campo de Batalla</h1>
+        <div>
+          <h1>Campo de Batalla</h1>
+          <p className="battle-subtitle">{winner ? `Victoria de ${winner.nb_name}` : battleStarted ? `Turno de ${currentTurnName}` : 'Presiona iniciar para comenzar'}</p>
+        </div>
         <div className="battle-actions">
           <button className="battle-exit" onClick={onExit}>Volver</button>
-          <button className="battle-start" onClick={startBattle} disabled={inProgress}>Iniciar</button>
+          <button className="battle-start" onClick={startBattle} disabled={battleStarted || !!winner}>Comenzar</button>
         </div>
       </header>
 
       <main className="battle-stage">
         <div className="opponent-area">
+          <div className="hp hp-top">
+            <div className="hp-name">{cardB.nb_name}</div>
+            <div className="hp-bar"><div style={{ width: `${Math.max(0, (hpB / maxHpB) * 100)}%` }} /></div>
+            <div className="hp-text">{hpB} / {cardB.llifepoints ?? 0}</div>
+          </div>
           <div className={`sprite ${attacking === 'B' ? 'attacking' : ''}`}>
             <img src={cardB.pictureUrl} alt={cardB.nb_name} />
           </div>
-          <div className="hp">
-            <div className="hp-name">{cardB.nb_name}</div>
-            <div className="hp-bar"><div style={{ width: `${Math.max(0, (hpB / (cardB.llifepoints || 1)) * 100)}%` }} /></div>
-            <div className="hp-text">{hpB} / {cardB.llifepoints ?? 0}</div>
+        </div>
+
+        <div className="field-area">
+          <div className="battle-panel">
+            <div className="battle-prompt">¿Qué hará {currentTurnName ?? cardA.nb_name}?</div>
+            <div className="battle-buttons">
+              <button className="action-btn attack" onClick={handleFight} disabled={!battleStarted || !!winner}>LUCHAR</button>
+              <button className="action-btn bag" disabled>MOCHILA</button>
+              <button className="action-btn pokemon" disabled>POKÉMON</button>
+              <button className="action-btn run" onClick={handleRun} disabled={!battleStarted || !!winner}>HUIR</button>
+            </div>
           </div>
         </div>
 
-        <div className="field-area" />
-
         <div className="player-area">
-          <div className="hp">
-            <div className="hp-name">{cardA.nb_name}</div>
-            <div className="hp-bar"><div style={{ width: `${Math.max(0, (hpA / (cardA.llifepoints || 1)) * 100)}%` }} /></div>
-            <div className="hp-text">{hpA} / {cardA.llifepoints ?? 0}</div>
-          </div>
           <div className={`sprite ${attacking === 'A' ? 'attacking' : ''}`}>
             <img src={cardA.pictureUrl} alt={cardA.nb_name} />
+          </div>
+          <div className="hp hp-bottom">
+            <div className="hp-name">{cardA.nb_name}</div>
+            <div className="hp-bar"><div style={{ width: `${Math.max(0, (hpA / maxHpA) * 100)}%` }} /></div>
+            <div className="hp-text">{hpA} / {cardA.llifepoints ?? 0}</div>
           </div>
         </div>
       </main>
