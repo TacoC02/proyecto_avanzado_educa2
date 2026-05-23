@@ -1,5 +1,3 @@
-// Cartas.tsx - Arreglar el botón de editar
-
 import './Cartas.css'
 
 type Props = {  

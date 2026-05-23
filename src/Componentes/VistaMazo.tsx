@@ -52,6 +52,17 @@ function Mazo() {
     }
   }
 
+  const canBattle = selectionMode === 'select' ? selected.length === MAX_SELECTION : savedSelection.length === MAX_SELECTION
+
+  const handleBattleClick = () => {
+    const battleSelection = selectionMode === 'select' ? selected : savedSelection
+    if (battleSelection.length !== MAX_SELECTION) {
+      alert(`Selecciona exactamente ${MAX_SELECTION} cartas para pelear.`)
+      return
+    }
+    navigate('/card/battle', { state: { selectedCards: battleSelection } })
+  }
+
   const cancelSelection = () => {
     setSelectionMode(null)
     setSelected([])
@@ -150,6 +161,15 @@ function Mazo() {
             <span>🎯 Seleccionar carta</span>
           )}
         </button>
+        {(selectionMode === 'select' || (selectionMode === null && savedSelection.length === 2)) && (
+          <button
+            className={`px-5 py-2.5 rounded-xl bg-gradient-to-b from-white to-amber-50 border-2 border-gray-200 shadow-md transition-all font-pokemon font-bold tracking-wide ${canBattle ? 'hover:shadow-xl hover:-translate-y-1' : 'opacity-50 cursor-not-allowed'}`}
+            onClick={handleBattleClick}
+            disabled={!canBattle || isDeleting}
+          >
+            <span>⚔️ Pelear</span>
+          </button>
+        )}
         {selectionMode && (
           <button 
             className="px-5 py-2.5 rounded-xl bg-gradient-to-b from-gray-100 to-gray-200 border-2 border-gray-300 hover:-translate-y-1 transition-all font-pokemon font-bold text-gray-600"
