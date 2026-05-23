@@ -27,9 +27,21 @@ function Mazo() {
     loadData()
   }, [])
 
+  const MAX_SELECTION = 2
+
   const toggleSelect = (numero: number) => {
     if (!selectionMode) return
-    setSelected(prev => prev.includes(numero) ? prev.filter(n => n !== numero) : [...prev, numero])
+    setSelected(prev => {
+      const isAlreadySelected = prev.includes(numero)
+      if (isAlreadySelected) {
+        return prev.filter(n => n !== numero)
+      }
+      if (selectionMode === 'select' && prev.length >= MAX_SELECTION) {
+        alert(`Solo puedes seleccionar ${MAX_SELECTION} cartas.`)
+        return prev
+      }
+      return [...prev, numero]
+    })
   }
 
   const activateSelectionMode = (mode: Exclude<SelectionMode, null>) => {
