@@ -133,7 +133,7 @@ export default function CampoDeBatalla({ cardA, cardB, onExit }: CampoDeBatallaP
   const maxHpB = Math.max(cardB.llifepoints ?? 1, 1)
 
   return (
-    <div ref={battleRef} className={`battle-screen ${isFullscreen ? 'is-full' : ''}`}>
+    <div ref={battleRef} className={`battle-screen ${isFullscreen ? 'is-full' : ''} ${isFullscreen && battleStarted ? 'fs-battle' : ''}`}>
       <div className="battle-bg" aria-hidden />
 
       <header className="battle-header">
