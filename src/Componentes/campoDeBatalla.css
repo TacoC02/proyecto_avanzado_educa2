@@ -12,7 +12,10 @@
 .battle-bg {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top, rgba(255,255,255,0.75), transparent 35%), linear-gradient(180deg, #86c232 0%, #5f9c56 45%, #4a7b3d 100%);
+  background-image: url('https://static.wikia.nocookie.net/espokemon/images/3/33/Campo_de_batalla_DPPt_1.png/revision/latest?cb=20090424143320');
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: cover;
   z-index: 0;
 }
 
@@ -52,6 +55,13 @@
   cursor: pointer;
   font-weight: 700;
   transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.battle-fullscreen {
+  background: #10b981;
+  color: white;
+  border-radius: 999px;
+  padding: 10px 16px;
 }
 
 .battle-actions button:hover:not(:disabled) {
@@ -100,6 +110,14 @@
 .battle-panel {
   width: 100%;
   max-width: 320px;
+}
+
+.bottom-right {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  z-index: 6;
+  width: 240px;
 }
 
 .battle-prompt {
@@ -156,15 +174,190 @@
 }
 
 .sprite {
-  width: 160px;
-  height: 160px;
+  width: 260px;
+  height: 260px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 32px;
-  background: rgba(255,255,255,0.78);
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+  border-radius: 28px;
+  background: transparent;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.18);
 }
+
+.sprite-player {
+  transform: scale(1.55);
+  background: transparent;
+}
+.player-block .sprite {
+  background: transparent !important;
+}
+.player-block .sprite img {
+  background: transparent !important;
+  mix-blend-mode: multiply;
+}
+.sprite-opponent {
+  transform: scale(1.02);
+  margin-top: 14px;
+}
+
+.player-block {
+  position: absolute;
+  bottom: -8px;
+  left: 16px;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: 10px;
+  z-index: 7;
+}
+
+.opponent-block {
+  position: absolute;
+  top: 24px;
+  right: 110px;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  gap: 10px;
+  z-index: 4;
+}
+
+.hp-opponent, .hp-player {
+  width: 260px;
+}
+
+/* panel de opciones estilo Pokémon clásico */
+.battle-panel {
+  background: linear-gradient(#e9e6dc, #dcd9cf);
+  border-radius: 10px;
+  border: 6px solid #2b2b2b;
+  padding: 2px;
+  box-shadow: 0 10px 24px rgba(2,6,23,0.16);
+  width: 420px;
+  min-width: 420px;
+}
+
+.battle-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.action-btn {
+  min-height: 52px;
+  border: 6px solid #2b2b2b;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  padding: 10px 10px;
+  box-shadow: inset 0 -6px 0 rgba(0,0,0,0.08);
+}
+
+.action-btn.attack { background: linear-gradient(180deg,#fda4a4,#ef4444); color: #fff }
+.action-btn.bag { background: linear-gradient(180deg,#fcd34d,#f59e0b); color: #2b2b2b }
+.action-btn.pokemon { background: linear-gradient(180deg,#86efac,#22c55e); color: #fff }
+.action-btn.run { background: linear-gradient(180deg,#93c5fd,#3b82f6); color: #fff }
+
+.action-btn:disabled { opacity: 0.6 }
+
+/* diálogo inferior estilo retro */
+.dialog-bottom {
+  position: absolute;
+  left: 70%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  width: min(96vw, 960px);
+  z-index: 7;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+}
+.dialog-inner {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 22px 24px;
+  box-shadow: 0 12px 30px rgba(2,6,23,0.14);
+  border: 4px solid rgba(6,6,6,0.12);
+  font-weight: 700;
+  color: #0f172a;
+  pointer-events: auto;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 320px;
+}
+.dialog-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dialog-title {
+  font-size: 1rem;
+  font-weight: 800;
+}
+.dialog-message {
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+.dialog-content {
+  display: flex;
+  gap: 18px;
+  align-items: stretch;
+}
+.dialog-log {
+  background: rgba(243, 244, 246, 0.94);
+  border-radius: 16px;
+  padding: 14px 16px;
+  width: 100%;
+  max-width: 360px;
+  min-height: 200px;
+  overflow: auto;
+  border: 2px solid rgba(107, 114, 128, 0.22);
+}
+.dialog-actions {
+  pointer-events: auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+/* eliminar fondo blanco aproximado usando mezcla; funciona mejor con sprites lineales */
+.sprite img {
+  background: transparent;
+  mix-blend-mode: multiply;
+  image-rendering: pixelated;
+  max-width: 240px;
+  max-height: 240px;
+}
+
+/* animación de impacto */
+.opponent-block.attacking .sprite img,
+.player-block.attacking .sprite img {
+  animation: shake 640ms ease-in-out;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0) translateY(0) }
+  20% { transform: translateX(-8px) translateY(-4px) }
+  40% { transform: translateX(8px) translateY(2px) }
+  60% { transform: translateX(-6px) translateY(1px) }
+  80% { transform: translateX(4px) translateY(-2px) }
+  100% { transform: translateX(0) translateY(0) }
+}
+
+/* efecto visual cuando se ataca */
+.opponent-block.attacking .sprite,
+.player-block.attacking .sprite {
+  transform-origin: center;
+  box-shadow: 0 26px 48px rgba(2,6,23,0.16);
+}
+
+/* pequeños ajustes de HP para parecerse a la imagen */
+.hp-opponent .hp-name, .hp-player .hp-name { font-weight: 900; }
+.hp-opponent .hp-text, .hp-player .hp-text { font-weight: 700; }
 
 .sprite img {
   max-width: 140px;
@@ -173,22 +366,22 @@
 }
 
 .hp {
-  background: rgba(255,255,255,0.95);
+  background: rgba(255,255,255,0.94);
   padding: 14px 14px 10px;
   border-radius: 22px;
-  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
-  width: min(100%, 260px);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
+  width: min(100%, 280px);
 }
 
 .hp-name {
-  font-weight: 800;
-  font-size: 0.95rem;
+  font-weight: 900;
+  font-size: 1rem;
   margin-bottom: 8px;
 }
 
 .hp-bar {
   width: 100%;
-  height: 14px;
+  height: 18px;
   background: #e2e8f0;
   border-radius: 999px;
   overflow: hidden;
@@ -201,20 +394,25 @@
 }
 
 .hp-text {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 700;
   color: #475569;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 .battle-log {
-  position: relative;
-  z-index: 2;
-  padding: 18px 20px;
-  max-height: 220px;
+  position: absolute;
+  left: 34px;
+  bottom: 192px;
+  width: 380px;
+  max-height: 165px;
+  z-index: 6;
+  padding: 16px 18px;
   overflow: auto;
-  background: rgba(255,255,255,0.95);
-  border-radius: 26px;
-  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+  background: rgba(255,255,255,0.98);
+  border-radius: 18px;
+  border: 3px solid #2b2b2b;
+  box-shadow: 0 24px 40px rgba(15, 23, 42, 0.18);
 }
 
 .log-line {
@@ -273,3 +471,17 @@
     font-size: 0.9rem;
   }
 }
+
+/* estilos cuando el componente está en fullscreen */
+.battle-screen.is-full {
+  width: 100vw;
+  height: 100vh;
+  padding: 24px;
+}
+
+.battle-screen.is-full .battle-bg { background-size: cover; }
+
+.battle-screen.is-full .battle-panel.bottom-right { right: 34px; bottom: 34px; width: 320px }
+
+.battle-screen.is-full .sprite-player { transform: scale(1.22) }
+.battle-screen.is-full .sprite-opponent { transform: scale(0.78) }
