@@ -4,7 +4,10 @@ import { useCartas } from '../contexts/CartasContext'
 
 type LocationState = {
   selectedCards?: number[]
+  selectedField?: string
 }
+
+const defaultFieldImage = new URL('../imagenes/campo_1.png', import.meta.url).href
 
 function BattlePage() {
   const navigate = useNavigate()
@@ -12,6 +15,7 @@ function BattlePage() {
   const { cartas } = useCartas()
 
   const selectedCards = (location.state as LocationState)?.selectedCards ?? []
+  const selectedField = (location.state as LocationState)?.selectedField ?? defaultFieldImage
   const battleCards = selectedCards
     .map((id) => cartas.find((c) => c.numero === id))
     .filter((card): card is NonNullable<typeof card> => card !== undefined)
@@ -51,7 +55,12 @@ function BattlePage() {
 
   return (
     <div className="page-battle px-6 py-8">
-      <CampoDeBatalla cardA={battleCards[0]} cardB={battleCards[1]} onExit={() => navigate('/card')} />
+      <CampoDeBatalla
+        cardA={battleCards[0]}
+        cardB={battleCards[1]}
+        backgroundImage={selectedField}
+        onExit={() => navigate('/card')}
+      />
     </div>
   )
 }

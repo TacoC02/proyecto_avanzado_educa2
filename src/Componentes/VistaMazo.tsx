@@ -60,7 +60,7 @@ function Mazo() {
       alert(`Selecciona exactamente ${MAX_SELECTION} cartas para pelear.`)
       return
     }
-    navigate('/card/battle', { state: { selectedCards: battleSelection } })
+    navigate('/card/select-field', { state: { selectedCards: battleSelection } })
   }
 
   const cancelSelection = () => {

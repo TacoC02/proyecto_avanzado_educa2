@@ -5,6 +5,7 @@ import type { CartaItem } from '../contexts/CartasContext'
 type CampoDeBatallaProps = {
   cardA: CartaItem
   cardB: CartaItem
+  backgroundImage?: string
   onExit: () => void
 }
 
@@ -13,7 +14,7 @@ function calcularDaño(atacante: CartaItem, defensor: CartaItem) {
   return Math.round(dañoBase + Math.random() * 3)
 }
 
-export default function CampoDeBatalla({ cardA, cardB, onExit }: CampoDeBatallaProps) {
+export default function CampoDeBatalla({ cardA, cardB, backgroundImage, onExit }: CampoDeBatallaProps) {
   const [logs, setLogs] = useState<string[]>([])
   const [hpA, setHpA] = useState<number>(cardA.llifepoints ?? 0)
   const [hpB, setHpB] = useState<number>(cardB.llifepoints ?? 0)
@@ -134,7 +135,7 @@ export default function CampoDeBatalla({ cardA, cardB, onExit }: CampoDeBatallaP
 
   return (
     <div ref={battleRef} className={`battle-screen ${isFullscreen ? 'is-full' : ''} ${isFullscreen && battleStarted ? 'fs-battle' : ''}`}>
-      <div className="battle-bg" aria-hidden />
+      <div className="battle-bg" aria-hidden style={{ backgroundImage: `url(${backgroundImage ?? ''})` }} />
 
       <header className="battle-header">
         <div>

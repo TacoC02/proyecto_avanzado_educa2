@@ -6,6 +6,7 @@ import CrearCartaPage from './pages/CrearCartaPage'
 import EditarCartaPage from './pages/EditarCartaPage'
 import CardDetailPage from './pages/CardDetailPage'
 import BattlePage from './pages/BattlePage'
+import SelectFieldPage from './pages/SelectFieldPage'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/card/create" element={<CrearCartaPage />} />
         <Route path="/card/edit/:id" element={<EditarCartaPage />} />
         <Route path="/card/:id" element={<CardDetailPage />} />
+        <Route path="/card/select-field" element={<SelectFieldPage />} />
         <Route path="/card/battle" element={<BattlePage />} />
         <Route path="*" element={<Navigate to="/card" replace />} />
       </Routes>
