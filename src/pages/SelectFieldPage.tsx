@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import './selectField.css'
 
 type LocationState = {
   selectedCards?: number[]
@@ -29,53 +30,52 @@ function SelectFieldPage() {
 
   if (selectedCards.length !== 2) {
     return (
-      <div className="page-battle p-8 text-center">
-        <h1 className="text-3xl font-bold mb-4">Selecciona primero dos cartas</h1>
-        <p className="mb-6">No hay una selección válida de cartas para comenzar la pelea.</p>
-        <button
-          className="px-5 py-3 rounded-xl bg-sky-500 text-white font-bold hover:bg-sky-600 transition"
-          onClick={() => navigate('/card')}
-        >
-          Volver al mazo
-        </button>
+      <div className="select-field-empty">
+        <h1>Selecciona primero dos cartas</h1>
+        <p>No hay una selección válida de cartas para comenzar la pelea.</p>
+        <button className="btn" onClick={() => navigate('/card')}>Volver al mazo</button>
       </div>
     )
   }
 
   return (
-    <div className="page-battle px-6 py-10 min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800 text-white">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-8 rounded-3xl border border-white/10 bg-white/5 p-8 shadow-2xl shadow-slate-950/40 backdrop-blur-xl">
-          <h1 className="text-4xl font-black mb-4 tracking-tight">Elige tu campo de batalla</h1>
-          <p className="text-lg text-slate-200">
-            Antes de enviar las cartas a pelear, elige el estadio más épico. Cada campo usa una imagen de <code>src/imagenes</code>.
-          </p>
-        </div>
+    <div className="select-field-page">
+      <div className="select-frame">
+        <div className="retro-badge">ESTADIO</div>
+        <header className="retro-header">
+          <div className="pokeball-deco" aria-hidden>
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" fill="#fff" stroke="#000" strokeWidth="0.8" />
+              <path d="M2 12h20" stroke="#d62828" strokeWidth="3" />
+              <circle cx="12" cy="12" r="3" fill="#fff" stroke="#000" strokeWidth="0.8" />
+            </svg>
+          </div>
+          <div>
+            <h1 className="retro-title">Elige tu campo de batalla</h1>
+            <p className="retro-sub">Selecciona el campo donde tus pokemones lucharan</p>
+          </div>
+        </header>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {fields.map((field) => (
-            <button
-              key={field.id}
-              type="button"
-              className="group overflow-hidden rounded-3xl border border-white/10 bg-slate-950/80 p-2 text-left shadow-xl shadow-black/40 transition hover:-translate-y-1 hover:border-cyan-400/60"
-              onClick={() => navigate('/card/battle', { state: { selectedCards, selectedField: field.src } })}
-            >
-              <div className="relative overflow-hidden rounded-2xl bg-slate-900">
-                <img
-                  src={field.src}
-                  alt={field.label}
-                  className="h-48 w-full object-cover transition duration-300 group-hover:scale-105"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent px-4 py-3">
-                  <span className="text-white text-base font-semibold">{field.label}</span>
+        <main className="select-content">
+          <div className="fields-grid">
+            {fields.map((field) => (
+              <button
+                key={field.id}
+                type="button"
+                className="field-card"
+                onClick={() => navigate('/card/battle', { state: { selectedCards, selectedField: field.src } })}
+              >
+                <div className="field-thumb">
+                  <img src={field.src} alt={field.label} />
                 </div>
-              </div>
-              <div className="mt-3 px-2 pb-2">
-                <p className="text-sm text-slate-300">Pulsa para confirmar este campo y comenzar la pelea.</p>
-              </div>
-            </button>
-          ))}
-        </div>
+                <div className="field-meta">
+                  <div className="field-label">{field.label}</div>
+                  <div className="field-desc">Pulsa para seleccionar este campo</div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </main>
       </div>
     </div>
   )

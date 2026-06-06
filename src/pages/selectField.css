@@ -1,0 +1,200 @@
+/* selectField.css - Estética retro tipo Pokémon */
+
+.select-field-page {
+  min-height: 100vh;
+  padding: 48px 24px;
+  background: linear-gradient(180deg, #0b1220 0%, #0f1724 35%, #071021 100%);
+  color: #fff;
+  font-family: 'Pokemon Solid', 'Press Start 2P', system-ui, sans-serif;
+}
+
+.select-frame {
+  max-width: 1100px;
+  margin: 0 auto;
+  border-radius: 18px;
+  padding: 18px;
+  background: repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0 2px, transparent 2px 8px);
+  box-shadow: 0 12px 40px rgba(2,6,23,0.7), inset 0 2px 0 rgba(255,255,255,0.02);
+  border: 6px solid rgba(255,255,255,0.04);
+  position: relative;
+}
+
+/* little retro badge top-right */
+.select-frame .retro-badge {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background: linear-gradient(180deg,#ffef9f,#ffd54a);
+  color: #1b1b1b;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: 900;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  border: 3px solid rgba(0,0,0,0.25);
+  font-size: 12px;
+}
+
+.retro-header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 2px solid rgba(255,255,255,0.03);
+  margin-bottom: 18px;
+}
+
+.pokeball-deco {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6));
+}
+
+.retro-title {
+  font-size: 28px;
+  margin: 0 0 4px 0;
+  letter-spacing: 0.02em;
+  color: #ffd54a;
+  text-shadow: 0 3px 0 rgba(0,0,0,0.6), 0 0 8px rgba(255,215,74,0.06);
+}
+
+.retro-sub {
+  margin: 0;
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+.select-content {
+  padding: 8px 2px 20px 2px;
+}
+
+.fields-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 14px;
+}
+
+@media(min-width:640px){
+  .fields-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media(min-width:1024px){
+  .fields-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+.field-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  background: linear-gradient(180deg, rgba(10,14,20,0.6), rgba(10,14,20,0.4));
+  border: 6px solid #111;
+  border-left-color: #222;
+  border-top-color: #222;
+  padding: 6px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+}
+
+.field-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: #ffd54a;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.7), 0 0 18px rgba(255,213,74,0.06);
+}
+
+/* tiny blinking pixel lights under header */
+.retro-header:after {
+  content: '';
+  position: absolute;
+  left: 36px;
+  top: 14px;
+  width: calc(100% - 72px);
+  height: 2px;
+  background-image: linear-gradient(90deg, rgba(255,255,255,0.06) 0 10%, transparent 10% 100%);
+  opacity: 0.9;
+  transform: translateY(28px);
+}
+
+/* pixel corners using box-shadows for retro feel */
+.select-frame {
+  box-shadow: 0 12px 40px rgba(2,6,23,0.7), inset 0 2px 0 rgba(255,255,255,0.02),
+    4px 4px 0 0 rgba(0,0,0,0.6), -4px -4px 0 0 rgba(255,255,255,0.02);
+}
+
+/* subtle vignette */
+.select-field-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.6) 100%);
+}
+
+.field-thumb {
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #000 0%, rgba(255,255,255,0.02) 100%);
+  border: 2px solid rgba(255,255,255,0.03);
+}
+
+.field-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: auto;
+}
+
+.field-meta {
+  padding: 6px 8px 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-weight: 900;
+  color: #fff;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.6);
+}
+
+.field-desc {
+  font-size: 12px;
+  color: #cbd5e1;
+}
+
+/* small pixel frame corners */
+.select-frame:before,
+.select-frame:after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255,255,255,0.04);
+  pointer-events: none;
+}
+.select-frame:before { left: 6px; top: 6px; border-right: none; border-bottom: none; }
+.select-frame:after { right: 6px; bottom: 6px; border-left: none; border-top: none; }
+
+/* empty state */
+.select-field-empty { text-align: center; padding: 40px; color: #fff }
+.select-field-empty .btn { margin-top: 14px; padding: 10px 18px; border-radius: 10px; background: #10b981; color: #fff; border: none }
+
+/* subtle scanlines */
+.select-field-page::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px);
+  background-size: 100% 6px;
+  mix-blend-mode: overlay;
+}
