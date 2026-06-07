@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import './selectField.css'
 
@@ -28,6 +28,26 @@ function SelectFieldPage() {
     })
   }, [])
 
+  const [hovered, setHovered] = useState<BattleField | null>(null)
+  const previewRef = useRef<HTMLDivElement | null>(null)
+  const [selectedId, setSelectedId] = useState<number | null>(null)
+
+  const handlePreviewMove = (e: React.MouseEvent) => {
+    if (!previewRef.current) return
+    const rect = previewRef.current.getBoundingClientRect()
+    const x = ((e.clientX - rect.left) / rect.width) * 100
+    const y = ((e.clientY - rect.top) / rect.height) * 100
+    previewRef.current.style.backgroundPosition = `${x}% ${y}%`
+  }
+
+  const handleSelect = (field: BattleField) => {
+    setSelectedId(field.id)
+    // pequeño retardo para reproducir animación antes de navegar
+    setTimeout(() => {
+      navigate('/card/battle', { state: { selectedCards, selectedField: field.src } })
+    }, 380)
+  }
+
   if (selectedCards.length !== 2) {
     return (
       <div className="select-field-empty">
@@ -41,6 +61,19 @@ function SelectFieldPage() {
   return (
     <div className="select-field-page">
       <div className="select-frame">
+        <div
+          ref={previewRef}
+          className="field-preview"
+          onMouseMove={handlePreviewMove}
+          style={{ backgroundImage: `url(${hovered?.src ?? fields[0].src})` }}
+          aria-hidden
+        >
+          <div className="pokeballs">
+            <span className="pokeball p1" />
+            <span className="pokeball p2" />
+            <span className="pokeball p3" />
+          </div>
+        </div>
         <div className="retro-badge">ESTADIO</div>
         <header className="retro-header">
           <div className="pokeball-deco" aria-hidden>
@@ -62,8 +95,11 @@ function SelectFieldPage() {
               <button
                 key={field.id}
                 type="button"
-                className="field-card"
-                onClick={() => navigate('/card/battle', { state: { selectedCards, selectedField: field.src } })}
+                className={`field-card ${selectedId === field.id ? 'selected' : ''}`}
+                onMouseEnter={() => setHovered(field)}
+                onMouseLeave={() => setHovered(null)}
+                onClick={() => handleSelect(field)}
+                aria-pressed={selectedId === field.id}
               >
                 <div className="field-thumb">
                   <img src={field.src} alt={field.label} />
