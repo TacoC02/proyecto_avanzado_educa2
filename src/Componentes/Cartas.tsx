@@ -38,7 +38,6 @@ function Carta ({
   onSelect,
   onEdit, 
 }: CartaProps) {
-
   if (expanded) {
     return (
       <>

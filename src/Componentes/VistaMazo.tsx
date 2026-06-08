@@ -130,15 +130,12 @@ function Mazo() {
         </div>
       )}
       
-      <div className="absolute top-3 left-1/2 transform -translate-x-1/2 flex gap-4 z-40">
-        <button 
-          className="px-5 py-2.5 rounded-xl bg-gradient-to-b from-white to-gray-100 border-2 border-gray-200 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all font-pokemon font-bold tracking-wide"
-          onClick={() => navigate('/card/create')}
-        >
+      <div className="top-controls">
+        <button className="pokedex-button create-card-button" onClick={() => navigate('/card/create')}>
           ✨ Crear carta
         </button>
         <button
-          className={`px-5 py-2.5 rounded-xl bg-gradient-to-b from-white to-red-50 border-2 border-gray-200 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all font-pokemon font-bold tracking-wide ${selectionMode === 'delete' ? 'bg-gradient-to-b from-red-100 to-red-200 animate-pulse' : ''}`}
+          className={`pokedex-button delete-card-button ${selectionMode === 'delete' ? 'active' : ''}`}
           onClick={handleDeleteClick}
           disabled={isDeleting}
         >
@@ -151,7 +148,7 @@ function Mazo() {
           )}
         </button>
         <button
-          className={`px-5 py-2.5 rounded-xl bg-gradient-to-b from-white to-sky-50 border-2 border-gray-200 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all font-pokemon font-bold tracking-wide ${selectionMode === 'select' ? 'bg-gradient-to-b from-sky-100 to-cyan-200 animate-pulse' : ''}`}
+          className={`pokedex-button select-card-button ${selectionMode === 'select' ? 'active' : ''}`}
           onClick={handleSelectClick}
           disabled={isDeleting}
         >
@@ -163,7 +160,7 @@ function Mazo() {
         </button>
         {(selectionMode === 'select' || (selectionMode === null && savedSelection.length === 2)) && (
           <button
-            className={`px-5 py-2.5 rounded-xl bg-gradient-to-b from-white to-amber-50 border-2 border-gray-200 shadow-md transition-all font-pokemon font-bold tracking-wide ${canBattle ? 'hover:shadow-xl hover:-translate-y-1' : 'opacity-50 cursor-not-allowed'}`}
+            className={`pokedex-button battle-button ${canBattle ? '' : 'disabled'}`}
             onClick={handleBattleClick}
             disabled={!canBattle || isDeleting}
           >
@@ -171,8 +168,8 @@ function Mazo() {
           </button>
         )}
         {selectionMode && (
-          <button 
-            className="px-5 py-2.5 rounded-xl bg-gradient-to-b from-gray-100 to-gray-200 border-2 border-gray-300 hover:-translate-y-1 transition-all font-pokemon font-bold text-gray-600"
+          <button
+            className="pokedex-button cancel-button"
             onClick={cancelSelection}
             disabled={isDeleting}
           >
@@ -180,10 +177,7 @@ function Mazo() {
           </button>
         )}
         {savedSelection.length > 0 && selectionMode === null && (
-          <button
-            className="px-5 py-2.5 rounded-xl bg-gradient-to-b from-white to-lime-100 border-2 border-gray-200 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all font-pokemon font-bold tracking-wide text-emerald-700"
-            onClick={clearSavedSelection}
-          >
+          <button className="pokedex-button clear-selection-button" onClick={clearSavedSelection}>
             ✨ Limpiar selección
           </button>
         )}

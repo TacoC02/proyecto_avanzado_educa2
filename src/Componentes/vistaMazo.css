@@ -4,12 +4,17 @@
   gap: 18px 24px;
   justify-content: center;
   align-items: flex-start;
-  padding: 24px;
+  padding: 28px;
   margin: 24px auto 0;
   position: relative;
   max-width: 1192px;
   transition: background 0.4s, box-shadow 0.4s;
   animation: fadeInMazo 0.8s cubic-bezier(.42,0,.58,1);
+  background: rgba(8, 18, 42, 0.78);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 28px;
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
 }
 
 @keyframes fadeInMazo {
@@ -24,54 +29,87 @@
 
 .top-controls {
   position: absolute;
-  top: 12px;
+  top: 16px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 18px;
+  gap: 16px;
   align-items: center;
   z-index: 40;
+  padding: 10px 16px;
+  background: rgba(5, 10, 20, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+}
+
+.pokedex-button {
+  min-width: 140px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,0.18);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.24);
+  cursor: pointer;
+  font-family: 'Pokemon Solid', sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0f172a;
+  transition: transform 220ms ease, box-shadow 220ms ease, filter 220ms ease, background 220ms ease;
+  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(236, 244, 255, 0.82));
+}
+
+.pokedex-button:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+  filter: saturate(1.08);
+}
+
+.pokedex-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .create-card-button {
-  padding: 10px 18px;
-  border-radius: 12px;
-  background: linear-gradient(180deg, #ffffff 0%, #f2f4f5 100%);
-  border: 2px solid rgba(0,0,0,0.06);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-  cursor: pointer;
-  font-family: 'Pokemon Solid', sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  transition: transform 180ms ease, box-shadow 180ms ease;
-}
-
-.create-card-button:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+  background: linear-gradient(180deg, #fff9db 0%, #ffeaa5 100%);
+  color: #1f2937;
 }
 
 .delete-card-button {
-  padding: 10px 18px;
-  border-radius: 12px;
-  background: linear-gradient(180deg, #fff 0%, #f8e6e6 100%);
-  border: 2px solid rgba(0,0,0,0.06);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.06);
-  cursor: pointer;
-  font-family: 'Pokemon Solid', sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  transition: all 0.3s ease;
+  background: linear-gradient(180deg, #ffe0e0 0%, #ffb3b3 100%);
+  color: #7f1d1d;
 }
 
-.delete-card-button:hover {
-  transform: translateY(-4px) scale(1.02);
+.select-card-button {
+  background: linear-gradient(180deg, #dcf0ff 0%, #9dd7ff 100%);
+  color: #0f172a;
 }
 
-.delete-card-button.active {
-  background: linear-gradient(180deg, #ffdede 0%, #ffbdbd 100%);
-  box-shadow: 0 18px 40px rgba(0,0,0,0.12);
-  animation: buttonPulse 1s ease-in-out infinite;
+.battle-button {
+  background: linear-gradient(180deg, #d9f99d 0%, #86efac 100%);
+  color: #164e1b;
+}
+
+.cancel-button {
+  background: linear-gradient(180deg, #f3f4f6 0%, #dbeafe 100%);
+  color: #1e293b;
+  border-color: rgba(148, 163, 184, 0.45);
+}
+
+.clear-selection-button {
+  background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 100%);
+  color: #0f172a;
+}
+
+.pokedex-button.active {
+  animation: buttonPulse 1.2s ease-in-out infinite;
+  box-shadow: 0 18px 42px rgba(59, 130, 246, 0.34), 0 0 0 4px rgba(59, 130, 246, 0.08);
+}
+
+@keyframes buttonPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
 }
 
 @keyframes buttonPulse {
