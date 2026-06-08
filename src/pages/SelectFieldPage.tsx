@@ -28,17 +28,10 @@ function SelectFieldPage() {
     })
   }, [])
 
-  const [hovered, setHovered] = useState<BattleField | null>(null)
   const previewRef = useRef<HTMLDivElement | null>(null)
   const [selectedId, setSelectedId] = useState<number | null>(null)
-
-  const handlePreviewMove = (e: React.MouseEvent) => {
-    if (!previewRef.current) return
-    const rect = previewRef.current.getBoundingClientRect()
-    const x = ((e.clientX - rect.left) / rect.width) * 100
-    const y = ((e.clientY - rect.top) / rect.height) * 100
-    previewRef.current.style.backgroundPosition = `${x}% ${y}%`
-  }
+  const picaGif = new URL('../imagenes/pica.gif', import.meta.url).href
+  const fondoImg = new URL('../imagenes/fondo.jpg', import.meta.url).href
 
   const handleSelect = (field: BattleField) => {
     setSelectedId(field.id)
@@ -59,15 +52,15 @@ function SelectFieldPage() {
   }
 
   return (
-    <div className="select-field-page">
+    <div className="select-field-page" style={{ backgroundImage: `url(${fondoImg})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed' }}>
       <div className="select-frame">
         <div
           ref={previewRef}
           className="field-preview"
-          onMouseMove={handlePreviewMove}
-          style={{ backgroundImage: `url(${hovered?.src ?? fields[0].src})` }}
+          style={{ backgroundImage: `url(${picaGif})` }}
           aria-hidden
         >
+          <div className="forest-motion" aria-hidden />
           <div className="pokeballs">
             <span className="pokeball p1" />
             <span className="pokeball p2" />
@@ -96,8 +89,6 @@ function SelectFieldPage() {
                 key={field.id}
                 type="button"
                 className={`field-card ${selectedId === field.id ? 'selected' : ''}`}
-                onMouseEnter={() => setHovered(field)}
-                onMouseLeave={() => setHovered(null)}
                 onClick={() => handleSelect(field)}
                 aria-pressed={selectedId === field.id}
               >

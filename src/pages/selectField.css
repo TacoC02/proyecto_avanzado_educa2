@@ -13,10 +13,12 @@
   margin: 0 auto;
   border-radius: 18px;
   padding: 18px;
-  background: repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0 2px, transparent 2px 8px);
-  box-shadow: 0 12px 40px rgba(2,6,23,0.7), inset 0 2px 0 rgba(255,255,255,0.02);
-  border: 6px solid rgba(255,255,255,0.04);
+  background-color: rgba(6, 15, 14, 0.72);
+  box-shadow: 0 12px 40px rgba(2,6,23,0.7), inset 0 2px 0 rgba(255,255,255,0.04);
+  border: 6px solid rgba(255,255,255,0.12);
   position: relative;
+  backdrop-filter: blur(8px);
+  background-blend-mode: overlay;
 }
 
 /* little retro badge top-right */
@@ -76,8 +78,8 @@
   width: 100%;
   height: 240px;
   border-radius: 12px;
-  background-position: 50% 50%;
-  background-size: cover;
+  background-position: center center;
+  background-size: contain;
   background-repeat: no-repeat;
   margin-bottom: 14px;
   box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 -6px 30px rgba(0,0,0,0.12);
@@ -85,18 +87,106 @@
   overflow: hidden;
   position: relative;
   transition: transform 240ms ease, box-shadow 240ms ease;
+  background-color: #0b2f18;
 }
 .field-preview:hover { transform: scale(1.02) }
+
+.field-preview::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.88;
+  background-image:
+    radial-gradient(circle at 12% 65%, rgba(145, 234, 160, 0.22), transparent 20%),
+    radial-gradient(circle at 25% 40%, rgba(118, 200, 129, 0.18), transparent 16%),
+    radial-gradient(circle at 30% 80%, rgba(92, 169, 102, 0.16), transparent 18%),
+    radial-gradient(circle at 70% 18%, rgba(103, 186, 122, 0.14), transparent 15%),
+    radial-gradient(circle at 68% 75%, rgba(80, 150, 91, 0.16), transparent 18%);
+  background-size: 180% 180%, 160% 160%, 190% 190%, 170% 170%, 180% 180%;
+  animation: forest-leaf-float 24s ease-in-out infinite;
+  filter: blur(0.3px);
+  mix-blend-mode: screen;
+}
 
 .field-preview::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.18));
+  background: linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.24));
   pointer-events: none;
+  z-index: 4;
 }
 
-.pokeballs { position: absolute; inset: 0; pointer-events: none }
+.forest-motion {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image:
+    linear-gradient(120deg, rgba(8, 31, 17, 0.24), rgba(14, 45, 24, 0.18) 35%, rgba(22, 71, 38, 0.1) 65%, transparent 100%),
+    radial-gradient(circle at 15% 70%, rgba(93, 182, 100, 0.16), transparent 18%),
+    radial-gradient(circle at 80% 20%, rgba(66, 145, 82, 0.12), transparent 16%),
+    radial-gradient(circle at 40% 78%, rgba(75, 152, 90, 0.14), transparent 20%),
+    radial-gradient(circle at 55% 30%, rgba(132, 229, 151, 0.08), transparent 22%);
+  background-size: 170% 170%, 220% 220%, 200% 200%, 180% 180%, 160% 160%;
+  background-position: 52% 48%, 40% 32%, 72% 82%, 16% 76%, 50% 40%;
+  background-blend-mode: screen, normal, normal, normal, normal;
+  animation: forest-breeze 16s ease-in-out infinite;
+}
+
+.forest-motion::before,
+.forest-motion::after {
+  content: '';
+  position: absolute;
+  width: 280%;
+  height: 260%;
+  top: -30%;
+  left: -30%;
+  background-repeat: no-repeat;
+  background-image:
+    radial-gradient(circle at 15% 10%, rgba(205, 255, 190, 0.18), transparent 20%),
+    radial-gradient(circle at 85% 25%, rgba(135, 217, 153, 0.12), transparent 18%),
+    radial-gradient(circle at 55% 70%, rgba(116, 186, 127, 0.14), transparent 20%);
+}
+
+.forest-motion::after {
+  top: -20%;
+  left: -10%;
+  width: 240%;
+  height: 240%;
+  background-image:
+    radial-gradient(circle at 30% 30%, rgba(58, 173, 92, 0.14), transparent 16%),
+    radial-gradient(circle at 70% 45%, rgba(42, 122, 68, 0.10), transparent 18%);
+  opacity: 0.72;
+  animation: forest-breeze-reverse 18s ease-in-out infinite;
+}
+
+@keyframes forest-breeze {
+  0%, 100% { background-position: 52% 48%, 40% 32%, 72% 82%, 16% 76%, 50% 40%; }
+  50% { background-position: 48% 54%, 35% 28%, 76% 84%, 10% 72%, 54% 44%; }
+}
+
+@keyframes forest-leaf-float {
+  0%, 100% { transform: translate(0, 0); opacity: 0.88; }
+  25% { transform: translate(-4px, 2px); }
+  50% { transform: translate(2px, -3px); opacity: 0.92; }
+  75% { transform: translate(-2px, 1px); }
+}
+
+@keyframes forest-breeze-reverse {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-6px, 4px) scale(1.02); }
+}
+
+.pokeballs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
 .pokeball {
   width: 44px;
   height: 44px;
@@ -120,7 +210,7 @@
 .fields-grid {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 14px;
+  gap: 20px;
 }
 
 .field-card {
@@ -139,61 +229,76 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 8px;
-  background: linear-gradient(180deg, rgba(10,14,20,0.6), rgba(10,14,20,0.4));
-  border: 6px solid #111;
-  border-left-color: #222;
-  border-top-color: #222;
-  padding: 6px;
-  border-radius: 14px;
+  gap: 12px;
+  background: rgba(7, 18, 35, 0.72);
+  border: 1px solid rgba(66, 165, 245, 0.18);
+  padding: 0;
+  border-radius: 24px;
   cursor: pointer;
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
-  box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease, background-color 220ms ease;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.36);
+  backdrop-filter: blur(10px);
+}
+
+.field-card::before {
+  content: 'CAMPO';
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(145, 218, 255, 0.76);
+  background: rgba(5, 24, 42, 0.9);
+  padding: 4px 8px;
+  border-radius: 999px;
+  z-index: 2;
 }
 
 .field-card:hover {
-  transform: translateY(-6px) scale(1.02);
-  border-color: #ffd54a;
-  box-shadow: 0 18px 40px rgba(0,0,0,0.7), 0 0 18px rgba(255,213,74,0.06);
+  transform: translateY(-6px) scale(1.01);
+  border-color: rgba(123, 211, 255, 0.45);
+  box-shadow: 0 24px 58px rgba(0,0,0,0.5), 0 0 20px rgba(56, 189, 248, 0.12);
+  background: rgba(11, 24, 42, 0.84);
 }
 
-/* efecto colorido retro y pulso al seleccionar */
 .field-card.selected {
-  transform: translateY(-8px) scale(1.04);
-  border-color: transparent;
-  box-shadow: 0 28px 60px rgba(0,0,0,0.75), 0 0 28px rgba(255, 99, 71, 0.16);
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(0, 184, 255, 0.65);
+  box-shadow: 0 30px 70px rgba(0,0,0,0.65), 0 0 30px rgba(59, 130, 246, 0.2);
 }
 .field-card.selected .field-thumb {
-  outline: 6px solid transparent;
-  box-shadow: 0 0 0 4px rgba(255,213,74,0.06), 0 6px 26px rgba(255,99,71,0.12) inset;
+  outline: 4px solid rgba(56, 189, 248, 0.18);
+  box-shadow: inset 0 0 0 2px rgba(56, 189, 248, 0.16);
 }
 .field-card.selected::after {
   content: 'SELECCIONADO';
   position: absolute;
-  right: 10px;
-  top: 10px;
-  background: linear-gradient(90deg,#ffef9f,#ffd54a);
-  color: #1b1b1b;
-  font-weight: 900;
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: 2px solid rgba(0,0,0,0.25);
-  transform: translateY(-6px);
-  animation: popIn 420ms cubic-bezier(.2,.8,.2,1) forwards;
+  right: 14px;
+  top: 14px;
+  background: rgba(56, 189, 248, 0.14);
+  color: #a5f3fc;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  z-index: 2;
 }
 
 @keyframes popIn { from { opacity: 0; transform: translateY(-10px) scale(0.96) } to { opacity:1; transform: translateY(0) scale(1) } }
 
-/* label vibrante */
 .field-label {
-  background: linear-gradient(90deg,#ffd54a,#ff6b6b,#7ee7f7);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  font-weight: 900;
+  color: #dbeafe;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.5);
 }
 
-/* efecto pixelado en las miniaturas para estética retro */
-.field-thumb img { image-rendering: pixelated; filter: contrast(1.05) saturate(1.08); }
+.field-thumb img {
+  image-rendering: auto;
+  filter: saturate(1.08) contrast(1.05);
+}
 
 /* borde animado alrededor del frame principal */
 .select-frame {
@@ -274,23 +379,48 @@
 }
 
 .field-meta {
-  padding: 6px 8px 12px 8px;
+  padding: 14px 16px 18px 16px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
+  background: rgba(6, 19, 40, 0.85);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.field-meta::after {
+  content: 'Seleccionar campo';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  margin-top: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.95), rgba(56, 189, 248, 0.85));
+  color: #eff6ff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  box-shadow: 0 10px 28px rgba(56, 189, 248, 0.16);
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+.field-card:hover .field-meta::after {
+  transform: translateY(-1px);
+  opacity: 0.98;
 }
 
 .field-label {
   font-weight: 900;
-  color: #fff;
-  font-size: 14px;
-  letter-spacing: 0.04em;
-  text-shadow: 0 2px 0 rgba(0,0,0,0.6);
+  color: #dbeafe;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.5);
 }
 
 .field-desc {
   font-size: 12px;
-  color: #cbd5e1;
+  color: #a5b4fc;
+  line-height: 1.4;
 }
 
 /* small pixel frame corners */
