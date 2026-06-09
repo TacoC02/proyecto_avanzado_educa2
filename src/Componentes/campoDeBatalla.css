@@ -175,7 +175,7 @@
 
 .sprite {
   width: 260px;
-  height: 260px;
+  height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -185,7 +185,7 @@
 }
 
 .sprite-player {
-  transform: scale(1.55);
+  transform: scale(10.55);
   background: transparent;
 }
 .player-block .sprite {
@@ -206,19 +206,19 @@
   left: 16px;
   display: flex;
   flex-direction: column-reverse;
-  align-items: flex-start;
-  gap: 10px;
+  align-items: flex-end;
+  gap: 40px;
   z-index: 7;
 }
 
 .opponent-block {
   position: absolute;
   top: 24px;
-  right: 110px;
+  right: 210px;
   display: flex;
   flex-direction: column-reverse;
   align-items: flex-end;
-  gap: 10px;
+  gap: 30px;
   z-index: 4;
 }
 
