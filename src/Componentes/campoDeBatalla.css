@@ -185,7 +185,7 @@
 }
 
 .sprite-player {
-  transform: scale(10.55);
+  transform: scale(1);
   background: transparent;
 }
 .player-block .sprite {
@@ -226,7 +226,7 @@
   width: 260px;
 }
 
-/* panel de opciones estilo Pokémon clásico */
+/* panel de opciones*/
 .battle-panel {
   background: linear-gradient(#e9e6dc, #dcd9cf);
   border-radius: 10px;
@@ -261,7 +261,7 @@
 
 .action-btn:disabled { opacity: 0.6 }
 
-/* diálogo inferior estilo retro */
+/* diálogo inferior*/
 .dialog-bottom {
   position: absolute;
   left: 70%;
@@ -324,7 +324,6 @@
   width: 100%;
 }
 
-/* eliminar fondo blanco aproximado usando mezcla; funciona mejor con sprites lineales */
 .sprite img {
   background: transparent;
   mix-blend-mode: multiply;
