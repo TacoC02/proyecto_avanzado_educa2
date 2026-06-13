@@ -2,6 +2,13 @@
 import './campoDeBatalla.css'
 import type { CartaItem } from '../contexts/CartasContext'
 
+const itemPool = [
+  { id: 'potion', name: 'Poción', emoji: '🧪', description: 'Restaura 30 HP al Pokémon activo.', kind: 'heal' as const, value: 30 },
+  { id: 'boost', name: 'Energizante', emoji: '⚡', description: 'Aumenta su ataque en +6 por el resto de la batalla.', kind: 'boost' as const, value: 6 },
+  { id: 'revive', name: 'Revivir', emoji: '✨', description: 'Sube su vida a 25 HP si está bajo.', kind: 'revive' as const, value: 25 },
+  { id: 'shield', name: 'Escudo', emoji: '🛡️', description: 'Reduce el daño recibido en 4 puntos durante el próximo ataque.', kind: 'shield' as const, value: 4 },
+]
+
 type CampoDeBatallaProps = {
   cardA: CartaItem
   cardB: CartaItem
@@ -9,8 +16,8 @@ type CampoDeBatallaProps = {
   onExit: () => void
 }
 
-function calcularDaño(atacante: CartaItem, defensor: CartaItem) {
-  const dañoBase = Math.max((atacante.attack || 0) - (defensor.defense || 0) * 0.35, 1)
+function calcularDaño(atacante: CartaItem, defensor: CartaItem, bonus = 0) {
+  const dañoBase = Math.max((atacante.attack || 0) + bonus - (defensor.defense || 0) * 0.35, 1)
   return Math.round(dañoBase + Math.random() * 3)
 }
 
@@ -25,6 +32,10 @@ export default function CampoDeBatalla({ cardA, cardB, backgroundImage, onExit }
   const [animating, setAnimating] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [bagOpen, setBagOpen] = useState(false)
+  const [bagItems, setBagItems] = useState(() => itemPool.sort(() => Math.random() - 0.5).slice(0, 4))
+  const [attackBoost, setAttackBoost] = useState({ A: 0, B: 0 })
+  const [damageReduction, setDamageReduction] = useState({ A: 0, B: 0 })
   const battleRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -72,7 +83,9 @@ export default function CampoDeBatalla({ cardA, cardB, backgroundImage, onExit }
 
   const handleFight = () => {
     if (!battleStarted || !turn || winner) return
-    const damage = calcularDaño(attacker, defender)
+    const bonus = turn === 'A' ? attackBoost.A : attackBoost.B
+    const baseDamage = calcularDaño(attacker, defender, bonus)
+    const damage = Math.max(1, baseDamage - (damageReduction[turn === 'A' ? 'B' : 'A'] ?? 0))
     setAttacking(turn)
     setAnimating(true)
     setMessage(`${attacker.nb_name} atacó!`)
@@ -111,6 +124,52 @@ export default function CampoDeBatalla({ cardA, cardB, backgroundImage, onExit }
       setTurn(nextTurn)
       setAnimating(false)
       setAttacking(null)
+      setMessage(`Ahora es turno de ${nextTurn === 'A' ? cardA.nb_name : cardB.nb_name}.`)
+      pushLog(`Ahora es turno de ${nextTurn === 'A' ? cardA.nb_name : cardB.nb_name}.`)
+    }, 650)
+  }
+
+  const handleUseItem = (item: (typeof itemPool)[number]) => {
+    if (!battleStarted || !turn || winner) return
+
+    const activeCard = turn === 'A' ? cardA : cardB
+    const activeKey = turn === 'A' ? 'A' : 'B' as const
+
+    if (item.kind === 'heal') {
+      if (turn === 'A') {
+        setHpA((prev) => Math.min(cardA.llifepoints ?? prev, prev + item.value))
+      } else {
+        setHpB((prev) => Math.min(cardB.llifepoints ?? prev, prev + item.value))
+      }
+      setMessage(`${activeCard.nb_name} usó ${item.name} y recuperó ${item.value} HP.`)
+    }
+
+    if (item.kind === 'boost') {
+      setAttackBoost((prev) => ({ ...prev, [activeKey]: prev[activeKey] + item.value }))
+      setMessage(`${activeCard.nb_name} activó ${item.name} y su ataque subió +${item.value}.`)
+    }
+
+    if (item.kind === 'revive') {
+      if (turn === 'A') {
+        setHpA((prev) => Math.max(prev, 25))
+      } else {
+        setHpB((prev) => Math.max(prev, 25))
+      }
+      setMessage(`${activeCard.nb_name} usó ${item.name} y volvió con energía.`)
+    }
+
+    if (item.kind === 'shield') {
+      setDamageReduction((prev) => ({ ...prev, [activeKey]: prev[activeKey] + item.value }))
+      setMessage(`${activeCard.nb_name} usó ${item.name} y se protegió del siguiente golpe.`)
+    }
+
+    setBagOpen(false)
+    setBagItems((prev) => prev.filter((entry) => entry.id !== item.id))
+    pushLog(`${activeCard.nb_name} usó ${item.name}.`)
+
+    window.setTimeout(() => {
+      const nextTurn = turn === 'A' ? 'B' : 'A'
+      setTurn(nextTurn)
       setMessage(`Ahora es turno de ${nextTurn === 'A' ? cardA.nb_name : cardB.nb_name}.`)
       pushLog(`Ahora es turno de ${nextTurn === 'A' ? cardA.nb_name : cardB.nb_name}.`)
     }, 650)
@@ -193,7 +252,7 @@ export default function CampoDeBatalla({ cardA, cardB, backgroundImage, onExit }
                 <div className="battle-prompt small">Opciones</div>
                 <div className="battle-buttons">
                   <button className="action-btn attack" onClick={handleFight} disabled={!battleStarted || !!winner || animating}>LUCHAR</button>
-                  <button className="action-btn bag" disabled>MOCHILA</button>
+                  <button className="action-btn bag" onClick={() => setBagOpen(true)} disabled={!battleStarted || !!winner || animating}>MOCHILA</button>
                   <button className="action-btn pokemon" disabled>POKÉMON</button>
                   <button className="action-btn run" onClick={handleRun} disabled={!battleStarted || !!winner || animating}>HUIR</button>
                 </div>
@@ -202,6 +261,32 @@ export default function CampoDeBatalla({ cardA, cardB, backgroundImage, onExit }
           </div>
         </div>
       </div>
+
+      {bagOpen && (
+        <div className="item-modal-overlay" onClick={() => setBagOpen(false)}>
+          <div className="item-modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="item-modal-header">
+              <div>
+                <p className="item-modal-kicker">Mochila</p>
+                <h3>Objetos aleatorios para esta batalla</h3>
+              </div>
+              <button className="item-close-btn" onClick={() => setBagOpen(false)}>×</button>
+            </div>
+            <p className="item-modal-copy">Toca un objeto para usarlo. Cada uso consume el turno actual.</p>
+            <div className="item-grid">
+              {bagItems.length === 0 ? (
+                <div className="item-empty">No quedan objetos en la mochila.</div>
+              ) : bagItems.map((item) => (
+                <button key={item.id} className="item-card" onClick={() => handleUseItem(item)}>
+                  <span className="item-icon">{item.emoji}</span>
+                  <strong>{item.name}</strong>
+                  <span>{item.description}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
