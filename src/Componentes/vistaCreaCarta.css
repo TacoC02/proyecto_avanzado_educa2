@@ -2,19 +2,22 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.45);
+  background: rgba(7, 10, 24, 0.65);
+  backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 999;
+  padding: 18px;
 }
 
 .create-modal {
-  width: 980px;
+  width: 1120px;
   max-width: 98vw;
+  min-height: 720px;
   background: transparent;
-  border-radius: 14px;
-  padding: 12px;
+  border-radius: 24px;
+  padding: 14px;
   box-shadow: 0 20px 80px rgba(0,0,0,0.14);
   display: flex;
   gap: 20px;
@@ -29,19 +32,28 @@
 
 /* ========== CARD PREVIEW ========== */
 .modal-card {
-  width: 400px;
-  height: auto;
-  max-height: 78vh;
-  background: rgb(196, 190, 231);
-  border-radius: 18px;
-  padding: 20px;
+  width: 430px;
+  min-height: 660px;
+  max-height: 86vh;
+  background:
+    radial-gradient(circle at top, rgba(255,255,255,0.35), transparent 25%),
+    linear-gradient(145deg, #d7d0f7 0%, #b6aff3 45%, #978dcb 100%);
+  border-radius: 24px;
+  padding: 22px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
   border: 3px solid rgba(0,0,0,0.14);
-  box-shadow: 0 22px 80px rgba(255, 255, 255, 0.18);
+  box-shadow: 0 22px 80px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255,255,255,0.15) inset;
   overflow: hidden;
+  transform: perspective(1200px) rotateY(-4deg);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.modal-card:hover {
+  transform: perspective(1200px) rotateY(-2deg) translateY(-4px);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(255,255,255,0.18) inset;
 }
 
 .modal-card .modal-card-body {
@@ -49,8 +61,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 380px;
-  padding: 20px;
+  min-height: 420px;
+  padding: 18px 10px 8px;
 }
 
 .modal-card-footer .modal-name {
@@ -74,25 +86,34 @@
 
 /* ========== FORMULARIO ========== */
 .modal-details {
-  width: 50%;
-  max-height: 500px;
-  background: rgb(166, 160, 201);
+  width: 52%;
+  min-height: 660px;
+  max-height: 86vh;
+  background:
+    linear-gradient(180deg, rgba(174, 166, 221, 0.98) 0%, rgba(147, 139, 203, 0.98) 100%);
   color: #111;
   padding: 18px;
-  border-radius: 14px;
+  border-radius: 18px;
   border: 3px solid rgba(0,0,0,0.14);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  box-shadow: 0 18px 36px rgba(0,0,0,0.16), 0 0 0 1px rgba(255,255,255,0.12) inset;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   overflow-y: auto;
+  transform: perspective(1200px) rotateY(3deg);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.modal-details:hover {
+  transform: perspective(1200px) rotateY(1deg) translateY(-3px);
+  box-shadow: 0 22px 42px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,255,255,0.14) inset;
 }
 
 .modal-details h1 {
   font-family: 'Pokemon Solid', sans-serif;
   font-weight: 700;
   letter-spacing: 0.6px;
-  font-size: 22px;
+  font-size: 24px;
   margin: 0 0 8px;
   color: #111;
 }
@@ -101,6 +122,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+  flex: 1;
 }
 
 .create-form label {
@@ -113,12 +135,20 @@
 .create-form input,
 .create-form textarea {
   margin-top: 6px;
-  padding: 8px 10px;
-  border-radius: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
   border: 1px solid rgba(0,0,0,0.18);
   font-size: 14px;
   width: 100%;
   box-sizing: border-box;
+}
+
+.create-form input:focus,
+.create-form textarea:focus {
+  outline: none;
+  border-color: #ffb703;
+  box-shadow: 0 0 0 3px rgba(255, 183, 3, 0.18);
+  background: rgba(255,255,255,0.92);
 }
 
 .create-form input:disabled {
@@ -145,8 +175,16 @@
   flex-direction: column;
   gap: 6px;
   background: rgba(255, 255, 255, 0.5);
-  padding: 8px;
-  border-radius: 12px;
+  padding: 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.35);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.62);
 }
 
 .stat-item label {
@@ -179,7 +217,7 @@
 
 .search-button {
   flex: 1;
-  padding: 8px 12px;
+  padding: 10px 12px;
   background: linear-gradient(135deg, #ff4d4d, #ff8f00);
   color: white;
   border: none;
@@ -187,6 +225,7 @@
   cursor: pointer;
   font-family: 'Pokemon Solid', sans-serif;
   font-size: 12px;
+  box-shadow: 0 8px 18px rgba(255, 77, 77, 0.25);
   transition: all 0.3s ease;
 }
 
@@ -280,8 +319,8 @@ small {
 }
 
 .modal-media img {
-  max-width: 280px;
-  max-height: 280px;
+  max-width: 310px;
+  max-height: 310px;
   object-fit: contain;
   transition: transform 0.3s ease;
   position: relative;
@@ -331,8 +370,8 @@ small {
 }
 
 .empty-image-placeholder {
-  width: 320px;
-  height: 320px;
+  width: 340px;
+  height: 340px;
   display: flex;
   flex-direction: column;
   align-items: center;
