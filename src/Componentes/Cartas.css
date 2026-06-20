@@ -29,7 +29,7 @@
   width: 400px;
   height: auto;
   max-height: 65vh;
-  background: linear-gradient(135deg, rgb(196, 190, 231) 0%, rgb(166, 160, 201) 100%);
+  background: var(--card-bg, linear-gradient(135deg, rgb(196, 190, 231) 0%, rgb(166, 160, 201) 100%));
   border-radius: 24px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
   padding: 20px;
@@ -48,7 +48,7 @@
   inset: 0;
   border-radius: 24px;
   padding: 3px;
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.5), rgba(255, 140, 0, 0.5));
+  background: var(--card-overlay, linear-gradient(135deg, rgba(255, 215, 0, 0.5), rgba(255, 140, 0, 0.5)));
   -webkit-mask: linear-gradient(#fff, #fff) content-box, linear-gradient(#fff, #fff);
   mask: linear-gradient(#fff, #fff) content-box, linear-gradient(#fff, #fff);
   pointer-events: none;
@@ -157,12 +157,17 @@
 .modal-name, .carta-name {
   font-family: 'Pokemon Solid', sans-serif;
   font-weight: 700;
-  background: linear-gradient(135deg, #ff4d4d, #d47a04, #ffd700);
+  background: var(--name-gradient, linear-gradient(135deg, #ff4d4d, #d47a04, #ffd700));
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  text-align: center;
+  text-align: left;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .modal-name {
@@ -313,7 +318,7 @@
 .carta {
   width: 280px;
   height: 370px;
-  background: linear-gradient(135deg, rgb(196, 190, 231) 0%, rgb(176, 170, 211) 100%);
+  background: var(--card-bg, linear-gradient(135deg, rgb(196, 190, 231) 0%, rgb(176, 170, 211) 100%));
   border-radius: 22px;
   padding: 14px;
   box-shadow: 0 18px 45px rgba(15, 23, 42, 0.25);
@@ -331,7 +336,7 @@
   inset: 0;
   border-radius: 22px;
   padding: 3px;
-  background: linear-gradient(135deg, rgba(59,130,246,0.3), rgba(56,189,248,0.14));
+  background: var(--card-overlay, linear-gradient(135deg, rgba(59,130,246,0.3), rgba(56,189,248,0.14)));
   -webkit-mask: linear-gradient(#fff,#fff) content-box, linear-gradient(#fff,#fff);
   mask: linear-gradient(#fff,#fff) content-box, linear-gradient(#fff,#fff);
   pointer-events: none;
@@ -353,7 +358,7 @@
 }
 
 .carta:hover::before {
-  background: linear-gradient(135deg, rgba(59,130,246,0.55), rgba(14,165,233,0.25));
+  background: var(--card-overlay, linear-gradient(135deg, rgba(59,130,246,0.55), rgba(14,165,233,0.25)));
 }
 
 .carta:hover {
@@ -398,7 +403,7 @@
   height: 200px;
   border-radius: 50%;
   object-fit: cover;
-  border: 5px solid rgba(59, 130, 246, 0.35);
+  border: 5px solid var(--img-border, rgba(59, 130, 246, 0.35));
   background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.8), transparent 70%);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18), inset 0 -4px 12px rgba(0, 0, 0, 0.05);
   transition: all 0.35s ease;
@@ -406,18 +411,18 @@
 
 .carta:hover .carta-media img {
   transform: scale(1.05);
-  border-color: rgba(255, 215, 0, 0.8);
+  border-color: var(--img-border, rgba(255, 215, 0, 0.8));
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
 }
 
 .carta-name-bar {
   width: 100%;
-  padding: 12px 12px;
+  padding: 10px 12px;
   background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(242,244,245,0.95) 100%);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   border-top: 2px solid rgba(255, 215, 0, 0.3);
   border-radius: 12px;
   margin-bottom: 4px;
@@ -426,28 +431,149 @@
   min-height: 48px;
 }
 
-.carta:hover .carta-name-bar {
-  background: linear-gradient(180deg, #fff 0%, #fffaf0 100%);
-  border-top-color: rgba(255, 215, 0, 0.6);
+.carta-attribute-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  justify-content: flex-end;
+  max-width: 130px;
 }
 
 .carta-attribute-badge {
-  font-size: 10px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 4px 10px;
-  background: linear-gradient(135deg, rgba(255,77,77,0.2), rgba(255,212,0,0.3));
-  border-radius: 20px;
-  color: #ff4d4d;
-  font-weight: bold;
+  height: 24px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  border: 1px solid rgba(255, 77, 77, 0.4);
-  white-space: nowrap;
-  transition: all 0.3s ease;
+  color: #334155;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 4px 8px rgba(15, 23, 42, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-.carta:hover .carta-attribute-badge {
-  background: linear-gradient(135deg, rgba(255,77,77,0.3), rgba(255,212,0,0.4));
-  transform: scale(1.05);
-  border-color: rgba(255, 77, 77, 0.6);
+.carta-attribute-badge::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+}
+
+.carta-attribute-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+}
+
+.carta-attribute-badge.type-agua {
+  color: #0f69c1;
+  border-color: rgba(59, 130, 246, 0.45);
+}
+
+.carta-attribute-badge.type-fuego {
+  color: #b91c1c;
+  border-color: rgba(251, 146, 60, 0.45);
+}
+
+.carta-attribute-badge.type-planta {
+  color: #166534;
+  border-color: rgba(34, 197, 94, 0.45);
+}
+
+.carta-attribute-badge.type-dragón,
+.carta-attribute-badge.type-dragon {
+  color: #1d4ed8;
+  border-color: rgba(59, 130, 246, 0.45);
+}
+
+.carta-attribute-badge.type-eléctrico,
+.carta-attribute-badge.type-electrico {
+  color: #92400e;
+  border-color: rgba(245, 158, 11, 0.45);
+}
+
+.carta-attribute-badge.type-normal {
+  color: #334155;
+  border-color: rgba(148, 163, 184, 0.45);
+}
+
+.carta-attribute-badge.type-volador {
+  color: #2563eb;
+  border-color: rgba(59, 130, 246, 0.45);
+}
+
+.carta-attribute-badge.type-siniestro {
+  color: #292524;
+  border-color: rgba(55, 65, 81, 0.45);
+}
+
+.carta-attribute-badge.type-acero {
+  color: #475569;
+  border-color: rgba(100, 116, 139, 0.45);
+}
+
+.carta-attribute-badge.type-psíquico,
+.carta-attribute-badge.type-psiquico {
+  color: #7c3aed;
+  border-color: rgba(129, 76, 249, 0.45);
+}
+
+.carta-attribute-badge.type-hielo {
+  color: #0284c7;
+  border-color: rgba(56, 189, 248, 0.45);
+}
+
+.carta-attribute-badge.type-tierra {
+  color: #92400e;
+  border-color: rgba(171, 94, 0, 0.45);
+}
+
+.carta-attribute-badge.type-roca {
+  color: #57534e;
+  border-color: rgba(113, 100, 80, 0.45);
+}
+
+.carta-attribute-badge.type-veneno {
+  color: #6d28d9;
+  border-color: rgba(168, 85, 247, 0.45);
+}
+
+.carta-attribute-badge.type-lucha {
+  color: #b91c1c;
+  border-color: rgba(239, 68, 68, 0.45);
+}
+
+.carta-attribute-badge.type-bicho {
+  color: #166534;
+  border-color: rgba(34, 197, 94, 0.45);
+}
+
+.carta-attribute-badge.type-hada {
+  color: #c026d3;
+  border-color: rgba(192, 38, 211, 0.45);
+}
+
+.carta-attribute-badge.type-fantasma {
+  color: #4f46e5;
+  border-color: rgba(99, 102, 241, 0.45);
+}
+
+.carta-attribute-badge.type-others {
+  color: #334155;
+  border-color: rgba(148, 163, 184, 0.45);
+}
+
+.carta:hover .carta-name-bar {
+  background: linear-gradient(180deg, #fff 0%, #fffaf0 100%);
+  border-top-color: rgba(255, 215, 0, 0.6);
 }
 
 /* ========== BOTONES DE ACCIONES ========== */

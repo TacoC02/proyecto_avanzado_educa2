@@ -2,9 +2,31 @@ import { useState } from 'react'
 import './vistaCreaCarta.css'
 import type { CartaItem } from '../contexts/CartasContext'
 
+const POKEMON_TYPES = [
+  { value: 'Acero', label: 'Acero 🛡️' },
+  { value: 'Agua', label: 'Agua 💧' },
+  { value: 'Bicho', label: 'Bicho 🐛' },
+  { value: 'Dragón', label: 'Dragón 🐲' },
+  { value: 'Eléctrico', label: 'Eléctrico ⚡' },
+  { value: 'Fantasma', label: 'Fantasma 👻' },
+  { value: 'Fuego', label: 'Fuego 🔥' },
+  { value: 'Hada', label: 'Hada ✨' },
+  { value: 'Hielo', label: 'Hielo 🧊' },
+  { value: 'Lucha', label: 'Lucha 🥊' },
+  { value: 'Normal', label: 'Normal ⚪' },
+  { value: 'Planta', label: 'Planta 🌿' },
+  { value: 'Psíquico', label: 'Psíquico 🔮' },
+  { value: 'Roca', label: 'Roca 🪨' },
+  { value: 'Siniestro', label: 'Siniestro 🌑' },
+  { value: 'Tierra', label: 'Tierra 🏜️' },
+  { value: 'Veneno', label: 'Veneno ☠️' },
+  { value: 'Volador', label: 'Volador 🕊️' },
+] as const
+
 type FormData = {
   nb_name: string
-  attributes: string
+  attribute1: string
+  attribute2: string
   attack: number
   defense: number
   llifepoints: number
@@ -20,9 +42,15 @@ type Props = {
 }
 
 function VistaEditarCarta({ carta, onClose, onUpdate }: Props) {
+  const splitAttributes = carta.attributes
+    .split(',')
+    .map((value) => value.trim())
+    .filter(Boolean)
+
   const [form, setForm] = useState<FormData>({
     nb_name: carta.nb_name,
-    attributes: carta.attributes,
+    attribute1: splitAttributes[0] || '',
+    attribute2: splitAttributes[1] || '',
     attack: carta.attack,
     defense: carta.defense,
     llifepoints: carta.llifepoints || 0,
@@ -74,10 +102,17 @@ function VistaEditarCarta({ carta, onClose, onUpdate }: Props) {
     if (!form.nb_name || !form.nb_name.trim()) return alert('Ingrese un nombre para la carta')
     if (!form.pictureUrl) return alert('Debe tener una imagen para la carta')
 
+    const attributes = [form.attribute1, form.attribute2]
+      .map((value) => value.trim())
+      .filter(Boolean)
+      .join(', ')
+
+    if (!attributes) return alert('Ingresa al menos un tipo para la carta')
+
     try {
       await onUpdate({
         nb_name: form.nb_name,
-        attributes: form.attributes,
+        attributes,
         attack: form.attack,
         defense: form.defense,
         llifepoints: form.llifepoints,
@@ -153,10 +188,29 @@ function VistaEditarCarta({ carta, onClose, onUpdate }: Props) {
               />
             </label>
 
-            <label>
-              Atributos
-              <input value={form.attributes} onChange={(e) => handleChange('attributes', e.target.value)} placeholder="Ej: Eléctrico, Fuego" />
-            </label>
+            <div className="types-row">
+              <label>
+                Tipo 1
+                <select value={form.attribute1} onChange={(e) => handleChange('attribute1', e.target.value)}>
+                  <option value="">Selecciona tipo</option>
+                  {POKEMON_TYPES.map((type) => (
+                    <option key={type.value} value={type.value}>{type.label}</option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Tipo 2
+                <select value={form.attribute2} onChange={(e) => handleChange('attribute2', e.target.value)}>
+                  <option value="">Ninguno</option>
+                  {POKEMON_TYPES.map((type) => (
+                    <option key={type.value} value={type.value}>{type.label}</option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <small style={{ color: '#333', fontSize: '12px' }}>
+              Selecciona hasta dos tipos. Si es mono-tipo deja Tipo 2 en Ninguno.
+            </small>
 
             <div className="stats-row">
               <div className="stat-item">

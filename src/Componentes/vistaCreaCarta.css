@@ -169,6 +169,17 @@
   margin: 8px 0;
 }
 
+.types-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.types-row label {
+  display: flex;
+  flex-direction: column;
+}
+
 .stat-item {
   flex: 1;
   display: flex;
