@@ -1,4 +1,3 @@
-// VistaMazo.tsx
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Carta from './Cartas'
@@ -133,6 +132,9 @@ function Mazo() {
       <div className="top-controls">
         <button className="pokedex-button create-card-button" onClick={() => navigate('/card/create')}>
           ✨ Crear carta
+        </button>
+        <button className="pokedex-button ai-card-button" onClick={() => navigate('/generar-carta-ia')}>
+          🤖 Generar IA
         </button>
         <button
           className={`pokedex-button delete-card-button ${selectionMode === 'delete' ? 'active' : ''}`}
