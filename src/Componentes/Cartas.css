@@ -212,13 +212,17 @@
   position: relative;
   z-index: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  padding: 10px;
-  background: radial-gradient(circle at 50% 30%, rgba(255, 215, 0, 0.1), transparent 70%);
-  border-radius: 20px;
+  width: 280px;
+  height: 280px;
+  margin: 0 auto;
+  padding: 0;
+  background: radial-gradient(circle at 50% 45%, rgba(255, 215, 0, 0.14), rgba(255, 215, 0, 0.02) 55%, transparent 75%);
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 12px 35px rgba(0, 0, 0, 0.18);
 }
 
 .modal-media::before {
@@ -227,10 +231,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 95%;
-  height: 95%;
+  width: 92%;
+  height: 92%;
   border-radius: 50%;
-  border: 2px dashed rgba(255, 215, 0, 0.4);
+  border: 2px dashed rgba(255, 215, 0, 0.35);
   pointer-events: none;
   animation: rotateBorder 20s linear infinite;
 }
@@ -243,7 +247,7 @@
   width: 100%;
   height: 100%;
   transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(255, 215, 0, 0.2), transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.16), transparent 70%);
   opacity: 0;
   transition: opacity 0.5s ease;
   pointer-events: none;
@@ -253,12 +257,14 @@
 .modal-card:hover .modal-media::after { opacity: 1; }
 
 .modal-media img {
-  max-width: 240px;
-  max-height: 240px;
+  width: 220px;
+  height: 220px;
   object-fit: contain;
   transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   position: relative;
   z-index: 2;
+  margin: 0;
+  border-radius: 50%;
   filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
   animation: floatImage 3s ease-in-out infinite;
 }
@@ -741,7 +747,8 @@
   width: 460px;
   height: auto;
   max-height: 78vh;
-  background: linear-gradient(135deg, rgb(166, 160, 201) 0%, rgb(146, 140, 181) 100%);
+  background: var(--details-bg, linear-gradient(135deg, rgb(166, 160, 201) 0%, rgb(146, 140, 181) 100%));
+  background-image: radial-gradient(circle at top left, rgba(255,255,255,0.18), transparent 26%), radial-gradient(circle at bottom right, rgba(255,255,255,0.1), transparent 35%), var(--details-bg, linear-gradient(135deg, rgb(166, 160, 201) 0%, rgb(146, 140, 181) 100%));
   color: #111;
   padding: 20px;
   overflow-y: auto;
@@ -749,7 +756,7 @@
   flex-direction: column;
   gap: 14px;
   border-radius: 18px;
-  border: 3px solid rgba(255, 215, 0, 0.3);
+  border: 3px solid var(--details-border, rgba(255, 215, 0, 0.3));
   box-shadow: 0 18px 60px rgba(0,0,0,0.14), inset 0 1px 0 rgba(255,255,255,0.2);
   animation: detailsSlideIn 0.4s ease-out;
 }

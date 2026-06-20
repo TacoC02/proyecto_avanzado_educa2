@@ -173,6 +173,7 @@ function Carta ({
         <div className="modal" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()} style={palette ? {
             ['--card-bg' as any]: `linear-gradient(135deg, ${palette.light}, ${palette.primary})`,
+            ['--card-overlay' as any]: `linear-gradient(135deg, ${hexToRgba(palette.primary, 0.45)}, ${hexToRgba(palette.accent, 0.28)})`,
             ['--name-gradient' as any]: `linear-gradient(135deg, ${palette.primary}, ${palette.accent})`,
           } : {}}>
             <div className="pokebola modal-pokebola" aria-hidden="true" />
@@ -191,7 +192,10 @@ function Carta ({
             </div>
           </div>
 
-          <aside className="modal-details" onClick={(e) => e.stopPropagation()}>
+          <aside className="modal-details" onClick={(e) => e.stopPropagation()} style={palette ? {
+            ['--details-bg' as any]: `linear-gradient(180deg, ${palette.light}, ${palette.primary})`,
+            ['--details-border' as any]: palette.accent,
+          } : {}}>
             <h3>Estadísticas</h3>
             <div className="stat-row"><span className="stat-icon">⚔️</span> <strong>Ataque:</strong> {attack}</div>
             <div className="stat-row"><span className="stat-icon">🛡️</span> <strong>Defensa:</strong> {defense}</div>
