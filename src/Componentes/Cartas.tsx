@@ -298,17 +298,20 @@ function Carta ({
           <img src={pictureUrl} alt={name} />
         </div>
 
-        <div className="carta-name-bar">
-          <div className="carta-name">{name}</div>
+        <div className="carta-name-area">
           {typeList.length > 0 && (
-            <div className="carta-attribute-list">
+            <div className="carta-types-row">
               {typeList.map((type) => (
-                <div className={`carta-attribute-badge type-${normalizeTypeClass(type)}`} key={type}>
+                <div className={`carta-type-top type-${normalizeTypeClass(type)}`} key={type}>
                   {type}
                 </div>
               ))}
             </div>
           )}
+
+          <div className="carta-name-bar">
+            <div className="carta-name">{name}</div>
+          </div>
         </div>
       </div>
       
