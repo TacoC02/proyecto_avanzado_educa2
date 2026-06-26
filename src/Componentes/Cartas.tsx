@@ -258,7 +258,10 @@ function Carta ({
       .replace(/^-+|-+$/g, '')
 
   const typeList = attributes
-    ? attributes.split(',').map((value) => value.trim()).filter(Boolean)
+    ? attributes
+        .split(/[,/|;]+/)
+        .map((value) => value.trim())
+        .filter(Boolean)
     : []
 
   const cssVars: React.CSSProperties = palette ? {
