@@ -297,7 +297,7 @@ export default function GenerarCartaIAPage() {
           await tryResolvePokemon(query)
           break
         } catch {
-          // continue to next query
+
         }
       }
 

@@ -198,8 +198,10 @@
 .ia-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.9);
-  backdrop-filter: blur(8px);
+  background: radial-gradient(circle at top, rgba(96, 165, 250, 0.12), transparent 30%),
+    radial-gradient(circle at left, rgba(251, 191, 36, 0.12), transparent 20%),
+    rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -209,78 +211,128 @@
 
 .ia-modal {
   width: min(1120px, 100%);
-  max-height: calc(100vh - 48px);
+  max-height: calc(100vh - 40px);
   overflow-y: auto;
-  background: rgba(8, 18, 40, 0.98);
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  border-radius: 28px;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
-  padding: 24px;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(8, 16, 32, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 32px;
+  box-shadow: 0 35px 120px rgba(0, 0, 0, 0.55);
+  padding: 28px;
   display: grid;
-  gap: 18px;
+  gap: 20px;
+  position: relative;
+}
+
+.ia-modal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 32px;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(248, 113, 113, 0.02), transparent 20%, rgba(59, 130, 246, 0.04));
 }
 
 .ia-modal h2 {
   margin: 0;
   color: #f8fafc;
-  font-size: 1.8rem;
-  letter-spacing: 0.05em;
+  font-size: clamp(1.9rem, 2.8vw, 2.4rem);
+  letter-spacing: 0.1em;
   text-align: center;
+  text-transform: uppercase;
+  text-shadow: 0 0 18px rgba(250, 204, 21, 0.28);
+  position: relative;
+  z-index: 1;
+}
+
+.ia-modal h2::after {
+  content: 'Elige la mejor carta';
+  display: block;
+  margin-top: 8px;
+  color: rgba(203, 213, 225, 0.75);
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
 }
 
 .ia-modal-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
+  position: relative;
+  z-index: 1;
 }
 
 .ia-modal-card {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 24px;
-}
-
-.ia-modal-card.selected {
-  border-color: #facc15;
-  box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.18);
-}
-
-.ia-modal-card {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 24px;
+  gap: 14px;
+  padding: 18px;
+  min-height: 460px;
+  background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.12), transparent 35%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.98));
+  border: 2px solid rgba(147, 197, 253, 0.18);
+  border-radius: 28px;
   cursor: pointer;
+  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease, background 220ms ease;
+  position: relative;
+}
+
+.ia-modal-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  pointer-events: none;
+  background: radial-gradient(circle at top right, rgba(250, 204, 21, 0.1), transparent 30%);
+}
+
+.ia-modal-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(252, 211, 77, 0.55);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.35);
 }
 
 .ia-modal-card.selected {
   border-color: #facc15;
-  box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.18);
+  box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.24), 0 20px 40px rgba(250, 204, 21, 0.08);
+  background: linear-gradient(180deg, rgba(250, 204, 21, 0.08), rgba(15, 23, 42, 0.96));
+}
+
+.ia-modal-card.selected::after {
+  background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.16), transparent 36%);
+}
+
+.ia-modal-card > .ia-button.secondary {
+  align-self: stretch;
 }
 
 .ia-card-source {
   color: #cbd5e1;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   text-align: center;
-  padding: 10px 0 4px;
+  padding: 10px 0 6px;
 }
 
 .ia-modal-actions {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   justify-content: center;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
 }
 
 .ia-modal-actions .ia-button {
   flex: 1 1 220px;
+  min-width: 200px;
+  padding: 16px 24px;
+}
+
+.ia-modal-actions .ia-button.primary {
+  background: linear-gradient(135deg, #facc15 0%, #fb923c 100%);
+}
+
+.ia-modal-actions .ia-button.secondary {
+  background: linear-gradient(135deg, rgba(30, 64, 175, 0.95), rgba(79, 70, 229, 0.95));
 }
 
 @media (max-width: 900px) {

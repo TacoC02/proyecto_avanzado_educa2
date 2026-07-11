@@ -259,6 +259,192 @@
 .action-btn.pokemon { background: linear-gradient(180deg,#86efac,#22c55e); color: #fff }
 .action-btn.run { background: linear-gradient(180deg,#93c5fd,#3b82f6); color: #fff }
 
+.attack-modal-overlay,
+.item-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  background: rgba(15, 23, 42, 0.6);
+  padding: 16px;
+}
+
+.attack-modal-card,
+.item-modal-card {
+  width: min(680px, 100%);
+  max-width: 680px;
+  background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 4px solid #1e293b;
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow: 0 30px 70px rgba(15, 23, 42, 0.32);
+  position: relative;
+}
+
+.attack-modal-header,
+.item-modal-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.attack-modal-kicker,
+.item-modal-kicker {
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.8rem;
+  color: #1e293b;
+}
+
+.attack-modal-card h3,
+.item-modal-card h3 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.attack-modal-copy,
+.item-modal-copy,
+.type-chart-note {
+  margin: 18px 0 14px;
+  color: #334155;
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+.attack-grid,
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.attack-card,
+.item-card {
+  border: 2px solid rgba(15, 23, 42, 0.12);
+  background: white;
+  border-radius: 18px;
+  padding: 16px;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  min-height: 160px;
+}
+
+.attack-card:hover,
+.item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+  border-color: #0ea5e9;
+}
+
+.attack-card strong,
+.item-card strong {
+  display: block;
+  font-size: 1.05rem;
+  margin: 0 0 8px;
+}
+
+.attack-card span,
+.item-card span {
+  color: #475569;
+  line-height: 1.5;
+}
+
+.attack-type {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: white;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.12);
+}
+
+.attack-card {
+  border: 2px solid rgba(15, 23, 42, 0.12);
+  background: radial-gradient(circle at top left, rgba(255,255,255,0.95), rgba(248,250,252,0.94));
+  border-radius: 22px;
+  padding: 18px;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+  min-height: 180px;
+}
+
+.attack-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 26px 60px rgba(15, 23, 42, 0.16);
+}
+
+.attack-card strong {
+  display: block;
+  font-size: 1.15rem;
+  margin: 0 0 10px;
+}
+
+.attack-card span {
+  color: #475569;
+  line-height: 1.65;
+}
+
+.attack-card--normal { border-color: #6b7280; background: linear-gradient(180deg, #f8fafc 0%, #e5e7eb 100%); }
+.attack-card--fuego { border-color: #dc2626; background: linear-gradient(180deg, #fee2e2 0%, #fca5a5 100%); }
+.attack-card--agua { border-color: #1d4ed8; background: linear-gradient(180deg, #dbeafe 0%, #93c5fd 100%); }
+.attack-card--electrico { border-color: #ca8a04; background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%); color: #1f2937; }
+.attack-card--planta { border-color: #15803d; background: linear-gradient(180deg, #dcfce7 0%, #86efac 100%); }
+.attack-card--hielo { border-color: #0ea5e9; background: linear-gradient(180deg, #ecfeff 0%, #bae6fd 100%); color: #0f172a; }
+.attack-card--lucha { border-color: #92400e; background: linear-gradient(180deg, #fef3c7 0%, #f5d0a9 100%); color: #1f2937; }
+.attack-card--veneno { border-color: #7c3aed; background: linear-gradient(180deg, #f3e8ff 0%, #ddd6fe 100%); }
+.attack-card--tierra { border-color: #b45309; background: linear-gradient(180deg, #fdf2f8 0%, #fde68a 100%); color: #1f2937; }
+.attack-card--volador { border-color: #0ea5e9; background: linear-gradient(180deg, #ecfeff 0%, #bfdbfe 100%); }
+.attack-card--psiquico { border-color: #db2777; background: linear-gradient(180deg, #ffe4e6 0%, #fda4af 100%); }
+.attack-card--bicho { border-color: #4d7c0f; background: linear-gradient(180deg, #ecfccb 0%, #d9f99d 100%); color: #1f2937; }
+.attack-card--roca { border-color: #7c2d12; background: linear-gradient(180deg, #f8ede8 0%, #f5d0c5 100%); color: #1f2937; }
+.attack-card--fantasma { border-color: #4b5563; background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%); }
+.attack-card--dragon { border-color: #6d28d9; background: linear-gradient(180deg, #ede9fe 0%, #c4b5fd 100%); }
+.attack-card--siniestro { border-color: #111827; background: linear-gradient(180deg, #d1d5db 0%, #9ca3af 100%); color: #ffffff; }
+.attack-card--acero { border-color: #6b7280; background: linear-gradient(180deg, #f4f4f5 0%, #cbd5e1 100%); }
+.attack-card--hada { border-color: #f9a8d4; background: linear-gradient(180deg, #fdf2f8 0%, #fbcfe8 100%); }
+
+.attack-type--normal { background: #6b7280; color: white }
+.attack-type--fuego { background: #dc2626; color: white }
+.attack-type--agua { background: #1d4ed8; color: white }
+.attack-type--electrico { background: #ca8a04; color: black }
+.attack-type--planta { background: #15803d; color: white }
+.attack-type--hielo { background: #0ea5e9; color: white }
+.attack-type--lucha { background: #92400e; color: white }
+.attack-type--veneno { background: #7c3aed; color: white }
+.attack-type--tierra { background: #b45309; color: white }
+.attack-type--volador { background: #3b82f6; color: white }
+.attack-type--psiquico { background: #db2777; color: white }
+.attack-type--bicho { background: #4d7c0f; color: white }
+.attack-type--roca { background: #7c2d12; color: white }
+.attack-type--fantasma { background: #4b5563; color: white }
+.attack-type--dragon { background: #6d28d9; color: white }
+.attack-type--siniestro { background: #111827; color: white }
+.attack-type--acero { background: #6b7280; color: white }
+.attack-type--hada { background: #ec4899; color: white }
+
+.item-close-btn {
+  border: none;
+  border-radius: 999px;
+  background: #0f172a;
+  color: white;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+
 .action-btn:disabled { opacity: 0.6 }
 
 /* diálogo inferior*/
