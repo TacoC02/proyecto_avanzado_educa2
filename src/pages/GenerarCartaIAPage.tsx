@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useCartas } from '../contexts/CartasContext'
+import { useCartas, type CartaItem } from '../contexts/CartasContext'
+import Carta from '../Componentes/Cartas'
 import './GenerarCartaIAPage.css'
 
 const GLOBAL_CONTEXT = [
@@ -80,6 +81,34 @@ function normalizeAttributes(value: unknown): string {
   return ''
 }
 
+function isPokeApiImageUrl(url: string | undefined) {
+  if (!url || typeof url !== 'string') return false
+  const normalized = url.toLowerCase()
+  const allowedFragments = [
+    'raw.githubusercontent.com/pokeapi',
+    'pokeapi.co/api/v2/pokemon',
+    '/other/official-artwork/',
+    '/sprites/pokemon/',
+  ]
+  return allowedFragments.some((fragment) => normalized.includes(fragment)) || normalized.endsWith('.png')
+}
+
+function hasQuotedValue(value: string): boolean {
+  return /["']\s*[^"']+\s*["']/.test(value)
+}
+
+function isInvalidCandidate(candidate: CandidateCard, existingCards: CartaItem[]) {
+  const imageInvalid = Boolean(candidate.pictureUrl) && !isPokeApiImageUrl(candidate.pictureUrl)
+  const quotedAttribute = hasQuotedValue(candidate.attributes)
+  const quotedName = hasQuotedValue(candidate.nb_name)
+  const quotedDescription = hasQuotedValue(candidate.description)
+  const similarInvalidExisting = existingCards.some((card) => {
+    const similarity = similarityScore(normalizeText(candidate.nb_name), normalizeText(card.nb_name))
+    return similarity >= 0.85 && Boolean(card.pictureUrl) && !isPokeApiImageUrl(card.pictureUrl)
+  })
+  return imageInvalid || quotedAttribute || quotedName || quotedDescription || similarInvalidExisting
+}
+
 function levenshteinDistance(a: string, b: string) {
   const matrix = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0))
 
@@ -141,13 +170,14 @@ async function resolvePokemonName(input: string) {
   let bestScore = 0
 
   for (const word of candidateWords) {
-    const scores = names.map((name: string) => {
+    type ScoreEntry = { name: string; score: number }
+    const scores: ScoreEntry[] = names.map((name: string) => {
       const normalizedName = normalizeText(name)
       const score = similarityScore(normalizedName, word)
       return { name, score }
     })
 
-    const top = scores.sort((a, b) => b.score - a.score)[0]
+    const top = scores.sort((a: ScoreEntry, b: ScoreEntry) => b.score - a.score)[0]
     if (top && top.score > bestScore) {
       bestMatch = top.name
       bestScore = top.score
@@ -187,13 +217,28 @@ async function fetchPokemonInfo(pokemonName: string) {
   }
 }
 
+type CandidateCard = {
+  id: string
+  nb_name: string
+  description: string
+  attack: number
+  defense: number
+  llifepoints: number
+  pictureUrl: string
+  attributes: string
+  source: 'oficial' | 'ia'
+}
+
 export default function GenerarCartaIAPage() {
   const navigate = useNavigate()
-  const { addCarta } = useCartas()
+  const { addCarta, updateCarta, cartas } = useCartas()
   const [cardPrompt, setCardPrompt] = useState('')
-  const [status, setStatus] = useState<'idle' | 'loading' | 'error' | 'success'>('idle')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'error' | 'success' | 'pending-selection'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
   const [generatedName, setGeneratedName] = useState('')
+  const [candidates, setCandidates] = useState<CandidateCard[]>([])
+  const [selectedCandidate, setSelectedCandidate] = useState<CandidateCard | null>(null)
+  const [isSaving, setIsSaving] = useState(false)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -233,42 +278,117 @@ export default function GenerarCartaIAPage() {
       const defense = clamp(Number(payload?.defense ?? payload?.defensa ?? 0), 0, 50)
       const lifePoints = clamp(Number(payload?.lifePoints ?? payload?.llifepoints ?? payload?.vida ?? 100), 100, 200)
 
-      let pokemonName = candidateName || cardPrompt
+      const promptPokemonName = candidateName.trim()
+      let resolvedPokemonName = ''
       let pictureUrl = ''
+      let pokemonTypes: string[] = []
       let attributes = normalizeAttributes(payload?.attributes ?? payload?.types ?? payload?.tipo ?? payload?.type) || 'Normal'
 
-      if (pokemonName) {
+      const tryResolvePokemon = async (query: string) => {
+        const pokemonInfo = await fetchPokemonInfo(query)
+        pictureUrl = pokemonInfo.imageUrl
+        pokemonTypes = pokemonInfo.types
+        resolvedPokemonName = pokemonInfo.pokemonName
+      }
+
+      const searchQueries = [promptPokemonName, cardPrompt].filter(Boolean)
+      for (const query of searchQueries) {
         try {
-          const pokemonInfo = await fetchPokemonInfo(String(pokemonName))
-          pictureUrl = pokemonInfo.imageUrl
-          attributes = pokemonInfo.types.length > 0 ? pokemonInfo.types.join(', ') : attributes || 'Normal'
-          pokemonName = pokemonInfo.pokemonName
+          await tryResolvePokemon(query)
+          break
         } catch {
-          throw new Error('No se encontró un Pokémon real para usar como imagen de la carta.')
+          // continue to next query
         }
-      } else {
-        throw new Error('La IA debe indicar un Pokémon real para generar la carta.')
+      }
+
+      if (!resolvedPokemonName) {
+        throw new Error('No se encontró un Pokémon real para usar como imagen de la carta.')
       }
 
       if (!pictureUrl) {
         throw new Error('No se pudo obtener la imagen oficial del Pokémon desde la API de Pokémon.')
       }
 
-      await addCarta({
-        nb_name: payload?.name || payload?.nb_name || pokemonName || 'Carta IA',
+      if (pokemonTypes.length > 0) {
+        attributes = pokemonTypes.join(', ')
+      }
+
+      const rawPicture = payload?.pictureUrl || payload?.imageUrl || payload?.image || ''
+      const rawName = payload?.name || payload?.nb_name || payload?.pokemonName || payload?.pokemon || 'Carta IA'
+      const rawAttributes = normalizeAttributes(payload?.attributes ?? payload?.types ?? payload?.tipo ?? payload?.type) || 'Normal'
+
+      const officialCandidate: CandidateCard = {
+        id: 'oficial',
+        nb_name: resolvedPokemonName,
         description,
         attack,
         defense,
         llifepoints: lifePoints,
         pictureUrl,
         attributes,
-      })
+        source: 'oficial',
+      }
 
-      setGeneratedName(pokemonName || payload?.name || payload?.nb_name || 'Carta IA')
-      setStatus('success')
+      const rawCandidate: CandidateCard = {
+        id: 'ia',
+        nb_name: toTitleCase(String(rawName)),
+        description,
+        attack,
+        defense,
+        llifepoints: lifePoints,
+        pictureUrl: rawPicture || pictureUrl,
+        attributes: rawAttributes,
+        source: 'ia',
+      }
+
+      const candidatesToShow = [officialCandidate, rawCandidate].filter(
+        (candidate) => !isInvalidCandidate(candidate, cartas),
+      )
+
+      if (candidatesToShow.length === 0) {
+        throw new Error('No se generó ninguna carta válida. Intenta con otro prompt.')
+      }
+
+      setCandidates(candidatesToShow)
+      setSelectedCandidate(candidatesToShow[0])
+      setStatus('pending-selection')
+      return
     } catch (error: any) {
       setStatus('error')
       setErrorMessage(error?.message || 'No se pudo generar la carta. Intenta nuevamente.')
+    }
+  }
+
+  const handleSelectCandidate = async () => {
+    if (isSaving || !selectedCandidate) return
+
+    setIsSaving(true)
+    setErrorMessage('')
+    setStatus('loading')
+
+    try {
+      const normalizedResolvedName = normalizeText(selectedCandidate.nb_name)
+      const existingCard = cartas.find((card) => {
+        const normalizedCardName = normalizeText(card.nb_name)
+        const similarity = similarityScore(normalizedCardName, normalizedResolvedName)
+        const isExact = normalizedCardName === normalizedResolvedName
+        const isPartial = normalizedResolvedName && (normalizedCardName.includes(normalizedResolvedName) || normalizedResolvedName.includes(normalizedCardName))
+        return isExact || isPartial || similarity >= 0.75
+      })
+
+      await (existingCard
+        ? updateCarta(existingCard.numero, selectedCandidate)
+        : addCarta(selectedCandidate))
+
+      setGeneratedName(selectedCandidate.nb_name)
+      setCandidates([])
+      setSelectedCandidate(null)
+      setStatus('success')
+    } catch (error: any) {
+      setStatus('error')
+      setErrorMessage(error?.message || 'No se pudo guardar la carta seleccionada.')
+    } finally {
+      setIsSaving(false)
     }
   }
 
@@ -315,12 +435,69 @@ export default function GenerarCartaIAPage() {
 
             {status === 'success' && (
               <div className="ia-message success">
-                <strong>¡Carta generada!</strong> {generatedName} se guardó en tu colección.
+                <strong>¡Carta guardada!</strong> {generatedName} se integró a tu colección.
               </div>
             )}
           </div>
         </div>
       </section>
+
+      {status === 'pending-selection' && (
+        <div className="ia-modal-overlay">
+          <div className="ia-modal">
+            <h2>Selecciona la carta que quieres guardar</h2>
+            <div className="ia-modal-grid">
+              {candidates.map((candidate, index) => (
+                <div
+                  key={candidate.id}
+                  className={`ia-modal-card ${selectedCandidate?.id === candidate.id ? 'selected' : ''}`}
+                >
+                  <Carta
+                    numero={index + 1}
+                    name={candidate.nb_name}
+                    attributes={candidate.attributes}
+                    attack={candidate.attack}
+                    defense={candidate.defense}
+                    llifepoints={candidate.llifepoints}
+                    description={candidate.description}
+                    pictureUrl={candidate.pictureUrl}
+                    selectable={false}
+                  />
+                  <button
+                    type="button"
+                    className={`ia-button secondary ${selectedCandidate?.id === candidate.id ? 'selected' : ''}`}
+                    onClick={() => setSelectedCandidate(candidate)}
+                  >
+                    {selectedCandidate?.id === candidate.id ? 'Seleccionada' : 'Seleccionar'}
+                  </button>
+                  <div className="ia-card-source">Fuente: {candidate.source === 'oficial' ? 'PokeAPI' : 'IA'}</div>
+                </div>
+              ))}
+            </div>
+            <div className="ia-modal-actions">
+              <button
+                type="button"
+                className="ia-button primary"
+                onClick={handleSelectCandidate}
+                disabled={!selectedCandidate || isSaving}
+              >
+                Guardar carta seleccionada
+              </button>
+              <button
+                type="button"
+                className="ia-button secondary"
+                onClick={() => {
+                  setStatus('idle')
+                  setCandidates([])
+                  setSelectedCandidate(null)
+                }}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

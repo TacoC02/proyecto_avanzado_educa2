@@ -5,10 +5,20 @@ import { useCartas } from '../contexts/CartasContext'
 import Carta from '../Componentes/Cartas'
 import Spinner from '../Componentes/Spinner'
 
+function isPokeApiImage(url: string | undefined) {
+  if (!url || typeof url !== 'string') return false
+  return [
+    'raw.githubusercontent.com/PokeAPI',
+    'pokeapi.co/api/v2/pokemon',
+    '/other/official-artwork/',
+    '/sprites/pokemon/',
+  ].some((fragment) => url.includes(fragment))
+}
+
 export default function CardDetailPage() {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
-  const { getCartaById } = useCartas()
+  const { getCartaById, deleteCartas } = useCartas()
   const [carta, setCarta] = useState<CartaItem | undefined>()
   const [loading, setLoading] = useState(true)
 
@@ -21,11 +31,22 @@ export default function CardDetailPage() {
 
     setLoading(true)
     getCartaById(cardId)
-      .then((c) => {
+      .then(async (c) => {
         if (!c) {
           navigate('/card', { replace: true })
           return
         }
+
+        if (!isPokeApiImage(c.pictureUrl)) {
+          try {
+            await deleteCartas([c.numero])
+          } catch (err) {
+            console.error('Error deleting invalid carta:', err)
+          }
+          navigate('/card', { replace: true })
+          return
+        }
+
         setTimeout(() => {
           setCarta(c)
           setLoading(false)
@@ -36,7 +57,7 @@ export default function CardDetailPage() {
         navigate('/card', { replace: true })
       })
       .finally(() => {})
-  }, [getCartaById, id, navigate])
+  }, [getCartaById, id, navigate, deleteCartas])
 
   if (loading) {
     return <Spinner message="Cargando carta..." />
