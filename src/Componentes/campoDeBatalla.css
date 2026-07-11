@@ -196,7 +196,6 @@
   mix-blend-mode: multiply;
 }
 .sprite-opponent {
-  transform: scale(1.02);
   margin-top: 14px;
 }
 
@@ -225,6 +224,8 @@
 .hp-opponent, .hp-player {
   width: 260px;
 }
+
+
 
 /* panel de opciones*/
 .battle-panel {
