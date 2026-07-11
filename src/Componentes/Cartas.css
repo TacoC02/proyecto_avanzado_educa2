@@ -9,9 +9,9 @@
 
 .modal {
   position: fixed;
-  top: 38%;
+  top: 32%;
   left: 50%;
-  transform: translate(-50%, -40%);
+  transform: translate(-50%, -32%);
   z-index: 1000;
   width: 900px;
   max-width: 900px;
